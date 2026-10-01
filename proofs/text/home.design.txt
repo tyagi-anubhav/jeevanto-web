@@ -10,7 +10,7 @@ Tell me when Jeevanto is live
 +65 SG
 +61 AU
 Tell me
-We’ll use these only to tell you when Jeevanto is live.
+We’ll use this only to tell you when Jeevanto is ready, then delete it. Privacy policy.
 WHAT JEEVANTO IS
 Every complex system has a control system.
 Aircraft have flight control.
@@ -29,7 +29,7 @@ Everything it knows comes from you. Every fact has a source. Every action has yo
 WHAT IT GIVES YOU
 Time back, and a clear head. Say it once, and Jeevanto carries it all the way through.
 OUR PROMISE
-Nothing trains on your data, and it’s never sold.
+We never train AI on your data, and we never sell it.
 No one sees it unless you say yes. Not your family, not the one who looks after you.
 Delete your account any time, and everything goes.
 Read what we believe about privacy

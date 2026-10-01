@@ -16,7 +16,7 @@ const beliefs = [
   ['If you leave', `Delete your account any time. Everything goes, and copies in our backups are gone within ${backupDays} days. We keep only what the law or fairness needs: a scrambled fingerprint of your email or mobile number, so the free months are given once per person; invoices, for as long as tax law asks; and a record of sign-ins for a year, never what anything said.`],
   ['This website', 'No trackers. No ads. One cookie, only if you sign in.'],
 ].map(([q, a], i) => ({ n: String(i + 1), q, a }));
-const answer = "flex:1 1 300px; font-family:'Newsreader',serif; font-size:var(--lede); line-height:var(--ledelh); color:var(--ink); text-wrap:pretty;";
+const answer = "font-family:'Newsreader',serif; font-size:var(--lede); line-height:var(--ledelh); color:var(--ink); text-wrap:pretty;";
 ---
 <Shell title="Our promise" here="Our promise" path="/our-promise" description="Our promise: we never train AI on your data, and we never sell it. No one sees it unless you say yes.">
   <div data-screen-label="05 Our promise" style="box-sizing:border-box; max-width:960px; margin:0 auto; padding:var(--top) var(--gut) var(--sec); display:flex; flex-direction:column; gap:40px;">
@@ -28,9 +28,9 @@ const answer = "flex:1 1 300px; font-family:'Newsreader',serif; font-size:var(--
       {beliefs.map(b => (
         <div style="display:flex; flex-wrap:wrap; gap:8px 40px; padding:22px 0; border-top:1px solid var(--line);">
           <dt style="flex:0 0 240px; display:flex; gap:12px; font-size:11px; font-weight:600; letter-spacing:1.6px; color:var(--quiet); text-transform:uppercase; padding-top:7px;"><span style="width:14px;">{b.n}</span><span>{b.q}</span></dt>
-          <dd style={`${answer} margin:0;`}>
-            {b.a}
-            {b.n === '1' && <> If you connect Google, exactly what Jeevanto does with your Gmail, Google Calendar and Google Contacts is in our <a href="/privacy-policy#google-user-data" style="color:var(--brass); font-weight:600;">privacy policy, section 14</a>.</>}
+          <dd style="flex:1 1 300px; margin:0; display:flex; flex-direction:column; gap:12px;">
+            <p style={answer}>{b.a}</p>
+            {b.n === '1' && <p style={answer}>If you connect Google, exactly what Jeevanto does with your Gmail, Google Calendar and Google Contacts is in our <a href="/privacy-policy#google-user-data" style="color:var(--brass); text-decoration:underline; text-underline-offset:3px;">privacy policy, section 14</a>.</p>}
           </dd>
         </div>
       ))}

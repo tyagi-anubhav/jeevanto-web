@@ -1,6 +1,7 @@
-// Drives Claude Design's prototype (Site v9) locally, for extraction and side-by-side proofs.
+// Drives Claude Design's prototype (Site v10) locally, for extraction and side-by-side proofs.
 import { chromium } from 'playwright';
-export const DESIGN = 'http://127.0.0.1:8731/Site%20v9.dc.html';
+// The design reference: v10 since 1 Oct (addendum 1); v9 is in ClaudeDesign's _superseded/.
+export const DESIGN = 'http://127.0.0.1:8731/' + encodeURIComponent(process.env.DESIGN_FILE || 'Site v10.dc.html');
 export async function openDesign(browser, { w, h, theme, scheme, dsf = 2 }) {
   const ctx = await browser.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: dsf, colorScheme: scheme || theme, reducedMotion: "reduce" });
   const page = await ctx.newPage();
