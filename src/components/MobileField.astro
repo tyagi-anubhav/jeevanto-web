@@ -1,0 +1,12 @@
+---
+// Template 15, the mobile field: country code (filled from the visitor's location, editable) + number.
+const { id, placeholder = 'Mobile number', label = 'Mobile number' } = Astro.props;
+const cc = [['+91', '+91 IN'], ['+1', '+1 US'], ['+1', '+1 CA'], ['+44', '+44 UK'], ['+971', '+971 AE'], ['+65', '+65 SG'], ['+61', '+61 AU']];
+---
+<div data-mobile style="display:flex; align-items:stretch; width:100%; height:50px; box-sizing:border-box; background:var(--raised); border:1px solid var(--line); border-radius:16px; overflow:hidden;">
+  <select aria-label="Country code" data-cc style="flex:none; width:96px; box-sizing:border-box; appearance:none; -webkit-appearance:none; border:none; border-right:1px solid var(--line); border-radius:0; background:transparent; padding:0 0 0 16px; font-size:15px; font-family:inherit; color:var(--ink); outline:none; cursor:pointer;">
+    {cc.map(([v, l], i) => <option value={v} data-c={l.slice(-2).toLowerCase()}>{l}</option>)}
+  </select>
+  <input id={id} aria-label={label} placeholder={placeholder} inputmode="tel" autocomplete="tel-national" style="flex:1 1 0%; width:0; min-width:0; border:none; background:transparent; padding:0 18px; font-size:15px; font-family:inherit; color:var(--ink); outline:none;">
+</div>
+<style is:global>[data-mobile]:focus-within { border-color:var(--brass) !important; }</style>

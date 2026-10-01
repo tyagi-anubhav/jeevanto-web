@@ -1,7 +1,6 @@
 {
-  "_about": "Every value the site reads from the ops console (OPS-CONSOLE-PLACEHOLDERS.md, handback v9, 1 Oct 2026). This file is the fallback: once ENGINES' public read-only door exists, the build reads it and this file fills any gap. Empty string = not set yet; the page shows '(To be confirmed)', 'TBC' or '₹TBC' in its place.",
+  "_about": "Every value the site reads from the ops console (OPS-CONSOLE-PLACEHOLDERS.md, handback v9, 1 Oct 2026). The build reads ENGINES' public settings door first (src/lib/config.mjs, POST /rest/v1/rpc/site_settings); this file is the fallback and fills any value the door leaves null. Empty string = not set yet; the page shows '(To be confirmed)', 'TBC' or '₹TBC' in its place.",
   "siteMode": "coming soon",
-
   "legalName": "Anubhav Tyagi (Jeevanto)",
   "registeredAddress": "Sector-66, Gurugram, Haryana 122102, India",
   "cin": "",
@@ -11,7 +10,6 @@
   "privacyContact": "Anubhav Tyagi, Founder · Grievance Officer",
   "privacyEmail": "privacy@jeevanto.com",
   "securityEmail": "security@jeevanto.com",
-
   "freeMonths": 3,
   "plusListPrice": 599,
   "foundingPlaces": 1000,
@@ -32,20 +30,24 @@
   "russiaPlans": "Express only",
   "plansWithPaidAbilities": "Plus and Family",
   "capabilitiesFamily": "Notes, Reminders, Prepare, Find, Book, Order, Do this, Send, Lookout and Errands",
-  "allowFamBriefs": "", "allowFamPictures": "", "allowFamJobs": "",
-  "allowPlusBriefs": "", "allowPlusPictures": "", "allowPlusJobs": "",
-  "allowExpBriefs": "", "allowExpPictures": "", "allowExpJobs": "",
+  "allowFamBriefs": "",
+  "allowFamPictures": "",
+  "allowFamJobs": "",
+  "allowPlusBriefs": "",
+  "allowPlusPictures": "",
+  "allowPlusJobs": "",
+  "allowExpBriefs": "",
+  "allowExpPictures": "",
+  "allowExpJobs": "",
   "familyGraceDays": 7,
-
   "appStoreUrl": "",
   "playStoreUrl": "",
-
   "backupDays": 7,
   "codeMinutes": 10,
   "inviteDays": 14,
   "recoveryWaitDays": 3,
   "recoveryDigits": 6,
-
+  "textsOn": false,
   "legal": {
     "version": "1.0",
     "in_force_date": "launch date (To be confirmed)",

@@ -1,0 +1,78 @@
+---
+// 15 · The ask (recovery and check brief, pages 1–3): reached from the link in the ask's email,
+// jeevanto.com/recover/answer?r=<request_id>&t=<token>. The link is the only key; r and t go back unchanged.
+import Shell from '../../layouts/Shell.astro';
+import MobileField from '../../components/MobileField.astro';
+import { config } from '../../lib/config.mjs';
+import { S } from '../../components/ui.mjs';
+const promise = 'font-size:15px; line-height:21px; color:var(--ink); padding:12px 0; text-wrap:pretty;';
+---
+<Shell title="A question for you" path="/recover/answer" doors description="Someone would like you as their recovery contact on Jeevanto.">
+  <div data-screen-label="15 Recovery contact · the ask" data-answer style={S.page}>
+    <div data-state="loading" style={S.stack}><p style={S.lede} role="status">Opening the question…</p></div>
+
+    <!-- 1 · the ask -->
+    <div data-state="agree" hidden style={S.stack}>
+      <div style={S.eyebrow}><span data-name-upper></span> HAS A QUESTION FOR YOU</div>
+      <h1 style={S.h1} tabindex="-1"><span data-name></span> would like you as a recovery contact.</h1>
+      <p style={S.lede}>If <span data-name></span> is ever locked out of Jeevanto, having lost <span data-name></span>’s phone and email at once, you’d help <span data-name></span> back in.</p>
+      <ul style="list-style:none; margin:0; background:var(--card); border-radius:16px; padding:6px 20px;">
+        <li style={promise}>You can start <span data-name></span>’s way back in, only when <span data-name></span> asks you.</li>
+        <li style={`${promise} border-top:1px solid var(--line);`}>You’ll never see anything of <span data-name></span>’s.</li>
+        <li style={`${promise} border-top:1px solid var(--line);`}>You can never act as <span data-name></span>, or spend anything.</li>
+      </ul>
+      <p data-agree-err role="alert" hidden style={S.err}></p>
+      <div style="display:flex; flex-direction:column; gap:12px;"><button type="button" data-yes style={S.primary}>Yes, I’ll do it</button><button type="button" data-no style={S.quietBtn}>No, thank you</button></div>
+      <p style={`${S.small} text-align:center;`}>Saying no is fine. We’ll tell <span data-name></span> plainly, and <span data-name></span> can choose someone else.</p>
+    </div>
+
+    <!-- 2 · said yes -->
+    <div data-state="yes" hidden style={S.stack}>
+      <div style={S.eyebrow}>YOU SAID YES</div>
+      <h1 style={S.h1} tabindex="-1">Thank you. You’re <span data-name></span>’s recovery contact.</h1>
+      <p style={S.lede}>We’ve told <span data-name></span>.</p>
+      <div style={S.card}>
+        <div data-known style="display:flex; flex-direction:column; gap:12px;"></div>
+        <div data-add hidden style="display:flex; flex-direction:column; gap:12px; border-top:1px solid var(--line); padding-top:14px;">
+          <p data-add-line style={S.quiet}></p>
+          <div data-add-mob hidden><MobileField id="rc-add-mob" /></div>
+          <input data-add-mail hidden id="rc-add-mail" class="jv-field" aria-label="Email" placeholder="Email" inputmode="email" autocomplete="email" style={S.field}>
+          <input data-add-code hidden class="jv-field" aria-label="The code" placeholder="Code" inputmode="numeric" autocomplete="one-time-code" style={S.field}>
+          <p data-add-err role="alert" hidden style="font-size:14px; line-height:20px; color:var(--danger);"></p>
+          <button type="button" data-add-btn style={S.secondary}>Send a code</button>
+        </div>
+        <p data-added role="status" hidden style="font-size:15px; line-height:21px; color:var(--sage); font-weight:600; border-top:1px solid var(--line); padding-top:14px;">Added. We’ll know you by both.</p>
+      </div>
+      <div style="border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:22px 0; display:flex; flex-direction:column; gap:6px;">
+        <div style={S.eyebrow}>THE ONE THING TO REMEMBER</div>
+        <p style="font-family:'Newsreader',serif; font-size:var(--h2); line-height:var(--h2lh); color:var(--ink); text-wrap:balance;">If <span data-name></span> ever asks for your help, go to <a href="/recover" style="font-weight:600; color:var(--brass);">jeevanto.com/recover</a>.</p>
+      </div>
+      <p style={S.small}>There’s nothing to keep and nothing to install. You can stop being <span data-name></span>’s recovery contact at any time, at the same address.</p>
+    </div>
+
+    <!-- 3 · said no -->
+    <div data-state="no" hidden style={S.stack}>
+      <div style={S.eyebrow}>YOU SAID NO</div>
+      <h1 style={S.h1} tabindex="-1">That’s fine.</h1>
+      <p style={S.lede}>We’ve told <span data-name></span>. We don’t keep your details for this.</p>
+    </div>
+
+    <!-- the question has closed, or the link doesn't work -->
+    <div data-state="expired" hidden style={S.stack}>
+      <div style={S.eyebrow}>HELP SOMEONE BACK IN</div>
+      <h1 style={S.h1} tabindex="-1">This question has closed.</h1>
+      <p style={S.lede}>It’s been more than 30 days, so we’ve let <span data-name></span> know. <span data-name></span> can ask you again from the app.</p>
+    </div>
+    <div data-state="gone" hidden style={S.stack}>
+      <div style={S.eyebrow}>HELP SOMEONE BACK IN</div>
+      <h1 style={S.h1} tabindex="-1">This link doesn’t work any more.</h1>
+      <p style={S.lede}>If you’re someone’s recovery contact, go to <a href="/recover" style="font-weight:600; color:var(--brass);">jeevanto.com/recover</a>.</p>
+    </div>
+    <div data-state="trouble" hidden style={S.stack}>
+      <div style={S.eyebrow}>HELP SOMEONE BACK IN</div>
+      <h1 style={S.h1} tabindex="-1" data-trouble></h1>
+    </div>
+  </div>
+  <script is:inline slot="scripts" src="/js/mobile.js" defer></script>
+  <script is:inline slot="scripts" src="/js/answer.js" defer></script>
+</Shell>

@@ -1,0 +1,22 @@
+{
+ "mode": "mock",
+ "base": "http://127.0.0.1:4321",
+ "when": "2026-10-01T04:13:52.479Z",
+ "results": [
+  "PASS mock phone/dark check-real",
+  "PASS mock phone/dark check-none",
+  "PASS mock phone/light check-real",
+  "PASS mock phone/light check-none",
+  "PASS mock laptop/dark check-real",
+  "PASS mock laptop/dark check-none",
+  "PASS mock laptop/light check-real",
+  "PASS mock laptop/light check-none"
+ ],
+ "requests": {
+  "127.0.0.1:4321": 72,
+  "qexfuwhyfeztwanihjye.supabase.co": 8
+ },
+ "offHost": [],
+ "cookies": [],
+ "axe": []
+}

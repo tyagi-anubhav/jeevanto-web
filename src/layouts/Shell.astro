@@ -3,16 +3,18 @@
 import '../styles/site.css';
 import Identity from '../components/Identity.astro';
 import Icon from '../components/Icon.astro';
-import { config, full, legalLine, regLine } from '../lib/config.mjs';
+import { config, full, legalLine, regLine, engine } from '../lib/config.mjs';
 
-const { title, description, here = '', path = '/' } = Astro.props;
+const { title, description, here = '', path = '/', doors = false } = Astro.props;
 const pageTitle = title ? `${title} · Jeevanto` : 'Jeevanto: your personal control system';
 const desc = description || 'Jeevanto is a personal assistant on your phone. Hand it the appointments, the bookings, the reminders and the family logistics, so you can put the phone down and be with the people who matter.';
 
 // No request may leave jeevanto.com: everything is self-hosted, and the policy below says so to the browser.
+// The one exception is a page that calls ENGINES' doors (/check, /recover, /invited): it may reach the engine's own
+// address, and nothing else, and only when the visitor asks it to.
 const csp = [
   "default-src 'self'", "script-src 'self'", "style-src 'self' 'unsafe-inline'", "img-src 'self' data:", "media-src 'self'",
-  "font-src 'self'", "connect-src 'self'", "frame-src 'none'", "object-src 'none'", "base-uri 'self'", "form-action 'none'",
+  "font-src 'self'", doors ? `connect-src 'self' ${engine.url}` : "connect-src 'self'", "frame-src 'none'", "object-src 'none'", "base-uri 'self'", "form-action 'none'",
 ].join('; '); // every address is relative and Pages enforces HTTPS, so no upgrade-insecure-requests (it breaks local WebKit tests)
 
 const navItems = [['What it does', '/what-it-does'], ['Circle', '/circle'], ['Kin mode', '/kin-mode']]
@@ -45,6 +47,7 @@ const footer = [
 <link rel="preload" href="/fonts/newsreader-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/source-sans-3-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <script is:inline src="/js/theme-init.js"></script>
+{doors && <meta name="jv-engine" content={engine.url} data-key={engine.anonKey}>}
 </head>
 <body>
 <a class="skip" href="#main">Skip to the page</a>
@@ -93,5 +96,7 @@ const footer = [
   </div>
 </footer>
 <script is:inline src="/js/site.js" defer></script>
+{doors && <script is:inline src="/js/doors.js" defer></script>}
+<slot name="scripts" />
 </body>
 </html>

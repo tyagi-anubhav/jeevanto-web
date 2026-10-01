@@ -25,8 +25,8 @@ jobs:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
       - run: npx astro build
         env:
-          # ENGINES' public read-only door for the site's values, once it exists (a repository variable, not a secret).
-          SITE_CONFIG_URL: ${{ vars.SITE_CONFIG_URL }}
+          # The build reads ENGINES' public settings door; set the repository variable SITE_CONFIG_DOOR=off to build from site-config.json alone.
+          SITE_CONFIG_DOOR: ${{ vars.SITE_CONFIG_DOOR }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

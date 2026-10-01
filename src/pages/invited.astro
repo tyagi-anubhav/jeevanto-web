@@ -1,10 +1,24 @@
 ---
-// 14 · Invited to Jeevanto: a holding page until ENGINES' invite door is built in (cc-website-01 JOB 2).
-import Holding from '../components/Holding.astro';
+// 14 · Invited to Jeevanto, on ENGINES' `invite_name` door. The invite message carries no link, only the code
+// (cc-wave-11b A3), so the page has a field for it; a ?c=<CODE> link is read the same way if one ever arrives.
+// The heading names the inviter by first name for a live code, and "Someone" for anything else.
+import Shell from '../layouts/Shell.astro';
 import { config } from '../lib/config.mjs';
-const lede = "font-family:'Newsreader',serif; font-size:var(--lede); line-height:var(--ledelh); color:var(--ink); text-wrap:pretty;";
+import { S } from '../components/ui.mjs';
 ---
-<Holding title="Invited to Jeevanto" path="/invited" eyebrow="INVITED TO JEEVANTO" heading="Jeevanto isn’t open yet." description="You’ve been invited to Jeevanto.">
-  <p style={lede}>When it is, get the app, open it, and enter the code from the message you were sent.</p>
-  <p style="font-size:15px; line-height:21px; color:var(--quiet); text-wrap:pretty;">Want to hear when we’re live? Write to <a href={`mailto:${config.supportEmail}`} style="color:var(--brass); font-weight:600;">{config.supportEmail}</a>.</p>
-</Holding>
+<Shell title="Invited to Jeevanto" path="/invited" doors description="Someone has invited you to Jeevanto. Get the app, open it, and enter the code from their message.">
+  <div data-screen-label="14 Invited to Jeevanto" data-invite style={S.page}>
+    <div style={S.eyebrow}>INVITED TO JEEVANTO</div>
+    <h1 style={S.h1} aria-live="polite"><span data-inviter>Someone</span> has invited you to Jeevanto.</h1>
+    <p style={S.lede}>Get the app, open it, and enter the code from their message. The code works once, for {Number(config.inviteDays) || 14} days.</p>
+    <form novalidate style="display:flex; flex-direction:column; gap:12px; border-top:1px solid var(--line); padding-top:18px; margin-top:8px;">
+      <label for="inv-code" style={S.small}>Not sure who it’s from? Type the code, and we’ll show their first name.</label>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <input id="inv-code" class="jv-field" placeholder="6-character code" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="12" aria-describedby="inv-err" style={`${S.field} flex:100 1 200px; min-width:0; width:auto; letter-spacing:2px; text-transform:uppercase;`}>
+        <button type="submit" style="flex:1 0 140px; height:50px; border-radius:15px; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; padding:0 20px; font-size:15px; font-weight:600; color:var(--ink);">Check the code</button>
+      </div>
+      <p id="inv-err" data-err role="alert" hidden style="font-size:14px; line-height:20px; color:var(--danger);"></p>
+    </form>
+  </div>
+  <script is:inline slot="scripts" src="/js/invited.js" defer></script>
+</Shell>

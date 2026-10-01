@@ -139,3 +139,11 @@ button { font:inherit; color:inherit; background:none; border:0; padding:0; marg
 [data-theme-choice][aria-pressed="true"] { border-color:var(--brassEdge) !important; color:var(--brass) !important; }
 #phone-menu:not([hidden]) { display:flex; }
 [hidden] { display:none !important; }
+
+/* Fields: the edge turns brass on focus (TEMPLATES 15); a field in error keeps the danger edge */
+.jv-field:focus { border-color:var(--brass) !important; }
+.jv-field[aria-invalid="true"] { border-color:var(--danger) !important; }
+.jv-field::placeholder { color:inherit; opacity:.75; }
+button[disabled] { opacity:.6; cursor:progress; }
+.visually-hidden { position:absolute !important; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+[tabindex="-1"]:focus { outline:none; }

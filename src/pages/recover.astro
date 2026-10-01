@@ -1,10 +1,130 @@
 ---
-// 15 · Help someone back in: a holding page until ENGINES' /recover doors are built in (cc-website-01 JOB 2).
-import Holding from '../components/Holding.astro';
+// 15 · Help someone back in: jeevanto.com/recover, the recovery contact's one door (recovery and check brief,
+// pages 4–10; decision 202; 206.3), on ENGINES' door_* actions. The person's name always comes from the engine.
+import Shell from '../layouts/Shell.astro';
+import MobileField from '../components/MobileField.astro';
+import Eyebrow from '../components/Eyebrow.astro';
 import { config } from '../lib/config.mjs';
-const lede = "font-family:'Newsreader',serif; font-size:var(--lede); line-height:var(--ledelh); color:var(--ink); text-wrap:pretty;";
+import { S } from '../components/ui.mjs';
+const W = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
+const d = Number(config.recoveryWaitDays) || 3, waitTxt = (W[d] || d) + (d === 1 ? ' day' : ' days');
+const digits = Number(config.recoveryDigits) || 6, minutes = Number(config.codeMinutes) || 10;
+const pop = 'box-sizing:border-box; width:440px; max-width:calc(100% - 32px); background:var(--card); border:1px solid var(--line); border-radius:20px; padding:22px 22px 24px; box-shadow:var(--sheetShadow); display:flex; flex-direction:column; gap:18px;';
+const scrim = 'position:fixed; inset:0; z-index:30; background:var(--scrim); display:flex; align-items:center; justify-content:center;';
 ---
-<Holding title="Help someone back in" path="/recover" eyebrow="HELP SOMEONE BACK IN" heading="Are you someone’s recovery contact?" description="Help someone you know back into their Jeevanto.">
-  <p style={lede}>This page opens when Jeevanto is live.</p>
-  <p style="font-size:15px; line-height:21px; color:var(--quiet); text-wrap:pretty;">If you need help before then, write to <a href={`mailto:${config.supportEmail}`} style="color:var(--brass); font-weight:600;">{config.supportEmail}</a>.</p>
-</Holding>
+<Shell title="Help someone back in" path="/recover" doors description="Are you someone’s recovery contact? Help them back into their Jeevanto.">
+  <div data-screen-label="15 Recovery contact" data-recover data-digits={digits} style={S.page}>
+    <noscript><p style={S.lede}>This page needs JavaScript to reach Jeevanto. If you can’t switch it on, write to <a href={`mailto:${config.supportEmail}`} style="color:var(--brass); font-weight:600;">{config.supportEmail}</a>.</p></noscript>
+
+    <!-- 4 · the front door -->
+    <form data-state="front" data-front novalidate style={S.stack}>
+      <Eyebrow>HELP SOMEONE BACK IN</Eyebrow>
+      <h1 style={S.h1}>Are you someone’s recovery contact?</h1>
+      <p id="rc-front-help" style={S.lede}>Enter the email or mobile you agreed with. We’ll send you a code.</p>
+      <input id="rc-dest" class="jv-field" aria-label="Your email or mobile number" placeholder={config.textsOn ? 'Email or mobile number (with ISD)' : 'Email'} inputmode="email" autocomplete="email" aria-describedby="rc-front-help rc-front-err" style={S.field}>
+      <p id="rc-front-err" data-err role="alert" hidden style={S.err}></p>
+      <button type="submit" data-send style={S.primary}>Send a code</button>
+      <div data-sent hidden style="display:flex; flex-direction:column; gap:12px;">
+        <p style={S.body} role="status">If that’s a recovery contact’s email or mobile, a code is on its way.</p>
+        <input id="rc-code" class="jv-field" aria-label="The code" placeholder="Code" inputmode="numeric" autocomplete="one-time-code" aria-describedby="rc-code-err" style={S.field}>
+        <p id="rc-code-err" data-err role="alert" hidden style="font-size:14px; line-height:20px; color:var(--danger);"></p>
+        <button type="button" data-verify style={S.primary}>Continue</button>
+      </div>
+    </form>
+
+    <!-- 5 · your people -->
+    <div data-state="people" hidden style={S.stack}>
+      <Eyebrow>HELP SOMEONE BACK IN</Eyebrow>
+      <h1 style={S.h1} tabindex="-1">You’re a recovery contact for:</h1>
+      <div data-list style="display:flex; flex-direction:column; gap:12px;"></div>
+      <p data-people-msg role="status" hidden style={S.small}></p>
+      <button type="button" data-to-update style={S.brassBtn}>Update my email or mobile</button>
+    </div>
+    <template id="rc-person">
+      <div style="background:var(--card); border-radius:16px; padding:16px 20px; display:flex; flex-direction:column; gap:10px;">
+        <div style="display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;"><h2 data-p="name" style="font-size:17px; font-weight:600; color:var(--ink);"></h2><span data-p="status" style="font-size:14px; color:var(--quiet);"></span></div>
+        <div data-p="idle" style="display:flex; flex-direction:column; gap:4px; border-top:1px solid var(--line); padding-top:8px;">
+          <button type="button" data-p="start" style="min-height:40px; display:flex; align-items:center; font-size:15px; font-weight:600; color:var(--brass);"></button>
+          <button type="button" data-p="stop" style="min-height:40px; display:flex; align-items:center; font-size:14px; color:var(--quiet);"></button>
+        </div>
+        <p data-p="waiting" style="font-size:13px; line-height:18px; color:var(--quiet); border-top:1px solid var(--line); padding-top:10px; text-wrap:pretty;"></p>
+        <button type="button" data-p="send" style="height:48px; border-radius:15px; background:var(--bone); display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:600; color:var(--boneText);">Send the {digits} digits</button>
+        <p data-p="err" role="alert" style="font-size:14px; line-height:20px; color:var(--danger);"></p>
+      </div>
+    </template>
+
+    <!-- 6b · the warning -->
+    <div data-state="warn" hidden style={S.stack}>
+      <Eyebrow>HELP SOMEONE BACK IN</Eyebrow>
+      <h1 style={S.h1} tabindex="-1">Start <span data-name></span>’s way back in?</h1>
+      <div style="background:var(--card); border-radius:16px; padding:18px 20px;"><p style="font-size:16px; line-height:24px; color:var(--ink); text-wrap:pretty;">Only start this if <span data-name></span> asked you, in person or on a call. A message isn’t enough: that’s how someone would try to trick you.</p></div>
+      <p data-warn-err role="alert" hidden style={S.err}></p>
+      <div style="display:flex; flex-direction:column; gap:12px;"><button type="button" data-start style={S.primary}>Start</button><button type="button" data-back style={S.quietBtn}>Not now</button></div>
+    </div>
+
+    <!-- 6c · started (206.3: never says how the person is warned) -->
+    <div data-state="started" hidden style={S.stack}>
+      <Eyebrow>HELP SOMEONE BACK IN</Eyebrow>
+      <h1 style={S.h1} tabindex="-1">Thank you. We’ve started <span data-name></span>’s way back in.</h1>
+      <p style={S.lede}>For safety, this takes about {waitTxt}.</p>
+      <p style={S.lede}>When the wait is over, we’ll tell you. Then, when you’re on a call with <span data-name></span>, come back here for {digits} digits to read out to <span data-name></span>.</p>
+    </div>
+
+    <!-- 7 · the digits -->
+    <div data-state="digits" hidden style={S.stack}>
+      <Eyebrow>HELP SOMEONE BACK IN</Eyebrow>
+      <h1 style={S.h1} tabindex="-1">We’ve sent {digits} digits to <span data-sent-to></span>.</h1>
+      <p style={S.lede}>Read them out to <span data-name></span> now. They work for {minutes} minutes.</p>
+      <p style={S.small}>Read them only to <span data-name></span>, on a call you made yourself. Jeevanto will never ask you for them.</p>
+    </div>
+
+    <!-- 8b · stepped down -->
+    <div data-state="stepped" hidden style={S.stack}>
+      <Eyebrow>HELP SOMEONE BACK IN</Eyebrow>
+      <h1 style={S.h1} tabindex="-1">Done. You’re no longer <span data-name></span>’s recovery contact.</h1>
+      <p style={S.lede}>We’ve told <span data-name></span>.</p>
+    </div>
+
+    <!-- 9 · update my email or mobile -->
+    <div data-state="update" hidden style={S.stack}>
+      <Eyebrow>HELP SOMEONE BACK IN</Eyebrow>
+      <h1 style={S.h1} tabindex="-1">Update my email or mobile</h1>
+      {[['mail', 'EMAIL'], ['mob', 'MOBILE']].map(([k, lab]) => (
+        <div data-upd={k} style={S.card}>
+          <h2 style={S.eyebrow}>{lab}</h2>
+          {k === 'mail'
+            ? <input id="rc-upd-mail" class="jv-field" aria-label="New email" placeholder="New email" inputmode="email" autocomplete="email" style={S.field}>
+            : <MobileField id="rc-upd-mob" placeholder="New mobile number" label="New mobile number" />}
+          <input data-upd-code hidden class="jv-field" aria-label="The code" placeholder="Code" inputmode="numeric" autocomplete="one-time-code" style={S.field}>
+          <p data-upd-err role="alert" hidden style="font-size:14px; line-height:20px; color:var(--danger);"></p>
+          <p data-upd-saved role="status" hidden style="font-size:15px; line-height:21px; color:var(--sage); font-weight:600;">Saved. It’s updated for everyone you’re a recovery contact for.</p>
+          <button type="button" data-upd-btn style={S.secondary}>Send a code</button>
+        </div>
+      ))}
+      <button type="button" data-to-people style={S.brassBtn}>Back to your people</button>
+    </div>
+  </div>
+
+  <!-- 6a · type their name -->
+  <div data-pop="name" hidden style={scrim}>
+    <div role="dialog" aria-modal="true" aria-labelledby="pop-name-q" style={pop}>
+      <div style={S.eyebrow}>START <span data-name-upper></span>’S WAY BACK IN</div>
+      <p id="pop-name-q" style="font-family:'Newsreader',serif; font-size:22px; line-height:30.8px; color:var(--ink); text-wrap:pretty;">To be sure you’ve picked the right person, type their name.</p>
+      <input id="rc-name" class="jv-field" aria-labelledby="pop-name-q" inputmode="text" autocomplete="off" aria-describedby="rc-name-err" style={S.field}>
+      <p id="rc-name-err" role="alert" hidden style="font-size:14px; line-height:20px; color:var(--danger);">That doesn’t match. Check you’ve picked the right person.</p>
+      <button type="button" data-name-go style={S.primary}>Continue</button>
+    </div>
+  </div>
+  <!-- 8a · step down -->
+  <div data-pop="stop" hidden style={scrim}>
+    <div role="dialog" aria-modal="true" aria-labelledby="pop-stop-q" style={pop}>
+      <div style={S.eyebrow}>STEP DOWN</div>
+      <p id="pop-stop-q" style="font-family:'Newsreader',serif; font-size:22px; line-height:30.8px; color:var(--ink);">Stop being <span data-name></span>’s recovery contact?</p>
+      <p style={S.quiet}>We’ll tell <span data-name></span>, so <span data-name></span> can choose someone else.</p>
+      <p data-stop-err role="alert" hidden style="font-size:14px; line-height:20px; color:var(--danger);"></p>
+      <div style="display:flex; flex-direction:column; gap:8px;"><button type="button" data-stop-go style={S.primary}>Stop</button><button type="button" data-pop-close style={S.quietBtn}>Keep</button></div>
+    </div>
+  </div>
+  <script is:inline slot="scripts" src="/js/mobile.js" defer></script>
+  <script is:inline slot="scripts" src="/js/recover.js" defer></script>
+</Shell>

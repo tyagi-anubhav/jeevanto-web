@@ -12,7 +12,8 @@ fonts: every file the site loads comes from jeevanto.com, and the Content-Securi
 
 | Path | What it is |
 |---|---|
-| `site-config.json` | Every value the site reads from the ops console (OPS-CONSOLE-PLACEHOLDERS.md), with `siteMode` and decision 207's `legalName`. The fallback once ENGINES' public read-only door exists (set the repository variable `SITE_CONFIG_URL`). |
+| `site-config.json` | Every value the site reads from the ops console (OPS-CONSOLE-PLACEHOLDERS.md), with `siteMode` and decision 207's `legalName`. The build reads ENGINES' public settings door first; this file is the fallback (`SITE_CONFIG_DOOR=off` builds from it alone). |
+| `src/lib/engine.json` | ENGINES' address and the **public anon key** (role `anon`, the key every app ships). The only key that may ever live here. |
 | `src/layouts/Shell.astro` | Template 1, the page shell: header, footer, theme switch, CSP. |
 | `src/components/` | The design blocks (TEMPLATES.md): eyebrow, row list, film, Replay, identity (orb and wordmark), the paperwork. |
 | `src/pages/` | One file per fixed address. |
@@ -26,8 +27,8 @@ fonts: every file the site loads comes from jeevanto.com, and the Content-Securi
 ## Fixed addresses (never change once live)
 
 Open now: `/` · `/what-it-does` · `/circle` · `/kin-mode` · `/our-promise` · `/help` · `/privacy-policy` (Google
-data: `/privacy-policy#google-user-data`) · `/terms` · `/refunds` · `/check` · `/recover` · `/invited` (the last
-three are holding pages until ENGINES' doors are built in).
+data: `/privacy-policy#google-user-data`) · `/terms` · `/refunds` · `/check` · `/recover` (and `/recover/answer`, the
+ask's link) · `/invited`. The last three call ENGINES' doors from the browser, and only when the visitor asks.
 Come back when coming-soon mode ends: `/plans` · `/sign-in` · `/create-account` · `/account` · `/delete-account` · `/get-the-app`.
 
 ## Build and check
@@ -39,6 +40,8 @@ node tools/serve.mjs               # serves dist/ the way Pages does, on :4321
 node tools/check-site.mjs http://127.0.0.1:4321      # links, outside requests, cookies, accessibility
 node tools/check-behaviour.mjs http://127.0.0.1:4321 # films, theme, menus, in Chromium and WebKit
 python3 tools/check-legal-text.py  # the legal pages against Cowork's files (run compare-text first)
+node tools/check-doors.mjs live https://jeevanto.com  # /check, /recover, /invited on the live doors (harmless inputs only)
+node tools/check-doors.mjs mock http://127.0.0.1:4321 # every page state, the engine's answers canned from its note
 ```
 
 The design-side tools (`design-probe.mjs`, `compare-shots.mjs`, `compare-text.mjs`, `extract-identity.mjs`,

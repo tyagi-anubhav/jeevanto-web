@@ -1,11 +1,48 @@
 ---
-// 13 · Check a message: a holding page until ENGINES' /check door is built in (cc-website-01 JOB 2).
-import Holding from '../components/Holding.astro';
+// 13 · Check a message (recovery and check brief, page 11), on ENGINES' `check` door.
+import Shell from '../layouts/Shell.astro';
 import { config } from '../lib/config.mjs';
-const lede = "font-family:'Newsreader',serif; font-size:var(--lede); line-height:var(--ledelh); color:var(--ink); text-wrap:pretty;";
+import { S } from '../components/ui.mjs';
+const row = 'display:grid; grid-template-columns:var(--sumCols); align-items:baseline; gap:4px 20px; padding:13px 0;';
+const rk = 'font-size:14px; line-height:20px; color:var(--quiet);';
+const rv = 'font-size:14px; font-weight:600; color:var(--ink); justify-self:end; text-align:right; text-wrap:balance;';
+const step = 'display:flex; gap:14px; align-items:flex-start; padding:12px 0; border-top:1px solid var(--line);';
 ---
-<Holding title="Check a message" path="/check" eyebrow="IS THIS FROM JEEVANTO?" heading="Check a message from us." description="Check that a message really came from Jeevanto.">
-  <p style={lede}>Checking a message opens here when Jeevanto is live.</p>
-  <p style="font-size:15px; line-height:21px; color:var(--quiet); text-wrap:pretty;">Not sure about a message that says it’s from Jeevanto? Don’t click anything in it. Forward it to <a href={`mailto:${config.securityEmail}`} style="color:var(--brass); font-weight:600;">{config.securityEmail}</a>, and we’ll take a look.</p>
-  <p style="font-size:13px; line-height:18px; color:var(--quiet); border-top:1px solid var(--line); padding-top:16px; margin-top:12px; text-wrap:pretty;">We’ll never ask you to click a link to check a message. Always type <span style="color:var(--ink); font-weight:600;">jeevanto.com/check</span> yourself.</p>
-</Holding>
+<Shell title="Check a message" path="/check" doors description="Check that a message really came from Jeevanto: type the reference it ends with.">
+  <div data-screen-label="13 Check a message" data-check style={S.page}>
+    <form data-state="ask none" novalidate style={S.stack}>
+      <div style={S.eyebrow}>IS THIS FROM JEEVANTO?</div>
+      <h1 style={S.h1}>Check a message from us.</h1>
+      <p id="chk-help" style={S.lede}>Every email, text and WhatsApp we send ends with a reference, like JV-7Q2M-4KDX. Type it here.</p>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <label for="chk-ref" class="visually-hidden">The reference</label>
+        <input id="chk-ref" class="jv-field" name="reference" placeholder="JV-XXXX-XXXX" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-describedby="chk-help chk-err" style="flex:100 1 220px; min-width:0; height:52px; box-sizing:border-box; background:var(--raised); border:1px solid var(--line); border-radius:16px; padding:0 18px; font-size:16px; letter-spacing:1px; color:var(--ink); outline:none; text-transform:uppercase;">
+        <button type="submit" style="flex:1 0 120px; max-width:100%; height:52px; border-radius:15px; background:var(--bone); display:flex; align-items:center; justify-content:center; padding:0 24px; font-size:15px; font-weight:600; color:var(--boneText);">Check</button>
+      </div>
+      <p id="chk-err" data-err role="alert" hidden style={S.err}></p>
+    </form>
+    <div data-state="real" hidden role="status" style="display:flex; flex-direction:column; gap:18px; margin-top:12px;">
+      <span style="display:inline-flex; align-items:center; gap:8px; font-size:13px; font-weight:500; letter-spacing:.4px; color:var(--sage);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>THIS IS REAL</span>
+      <h1 style="font-family:'Newsreader',serif; font-weight:400; font-size:24px; line-height:32px; color:var(--ink);">Yes, this is from Jeevanto.</h1>
+      <dl style="margin:0; background:var(--card); border-radius:16px; padding:4px 20px;">
+        <div style={`${row} border-bottom:1px solid var(--line);`}><dt style={rk}>Sent to</dt><dd style={`margin:0; ${rv}`} data-f="sent_to"></dd></div>
+        <div style={`${row} border-bottom:1px solid var(--line);`}><dt style={rk}>Sent on</dt><dd style={`margin:0; ${rv}`} data-f="sent_on"></dd></div>
+        <div style={row}><dt style={rk}>About</dt><dd style={`margin:0; ${rv}`} data-f="about"></dd></div>
+      </dl>
+      <p style={S.quiet}>You can trust it. If anything in it doesn’t look right, write to <a href={`mailto:${config.supportEmail}`} style="color:var(--brass); font-weight:600;">{config.supportEmail}</a> with the reference.</p>
+      <button type="button" data-again style={S.brassBtn}>Check another message</button>
+    </div>
+    <div data-state="none" hidden role="status" style="display:flex; flex-direction:column; gap:18px; margin-top:12px;">
+      <span style="display:inline-flex; align-items:center; gap:8px; font-size:13px; font-weight:500; letter-spacing:.4px; color:var(--danger);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg>NOT ONE OF OURS</span>
+      <h2 style="font-family:'Newsreader',serif; font-weight:400; font-size:24px; line-height:32px; color:var(--ink);">We didn’t send a message with that reference.</h2>
+      <ol style="list-style:none; margin:0; padding:0; display:flex; flex-direction:column;">
+        <li style={step}><span style="flex:0 0 24px; font-size:15px; font-weight:600; color:var(--quiet);">1</span><p style={S.body}>Don’t click anything in it.</p></li>
+        <li style={step}><span style="flex:0 0 24px; font-size:15px; font-weight:600; color:var(--quiet);">2</span><p style={S.body}>Forward it to <a href={`mailto:${config.securityEmail}`} style="color:var(--brass); font-weight:600;">{config.securityEmail}</a>, and we’ll take a look.</p></li>
+        <li style={step}><span style="flex:0 0 24px; font-size:15px; font-weight:600; color:var(--quiet);">3</span><p style={S.body}>Then delete it.</p></li>
+      </ol>
+      <p style={S.small}>Typed it yourself? Check each character and try again.</p>
+    </div>
+    <p style="font-size:13px; line-height:18px; color:var(--quiet); border-top:1px solid var(--line); padding-top:16px; margin-top:12px; text-wrap:pretty;">We’ll never ask you to click a link to check a message. Always type <span style="color:var(--ink); font-weight:600;">jeevanto.com/check</span> yourself.</p>
+  </div>
+  <script is:inline slot="scripts" src="/js/check.js" defer></script>
+</Shell>
