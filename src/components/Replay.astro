@@ -1,0 +1,8 @@
+---
+// Replay, under a film (pill) or beside a film's name on a phone (round).
+import Icon from './Icon.astro';
+const { target, round = false, name = '' } = Astro.props;
+---
+{round
+  ? <button type="button" class="replay" data-replay={target} aria-label={`Replay the ${name} film`} style="flex:none; width:36px; height:36px; box-sizing:border-box; border-radius:50%; border:1px solid var(--line); color:var(--nav); display:flex; align-items:center; justify-content:center; user-select:none;"><Icon name="replay" sw={1.9} /></button>
+  : <button type="button" class="replay hover-ink" data-replay={target} style="display:inline-flex; align-items:center; gap:7px; height:36px; padding:0 16px; box-sizing:border-box; border-radius:18px; border:1px solid var(--line); color:var(--nav); font-size:13.5px; font-weight:500; user-select:none;"><Icon name="replay" size={15} sw={1.9} />Replay</button>}

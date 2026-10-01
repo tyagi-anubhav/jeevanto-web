@@ -1,0 +1,10 @@
+---
+// Template 5, the row list: a bold short heading, the answer under it, rules between.
+const { rows } = Astro.props;
+---
+{rows.map(i => (
+  <div style="display:grid; grid-template-columns:var(--rowCols); gap:4px 24px; padding:14px 0; border-top:1px solid var(--line);">
+    <h3 style="font-size:15px; font-weight:600; line-height:21px; color:var(--ink);">{i.t}</h3>
+    <p style="font-size:15px; line-height:21px; color:var(--quiet); text-wrap:pretty; white-space:pre-line;">{i.d}</p>
+  </div>
+))}

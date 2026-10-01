@@ -1,0 +1,16 @@
+---
+// A capability film in its phone frame (design: the film iframe, here a recorded video of it).
+// `w` is the CSS variable that sets its width: --openW, --filmW or --kinW.
+const { film, title, id, w = '--filmW' } = Astro.props;
+const W = `var(${w})`;
+const vstyle = `width:${W}; height:calc(${W} * 1.944444); border-radius:calc(${W} * 0.0889);`;
+---
+<div id={id} data-film={film} class="film" style={`position:relative; flex:none; padding:var(--bz); border-radius:calc(${W} * 0.0889 + var(--bz)); background:#0B0B0D; box-shadow:0 0 0 1px #34343A, var(--lift);`}>
+  {['dark', 'light'].map(t => (
+    <video class={`in-${t}`} preload="none" muted playsinline disablepictureinpicture aria-label={title}
+      poster={`/films/${film}-${t}.jpg`} data-first={`/films/${film}-${t}-first.jpg`} style={vstyle}>
+      <source src={`/films/${film}-${t}.mp4`} type="video/mp4">
+    </video>
+  ))}
+  <button type="button" class="phone-only" data-fs-open={film} data-fs-title={title} aria-label="Show the film full screen" style="position:absolute; inset:0; cursor:zoom-in;"></button>
+</div>

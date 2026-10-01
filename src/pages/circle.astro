@@ -1,0 +1,137 @@
+---
+// 3 · Circle: the diagram, then seven sections that open with More.
+import Shell from '../layouts/Shell.astro';
+import Eyebrow from '../components/Eyebrow.astro';
+import More from '../components/More.astro';
+import Icon from '../components/Icon.astro';
+import RowList from '../components/RowList.astro';
+import { config, full } from '../lib/config.mjs';
+
+const opsMonths = config.freeMonths, graceDays = Number(config.familyGraceDays) || 7;
+const I = (k, t) => ({ k, t });
+const circleData = [
+  { id: 'family', label: 'FAMILY', heading: 'One plan, a Jeevanto each.', line: 'Bring two or more people onto one Family plan, and add or remove people as life changes.', items: [
+    I('Who can join', 'A couple, parents and their children, both sets of grandparents: anyone you call family, as long as they’re 18 or over.'),
+    I('Private to each', 'Each person’s Jeevanto is private to them. Being on one plan opens nobody’s account, not even to the person who pays.'),
+    I('Helping each other', 'Someone on your plan can let you help in their Jeevanto, and they choose what you may see and do. Inside their Jeevanto you can finish a booking or a job that needs paying, and pay for it yourself, where kin can only get it ready for them to say go. It uses no kin seat.'),
+    I('Acting for them', 'From your own Jeevanto you can book, order or get a job done for someone on your plan and pay for it, using what they’ve shared with you, or hand it to them to approve. An order can go in the family’s shared cart if they’ve shared that store with you. Send and Errands stay theirs alone.') ] },
+  { id: 'sharing', label: 'SHARING', heading: 'Share with everyone, or|with one or two, or|just keep it to yourself.', line: 'Nothing is shared until you share it.', intro: 'Nothing is shared until you share it. Then you choose who: the whole family, one or two of them, or just you.', cols: [
+    { t: 'With everyone', d: 'The babysitter’s number. The school’s term dates. The holiday plans.' },
+    { t: 'With one or two', d: 'Mom’s birthday surprise, with everyone except Mom. Your passport copy, with Ravi only.' },
+    { t: 'Just you', d: 'Your own notes. Your tax returns. Anything you haven’t chosen to share.' } ], items: [
+    I('They can use it', 'What you share, they can see and use. When they ask their own Jeevanto, it answers and says you shared it. Only you can change it.'),
+    I('New members', '“The whole family” means the people on your plan on the day you share something. When someone new joins, Jeevanto asks you before sharing anything with them.') ] },
+  { id: 'logins', label: 'SHARED LOGINS', heading: 'Share a store login, never the password.', line: 'On a Family plan, one person can fill a cart and another can pay for it, in the same account and at the same price.', items: [
+    I('Password hidden', 'They never see your password.'),
+    I('Saved cards', 'Anyone you share a store with can use it as you do, including a card saved in that store.'),
+    I('Every use shown', 'You see every time a shared login is used: who used it, and when.'),
+    I('Never shared', 'Bank and email logins can never be shared.') ] },
+  { id: 'kin', label: 'KIN', heading: 'Help a parent in their Jeevanto, or let your child* help in yours.', line: 'Kin is one link with two ends.', note: '* Everyone in a Circle is 18 or over.', link: true, items: [
+    I('You look after them', 'Help Papa with his reminders and appointments inside his Jeevanto, as far as he allows. His forms too: inside his Jeevanto if his plan includes it, or from your own Jeevanto if you’re on Plus or Family, using what he’s shared with you.'),
+    I('They look after you', 'Let Tara help in yours, and see everything she does.'),
+    I('Both ways', 'You can look after Papa and have Tara look after you, at the same time.'),
+    I('Either can ask', 'A parent can invite a child, or a child can invite a parent.'),
+    I('One pool of seats', 'Your kin seats count both ways. A seat is used by whoever sends the invitation: if Papa invites you to look after him, it’s the kin seat from Papa’s account that’s used; if you invite Papa so you can look after him, then it’s the kin seat from your account.'),
+    I('Joining the Family', 'If someone you’re linked with joins your Family plan, your kin link ends (and frees the seat immediately), because you’re family now. If they later leave, either of you can link again with a new invitation.'),
+    I('Always clear whose', 'When you’re helping Papa, his name stays at the top of your screen, so you never mistake his Jeevanto for yours.') ] },
+  { id: 'limits', label: 'YOUR LIMITS', heading: 'You decide what they see and do, one yes at a time.', line: 'Nothing is open to a care-giver until you allow it.', items: [
+    I('What they may see', 'Your details in your Jeevanto, if shared with your care-giver, can also be used by them when they act for you from their own Jeevanto. Each one is its own yes. They’re told when you miss a reminder or an appointment only if you say so.'),
+    I('What they may do', 'Based on the plan you’re on, what your care-giver may do is also your choice: notes, reminders, finding what you’ve kept, getting you ready, keeping a lookout, filling in your forms, or getting a booking ready for you to look over and say go.'),
+    I('Within your plan', 'They can do only what your own plan does.'),
+    I('Never allowed', 'Some things a care-giver can never do in your Jeevanto: pay with your money, see your passwords, change your settings or send a message as you. A store login can reach them only if they’re on your Family plan and you share it, and then they can use it as you do, including a card saved in that store.'),
+    I('Always visible', 'You see everything they’ve done, and you can change any permission at any time.') ] },
+  { id: 'change', label: 'WHEN THINGS CHANGE', heading: 'Pause it, end it, leave. Nothing you made is lost.', line: 'Help can be paused or ended, plans can change, and people can leave.', items: [
+    I('Pause or end', 'Either of you can pause the kin link or end it at any time, and the other is told each time it changes. A pause can be in effect immediately or from the renewal date. A kin seat freed by pausing or ending can be used again from the renewal date.'),
+    I('Fewer seats', 'If you move to a plan with fewer kin seats, you choose which links to pause. Nothing on either side is lost.'),
+    I('Leaving Family', 'Leave whenever you like. What you shared stops being shared, and logins you shared stop working for the others at once. It disappears from their Jeevanto. Anything they copied down before stays with them, as it would in life. You land on Express, with everything you made, unless you take your own Plus that day. Your kin links with the family end. Your seat stays on the Family plan until the person who pays removes it.'),
+    I('Joining from Plus', 'You join at once. Your Plus stops renewing and runs to the end of the month you’ve paid for. No refund on monthly Plus. On yearly Plus, the months you’ve used are charged at the monthly price, and the rest is refunded.'),
+    I('When Family ends', `Everyone keeps Family until the end of the month already paid for, and hears as soon as the end date is known. Anyone can take up their own Plus, starting the day Family ends, with no gap and no paying twice. If a payment fails, Family carries on for ${graceDays} more days. If nobody chooses a plan, everyone carries on free on Express, with nothing lost.`),
+    I('Nothing is lost', 'Whatever changes, everything each person made stays theirs, unless they choose to start fresh or delete their account.') ] },
+  { id: 'join', label: 'JOINING', heading: 'An invitation, a code, and your yes.', line: 'No link to tap, just a code that works once.', items: [
+    I('From your phone', 'You send the invitation yourself, by WhatsApp, text or email. Jeevanto writes the words.'),
+    I('No links', 'There’s no link to tap. They get Jeevanto from the App Store or Google Play and enter the six-character code.'),
+    I('Once, 14 days', 'The code works once, for 14 days. You see when it’s used, and you confirm it’s really them before anything is linked.'),
+    I('Chosen relation', 'You pick how they’re related to you, such as Papa, sister or son, from a list.'),
+    I('Adults only', 'Everyone in a Circle is an adult, 18 or over.'),
+    I('Free months', `Someone new to Jeevanto gets ${opsMonths} free months of Plus, once, starting the day they first open the app with your code. Joining, again or in a Family, never restarts or extends the offer.`) ] },
+];
+const SCREENS = { family: 'Your Family plan: who is on it', sharing: 'Choosing who sees a note', logins: 'Sharing a store login', kin: 'A kin link, as the care-giver sees it', limits: 'What your care-giver may see and do', change: 'Pausing or ending help', join: 'Entering the six-character code' };
+const SHOTS = { family: '01-family', sharing: '02-note', logins: '03-login', kin: '04-kin', limits: '05-carer', change: '06-pause', join: '07-joining' };
+const secs = circleData.map(s => ({ ...s, headLines: s.heading.split('|'), rows: (s.cols || []).map(c => ({ t: c.t, d: c.d })).concat(s.items.map(i => ({ t: i.k, d: i.t }))) }));
+
+// The diagram (Site v9): You and the family on the inner ring, kin on the outer; dashed kin lines.
+const pt = (deg, r) => { const a = deg * Math.PI / 180; return [50 + r * Math.sin(a), 40 - r * Math.cos(a)]; };
+const P = { You: pt(318, 18), Mom: pt(32, 18), Gauri: pt(104, 18), Ravi: pt(178, 18), Tara: pt(242, 18), Papa: pt(292, 34), Uncle: pt(122, 34), Grandpa: pt(211, 34) };
+const node = (name, kind) => {
+  const [x, y] = P[name]; const me = name === 'You';
+  const look = me ? { bg: 'var(--bone)', ink: 'var(--boneText)', edge: 'none' } : kind === 'kin' ? { bg: 'var(--card)', ink: 'var(--kinText)', edge: 'var(--kinFrame)' } : { bg: 'var(--card)', ink: 'var(--ink)', edge: '1.5px solid var(--quiet)' };
+  return { name: me ? '' : name, initial: me ? 'You' : name[0], x: x + '%', y: (y / 80 * 100) + '%', sz: me ? 'var(--meSz)' : 'var(--nodeSz)', fs: me ? '14px' : '13px', nameInk: kind === 'kin' ? 'var(--kinText)' : 'var(--ink)', ...look };
+};
+const nodes = ['You', 'Mom', 'Gauri', 'Tara', 'Ravi'].map(n => node(n, 'fam')).concat(['Papa', 'Uncle', 'Grandpa'].map(n => node(n, 'kin')));
+const unit = 660 / 100;
+const trim = (a, b) => { const [x1, y1] = P[a], [x2, y2] = P[b]; const dx = x2 - x1, dy = y2 - y1, d = Math.hypot(dx, dy); const r1 = (a === 'You' ? 32 : 26) / unit, r2 = 28 / unit; return { x1: x1 + dx / d * r1, y1: y1 + dy / d * r1, x2: x2 - dx / d * r2, y2: y2 - dy / d * r2 }; };
+const kinLines = [['You', 'Papa'], ['Gauri', 'Uncle'], ['Ravi', 'Grandpa'], ['Tara', 'Grandpa']].map(([a, b]) => trim(a, b));
+const brass = 'display:inline-flex; align-items:center; gap:6px; min-height:44px; font-size:14px; font-weight:600; color:var(--brass);';
+const shot = (s, t) => `/app-screens/circle-${SHOTS[s.id]}-${t}.png`;
+---
+<Shell title="Circle" here="Circle" path="/circle" description="Your Circle is the people you choose: the family on your plan, and the ones you look after or who look after you. Everyone keeps their own Jeevanto.">
+  <div data-screen-label="03 Circle" style="box-sizing:border-box; max-width:960px; margin:0 auto; padding:var(--top) var(--gut) 0; display:flex; flex-direction:column; gap:var(--par);">
+    <Eyebrow>CIRCLE</Eyebrow>
+    <h1 style="font-family:'Newsreader',serif; font-weight:400; font-size:var(--h1); line-height:var(--h1lh); letter-spacing:-0.3px; color:var(--ink); text-wrap:balance;">Jeevanto works for you, and for those in your Circle.</h1>
+    <p style="font-family:'Newsreader',serif; font-size:var(--lede); line-height:var(--ledelh); color:var(--quiet); max-width:720px; text-wrap:pretty;">Your Circle is the people you choose: the family on your plan, and the ones you look after or who look after you. Everyone keeps their own Jeevanto. Nothing passes between any of you without a yes.</p>
+  </div>
+  <div style="box-sizing:border-box; max-width:960px; margin:0 auto; padding:var(--grp) var(--gut) 0;">
+    <figure role="img" aria-label="A Circle: you, with Mom, Gauri, Tara and Ravi on your Family plan, and Papa, Uncle and Grandpa as kin, each looked after by someone in the family. Everyone keeps their own Jeevanto." style="margin:0 var(--diagM); position:relative; width:calc(100% + var(--diagBleed)); max-width:660px; aspect-ratio:5/4;">
+      <svg viewBox="0 0 100 80" style="position:absolute; inset:0; width:100%; height:100%; overflow:visible;" aria-hidden="true">
+        <defs><marker id="kinArrow" viewBox="0 0 6 6" refX="5" refY="3" markerUnits="userSpaceOnUse" markerWidth="2.4" markerHeight="2.4" orient="auto"><path d="M0 0 L6 3 L0 6 z" style="fill:var(--kinLine);"></path></marker></defs>
+        <circle cx="50" cy="40" r="34" style="fill:none; stroke:var(--line); stroke-width:.25;"></circle>
+        <circle cx="50" cy="40" r="18" style="fill:none; stroke:var(--quiet); stroke-width:.4;"></circle>
+        {kinLines.map(l => <line x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} marker-end="url(#kinArrow)" style="stroke:var(--kinLine); stroke-width:.4; stroke-dasharray:1.4 1;"></line>)}
+      </svg>
+      <span class="lap-only" aria-hidden="true" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); display:flex; flex-direction:column; align-items:center; gap:2px; text-align:center; font-size:12px; line-height:16px; color:var(--quiet);"><span style="font-size:10.5px; font-weight:600; letter-spacing:1.4px;">SHARED WITH EVERYONE</span><span style="font-family:'Newsreader',serif; font-size:15px; color:var(--ink);">The holiday plans</span></span>
+      {nodes.map(n => (
+        <div aria-hidden="true" style={`position:absolute; left:${n.x}; top:${n.y}; transform:translate(-50%, calc(${n.sz} / -2)); display:flex; flex-direction:column; align-items:center; gap:4px;`}>
+          <span style={`position:relative; width:${n.sz}; height:${n.sz}; border-radius:50%; background:${n.bg}; border:${n.edge}; box-sizing:border-box; display:flex; align-items:center; justify-content:center; font-size:${n.fs}; font-weight:600; color:${n.ink};`}>{n.initial}<span style="position:absolute; right:-3px; bottom:-3px; width:17px; height:17px; border-radius:50%; background:var(--bg); border:1px solid var(--line); box-sizing:border-box; display:flex; align-items:center; justify-content:center; color:var(--quiet);"><Icon name="lock" size={9} sw={2.4} /></span></span>
+          <span style={`font-size:13px; font-weight:600; color:${n.nameInk}; white-space:nowrap;`}>{n.name}</span>
+        </div>
+      ))}
+    </figure>
+    <div style="display:flex; justify-content:center; gap:10px 24px; flex-wrap:wrap; font-size:12px; color:var(--quiet); padding-top:28px;">
+      <span style="display:inline-flex; align-items:center; gap:8px;"><span style="width:22px; border-top:1.5px solid var(--quiet);"></span>Family plan</span>
+      <span style="display:inline-flex; align-items:center; gap:8px;"><span style="width:22px; border-top:1.5px dashed var(--kinLine);"></span>Kin: care-giver to the one they look after</span>
+      <span style="display:inline-flex; align-items:center; gap:8px;"><Icon name="lock" size={12} sw={2} />Everyone keeps their own Jeevanto</span>
+    </div>
+  </div>
+  <div style={`box-sizing:border-box; max-width:960px; margin:0 auto; padding:var(--sec2) var(--gut) var(--sec); display:flex; flex-direction:column;`}>
+    {secs.map(s => (
+      <section data-circle-sec={s.id} aria-labelledby={`h-${s.id}`} style="border-top:1px solid var(--line); padding:var(--grp) 0; display:flex; flex-direction:column; gap:var(--tight);">
+        <Eyebrow>{s.label}</Eyebrow>
+        <h2 id={`h-${s.id}`} style="font-family:'Newsreader',serif; font-weight:400; font-size:var(--h2); line-height:var(--h2lh); color:var(--ink); text-wrap:balance;">{s.headLines.map(hl => <span style="display:block;">{hl}</span>)}</h2>
+        <p style="font-family:'Newsreader',serif; font-size:var(--lede); line-height:var(--ledelh); color:var(--quiet); max-width:720px; text-wrap:pretty;">{s.line}{s.intro && <span data-intro hidden>{s.intro.slice(s.line.length)}</span>}</p>
+        {s.note && <p style="font-size:13px; line-height:18px; color:var(--quiet);">{s.note}</p>}
+        <button type="button" data-sec-toggle data-sec-more aria-expanded="false" aria-controls={`panel-${s.id}`} style={`align-self:flex-start; ${brass}`}>More<span class="visually-hidden"> about {s.label.toLowerCase()}</span><Icon name="chevDown" /></button>
+        <div id={`panel-${s.id}`} data-sec-panel hidden style="margin-top:calc(var(--grp) - var(--tight)); background:var(--card); border-radius:16px; padding:var(--panelPad); flex-wrap:wrap; gap:24px 32px; align-items:flex-start;">
+          <div class="phone-only" style="width:100%; display:flex; justify-content:center; padding-bottom:8px;"><div style="flex:none; padding:var(--bz); border-radius:calc(var(--shotW) * 0.0889 + var(--bz)); background:#0B0B0D; box-shadow:0 0 0 1px #34343A, var(--lift);">
+            {['dark', 'light'].map(t => <img class={`in-${t}`} src={shot(s, t)} alt={`App screen: ${SCREENS[s.id]}`} width="360" height="700" loading="lazy" decoding="async" style="display:block; width:var(--shotW); height:calc(var(--shotW) * 1.944444); border-radius:calc(var(--shotW) * 0.0889);">)}
+          </div></div>
+          <div style="flex:1 1 400px; min-width:0; display:flex; flex-direction:column;">
+            <RowList rows={s.rows} />
+            <div style="display:flex; flex-wrap:wrap; gap:4px 24px; padding-top:12px; border-top:1px solid var(--line);">
+              {s.link && <More href="/kin-mode" style="min-height:44px;">See kin mode</More>}
+              <button type="button" data-sec-toggle aria-controls={`panel-${s.id}`} style={brass}>Less<Icon name="chevDown" size={14} sw={2} style="transform:rotate(180deg);" /></button>
+            </div>
+          </div>
+          <div class="lap-only" style="flex:none; padding:var(--bz); border-radius:calc(var(--shotW) * 0.0889 + var(--bz)); background:#0B0B0D; box-shadow:0 0 0 1px #34343A, var(--lift);">
+            {['dark', 'light'].map(t => <img class={`in-${t}`} src={shot(s, t)} alt={`App screen: ${SCREENS[s.id]}`} width="360" height="700" loading="lazy" decoding="async" style="display:block; width:var(--shotW); height:calc(var(--shotW) * 1.944444); border-radius:calc(var(--shotW) * 0.0889);">)}
+          </div>
+        </div>
+      </section>
+    ))}
+    {full && <div style="border-top:1px solid var(--line); padding-top:var(--grp);"><More href="/plans">Find the right plan for your Circle</More></div>}
+  </div>
+</Shell>
+<style is:global>
+  [data-sec-panel]:not([hidden]) { display:flex; }
+  [data-circle-sec]:has([data-sec-panel]:not([hidden])) [data-intro] { display:inline !important; }
+  .visually-hidden { position:absolute !important; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+</style>

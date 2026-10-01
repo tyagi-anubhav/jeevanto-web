@@ -1,0 +1,56 @@
+---
+// 12 · The paperwork: one legal document, with the list of the three on a laptop.
+import Shell from '../layouts/Shell.astro';
+import { legalDoc, TITLES, PATHS } from '../lib/legal.mjs';
+const { doc: key } = Astro.props;
+const doc = legalDoc(key);
+const title = TITLES[key];
+const descs = { policy: 'What Jeevanto collects, why, who else handles it, how long we keep it, and your rights, including how Jeevanto uses Google user data.', terms: 'The terms for using Jeevanto, the app and jeevanto.com.', refunds: 'How payments, cancelling and refunds work for Jeevanto’s plans.' };
+const dot = '<span aria-hidden="true" style="flex:0 0 5px; width:5px; height:5px; border-radius:50%; background:var(--quiet); margin-top:11px;"></span>';
+const li = 'display:flex; gap:12px; font-size:16px; line-height:26px; color:var(--ink); text-wrap:pretty;';
+const lab = 'font-size:11px; font-weight:600; letter-spacing:1.6px; color:var(--quiet);';
+---
+<Shell title={title} path={PATHS[key]} description={descs[key]}>
+  <div data-screen-label="12 The paperwork" style="box-sizing:border-box; max-width:1152px; margin:0 auto; padding:var(--top) var(--gut) var(--sec); display:flex; flex-wrap:wrap; gap:32px 64px; align-items:flex-start;">
+    <nav class="lap-only" aria-label="The paperwork" style="flex:0 0 240px; max-width:100%; position:sticky; top:96px; display:flex; flex-direction:column; gap:4px;">
+      <div style={`${lab} padding:0 14px 6px;`}>THE PAPERWORK</div>
+      {Object.keys(TITLES).map(k => <a href={PATHS[k]} aria-current={k === key ? 'page' : undefined} style={`min-height:40px; display:flex; align-items:center; padding:0 14px; border-radius:12px; background:${k === key ? 'var(--card)' : 'transparent'}; font-size:14px; color:${k === key ? 'var(--ink)' : 'var(--brass)'}; font-weight:${k === key ? 600 : 400};`}>{TITLES[k]}</a>)}
+    </nav>
+    <article style="flex:1 1 440px; min-width:0; max-width:720px; display:flex; flex-direction:column; gap:24px;">
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <h1 style="font-size:var(--h2); font-weight:700; line-height:1.3; color:var(--ink);">{title}</h1>
+        <div style="font-size:13px; line-height:18px; color:var(--quiet);">{doc.meta}</div>
+      </div>
+      <section aria-label="In short" style="background:var(--card); border-radius:16px; padding:20px 22px; display:flex; flex-direction:column; gap:12px;">
+        <h2 style={lab}>IN SHORT</h2>
+        {doc.short.map(h => <div style={li}><Fragment set:html={dot} /><span set:html={h}></span></div>)}
+      </section>
+      {doc.shortAfter.map(h => <p style="font-size:14px; line-height:20px; color:var(--quiet); text-wrap:pretty;" set:html={h}></p>)}
+      <nav aria-label="Contents" style="border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:18px 0; display:flex; flex-direction:column; gap:6px;">
+        <h2 style={`${lab} padding-bottom:6px;`}>CONTENTS</h2>
+        <div style="display:grid; grid-template-columns:var(--tocCols); gap:0 32px;">
+          {doc.toc.map(c => <a href={`#${c.id}`} style="display:flex; gap:12px; min-height:36px; align-items:center; font-size:15px; line-height:21px;"><span style="flex:0 0 22px; color:var(--quiet);">{c.n}</span><span style="color:var(--brass);">{c.title}</span></a>)}
+        </div>
+      </nav>
+      {doc.secs.map(sec => (
+        <section id={sec.id} data-sec={sec.id} aria-labelledby={`h-${sec.id}`} style="display:flex; flex-direction:column; gap:14px; padding-top:12px;">
+          <h2 id={`h-${sec.id}`} style="font-size:22px; font-weight:600; line-height:30.8px; color:var(--ink);"><span style="color:var(--quiet); font-weight:400;">{sec.n}&nbsp;&nbsp;</span>{sec.title}</h2>
+          {sec.blocks.map(b => b.isP
+            ? <p style="font-size:16px; line-height:26px; color:var(--ink); text-wrap:pretty;">{b.num && <span style="color:var(--quiet);">{b.num}&nbsp;&nbsp;</span>}<Fragment set:html={b.html} /></p>
+            : b.isList
+            ? <ul style={`list-style:none; margin:0; display:flex; flex-direction:column; gap:8px; padding-left:${b.indent ? 'var(--listIndent)' : '0'};`}>{b.items.map(h => <li style={li}><Fragment set:html={dot} /><span set:html={h}></span></li>)}</ul>
+            : <div style="border:1px solid var(--line); border-radius:16px; overflow:hidden;">
+                <div class="lap-only" role="table" aria-label={`${sec.title}`}>
+                  <div role="row" style={`display:grid; grid-template-columns:${b.cols}; gap:20px; padding:12px 18px; background:var(--card);`}>{b.head.map(h => <div role="columnheader" style={lab}>{h}</div>)}</div>
+                  {b.rows.map(r => <div role="row" style={`display:grid; grid-template-columns:${b.cols}; gap:20px; padding:14px 18px; border-top:1px solid var(--line);`}>{r.wide.map(c => <div role="cell" style="display:flex; flex-direction:column; gap:2px; min-width:0;"><div style="font-size:14px; line-height:20px; color:var(--ink); text-wrap:pretty;" set:html={c}></div></div>)}</div>)}
+                </div>
+                <div class="phone-only">
+                  {b.rows.map((r, ri) => <div style={`display:grid; grid-template-columns:1fr; gap:6px; padding:14px 18px; border-top:${ri === 0 ? 'none' : '1px solid var(--line)'};`}>{r.phone.map((c, ci) => <div style="display:flex; flex-direction:column; gap:2px; min-width:0;">{ci > 0 && <div style={`${lab} padding-top:4px;`}>{b.head[ci]}</div>}<div style="font-size:14px; line-height:20px; color:var(--ink); text-wrap:pretty;" set:html={c}></div></div>)}</div>)}
+                </div>
+              </div>)}
+        </section>
+      ))}
+      <div style="border-top:1px solid var(--line); padding-top:20px; margin-top:12px; font-size:14px; line-height:20px; color:var(--quiet);">Questions about this page? <a href="/help" style="color:var(--brass); font-weight:600;">We’re happy to help.</a></div>
+    </article>
+  </div>
+</Shell>

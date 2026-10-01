@@ -1,0 +1,10 @@
+---
+// 15 · Help someone back in: a holding page until ENGINES' /recover doors are built in (cc-website-01 JOB 2).
+import Holding from '../components/Holding.astro';
+import { config } from '../lib/config.mjs';
+const lede = "font-family:'Newsreader',serif; font-size:var(--lede); line-height:var(--ledelh); color:var(--ink); text-wrap:pretty;";
+---
+<Holding title="Help someone back in" path="/recover" eyebrow="HELP SOMEONE BACK IN" heading="Are you someone’s recovery contact?" description="Help someone you know back into their Jeevanto.">
+  <p style={lede}>This page opens when Jeevanto is live.</p>
+  <p style="font-size:15px; line-height:21px; color:var(--quiet); text-wrap:pretty;">If you need help before then, write to <a href={`mailto:${config.supportEmail}`} style="color:var(--brass); font-weight:600;">{config.supportEmail}</a>.</p>
+</Holding>

@@ -1,0 +1,84 @@
+---
+// 4 · Kin mode. Brief A4 (decision 206.1): booking for kin stays, ordering for kin goes.
+import Shell from '../layouts/Shell.astro';
+import Eyebrow from '../components/Eyebrow.astro';
+import More from '../components/More.astro';
+import RowList from '../components/RowList.astro';
+import Film from '../components/Film.astro';
+import Replay from '../components/Replay.astro';
+import FilmFullScreen from '../components/FilmFullScreen.astro';
+import { config, full } from '../lib/config.mjs';
+
+const paidPlans = config.plansWithPaidAbilities || 'Plus and Family';
+const paidPlansOr = paidPlans.replace(/ and (?!.* and )/, ' or ');
+const kinPapa = [
+  { label: 'IN PAPA’S JEEVANTO, AS FAR AS HE ALLOWS', rows: [
+    { t: 'Reminders', d: 'Set his medicine reminders from the prescription. His phone reminds him, not yours.' },
+    { t: 'Notes', d: 'Keep notes for him, so the details of his care are in one place.' },
+    { t: 'Getting ready', d: 'Get him ready for Thursday’s check-up: where, when, what to carry, and where each piece came from.' },
+    { t: 'Finding', d: 'If Papa’s plan includes it, you can find what he’s kept, provided he has allowed you to view it.' },
+    { t: 'Lookouts', d: 'If Papa’s plan includes it, you can also keep a lookout for him.' },
+    { t: 'His forms', d: 'If Papa’s plan includes it, you can fill in his forms inside his Jeevanto, only with his yes. A form that ends in a payment comes back to him to look over; once he says go, he pays, or hands it to you to pay if you’re on Plus or Family. One without a payment goes only if he has allowed you to send it. On your own Plus or Family plan, you can also fill in a form for him from your own Jeevanto, using what he’s shared with you.' },
+    { t: 'Within his plan', d: 'What you do inside his Jeevanto depends on his plan, not yours, and uses his allowance. What you do from your own Jeevanto uses yours.' } ] },
+  { label: 'FROM YOUR OWN JEEVANTO', rows: [
+    { t: 'Booking', d: 'From your own Jeevanto, on a paid plan, you can book for Papa. If his plan is paid too, hand him a booking or a job to approve, and then either of you pays. If he’s on Express, you can book or get it done yourself, from your Jeevanto.' },
+    { t: 'Always visible', d: 'He sees everything you have done for him.' } ] } ];
+const kinTara = [
+  { t: 'Only what you allow', d: 'Tara helps in your Jeevanto with only the permissions you give her.' },
+  { t: 'What she may do', d: `Keep notes and set your reminders, and get you ready for a meeting. If you’re on ${paidPlansOr}, she can also find what you’ve kept, keep a lookout for you, and fill in your forms or get a booking ready for you to look over and say go.` },
+  { t: 'What she may see', d: 'Nothing you haven’t said yes to.' },
+  { t: 'Never allowed', d: 'As kin, Tara can never pay from your account, see your passwords, change your settings or send a message as you. Anything in your account that needs paying comes back to you to look over; once you say go, you pay, or hand it to her to pay if she’s on Plus or Family.' },
+  { t: 'Always visible', d: 'You see everything she’s done, and you can pause her help any time.' } ];
+const kinYes = [
+  'It starts only when both of you say yes: one sends the invitation, the other enters the code.',
+  'Every permission is a yes you gave, and every yes can be taken back.',
+  'Either of you can pause the help or end the link at any time, and the other is told.',
+  'Nothing either of you made is ever lost.' ];
+const h2 = "font-family:'Newsreader',serif; font-weight:400; font-size:var(--h2); line-height:var(--h2lh); color:var(--ink);";
+const lede = "font-family:'Newsreader',serif; font-size:var(--lede); line-height:var(--ledelh);";
+---
+<Shell title="Kin mode" here="Kin mode" path="/kin-mode" description="Look after the people you love in their own Jeevanto, or let them look after you, always with a yes.">
+  <div data-screen-label="04 Kin mode" style="box-sizing:border-box; max-width:1152px; margin:0 auto; padding:var(--top) var(--gut) 0; display:flex; flex-direction:column; gap:var(--par);">
+    <Eyebrow>KIN MODE</Eyebrow>
+    <h1 style="font-family:'Newsreader',serif; font-weight:400; font-size:var(--h1); line-height:var(--h1lh); letter-spacing:-0.3px; color:var(--ink); max-width:880px; text-wrap:balance;">Look after the people you love, or let them look after you.</h1>
+    <p style={`${lede} color:var(--quiet); max-width:720px; text-wrap:pretty;`}>Care that both of you agree to, never one watching the other. Help Papa in his own Jeevanto, or let your daughter help in yours.</p>
+  </div>
+  <section aria-labelledby="h-papa" style="box-sizing:border-box; max-width:1152px; margin:0 auto; padding:var(--sec2) var(--gut) 0; display:flex; flex-wrap:wrap; gap:32px 56px; align-items:center;">
+    <div style="flex:1 1 320px; max-width:420px; margin:0 auto; display:flex; justify-content:center;"><div style="display:flex; flex-direction:column; align-items:center; gap:14px;">
+      <Film film="reminders" id="film-kin" title="Reminders film in Papa’s Jeevanto" w="--kinW" />
+      <Replay target="film-kin" />
+      <p style="max-width:var(--kinW); font-size:13px; line-height:18px; color:var(--quiet); text-align:center; text-wrap:pretty;">His name stays at the top of your screen, so you always know you’re in Papa’s Jeevanto.</p>
+    </div></div>
+    <div style="flex:1 1 420px; display:flex; flex-direction:column; gap:var(--par);">
+      <h2 id="h-papa" style={h2}>When you look after Papa</h2>
+      <div style="background:var(--card); border-radius:16px; padding:var(--panelPad); display:flex; flex-direction:column;">
+        {kinPapa.map(g => (<><div style="font-size:11px; font-weight:600; letter-spacing:1.6px; color:var(--quiet); padding:16px 0 10px;">{g.label}</div><RowList rows={g.rows} /></>))}
+      </div>
+    </div>
+  </section>
+  <section aria-labelledby="h-tara" style="box-sizing:border-box; max-width:1152px; margin:0 auto; padding:var(--sec) var(--gut) 0; display:flex; flex-wrap:wrap; gap:32px 56px; align-items:center;">
+    <div style="flex:1 1 420px; display:flex; flex-direction:column; gap:var(--par);">
+      <h2 id="h-tara" style={h2}>When Tara, your daughter, looks after you</h2>
+      <div style="background:var(--card); border-radius:16px; padding:var(--panelPad); display:flex; flex-direction:column;"><RowList rows={kinTara} /></div>
+      <p style={`${lede} color:var(--quiet); text-wrap:pretty;`}>Kin doesn’t have to be family. A trusted friend nearby can look in on Papa when you can’t.</p>
+    </div>
+    <div style="order:var(--shotFirst); flex:0 1 auto; margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:14px;">
+      <div style="flex:none; padding:var(--bz); border-radius:calc(var(--kinW) * 0.0889 + var(--bz)); background:#0B0B0D; box-shadow:0 0 0 1px #34343A, var(--lift);">
+        {['dark', 'light'].map(t => <img class={`in-${t}`} src={`/app-screens/kin-02-tara-review-${t}.png`} alt="App screen: Tara filled in your passport renewal" width="360" height="700" loading="lazy" decoding="async" style="display:block; width:var(--kinW); height:calc(var(--kinW) * 1.944444); border-radius:calc(var(--kinW) * 0.0889);">)}
+      </div>
+      <p style={`max-width:var(--kinW); ${lede} color:var(--ink); text-align:center; text-wrap:pretty;`}>Tara filled in your passport renewal. Look it over and say go.</p>
+    </div>
+  </section>
+  <section aria-labelledby="h-yes" style="box-sizing:border-box; max-width:1152px; margin:0 auto; padding:var(--sec) var(--gut) 0; display:flex; flex-direction:column; gap:var(--par);">
+    <h2 id="h-yes" style={h2}>Always with a yes</h2>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap:12px;">
+      {kinYes.map(b => <p style={`background:var(--card); border-radius:16px; padding:20px 22px; ${lede} color:var(--ink);`}>{b}</p>)}
+    </div>
+  </section>
+  <section style="box-sizing:border-box; max-width:960px; margin:0 auto; padding:var(--sec) var(--gut) var(--sec); display:flex; flex-direction:column; align-items:center; text-align:center; gap:var(--par);">
+    <h2 style="font-family:'Newsreader',serif; font-weight:400; font-size:var(--h1); line-height:var(--h1lh); color:var(--ink); text-wrap:balance;">Be present, even when you can’t be there.</h2>
+    <p style={`${lede} color:var(--quiet); max-width:620px; text-wrap:pretty;`}><span style="display:block;">Bring the whole family onto one plan,</span><span style="display:block;">or add a kin seat for the one you look after.</span></p>
+    {full && <More href="/plans" style="margin-top:calc(var(--grp) - var(--par));">Find the right plan for your Circle</More>}
+  </section>
+  <FilmFullScreen />
+</Shell>

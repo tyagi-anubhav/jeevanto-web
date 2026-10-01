@@ -1,0 +1,11 @@
+---
+// 13 · Check a message: a holding page until ENGINES' /check door is built in (cc-website-01 JOB 2).
+import Holding from '../components/Holding.astro';
+import { config } from '../lib/config.mjs';
+const lede = "font-family:'Newsreader',serif; font-size:var(--lede); line-height:var(--ledelh); color:var(--ink); text-wrap:pretty;";
+---
+<Holding title="Check a message" path="/check" eyebrow="IS THIS FROM JEEVANTO?" heading="Check a message from us." description="Check that a message really came from Jeevanto.">
+  <p style={lede}>Checking a message opens here when Jeevanto is live.</p>
+  <p style="font-size:15px; line-height:21px; color:var(--quiet); text-wrap:pretty;">Not sure about a message that says it’s from Jeevanto? Don’t click anything in it. Forward it to <a href={`mailto:${config.securityEmail}`} style="color:var(--brass); font-weight:600;">{config.securityEmail}</a>, and we’ll take a look.</p>
+  <p style="font-size:13px; line-height:18px; color:var(--quiet); border-top:1px solid var(--line); padding-top:16px; margin-top:12px; text-wrap:pretty;">We’ll never ask you to click a link to check a message. Always type <span style="color:var(--ink); font-weight:600;">jeevanto.com/check</span> yourself.</p>
+</Holding>

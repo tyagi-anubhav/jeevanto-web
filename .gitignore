@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.astro/
+.venv-tools/
+proofs/screens/*.png
+.DS_Store
+proofs/films/*.png

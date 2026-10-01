@@ -1,0 +1,87 @@
+---
+// 1 · Front door. Coming-soon mode: no store badges, no founding lines, no prices; the waitlist card without a
+// form (cc-website-01). Brief A2 (the promise line) and A15 (the lede on the phone too).
+import Shell from '../layouts/Shell.astro';
+import Identity from '../components/Identity.astro';
+import Eyebrow from '../components/Eyebrow.astro';
+import More from '../components/More.astro';
+import Film from '../components/Film.astro';
+import Replay from '../components/Replay.astro';
+import FilmFullScreen from '../components/FilmFullScreen.astro';
+import { config, soon } from '../lib/config.mjs';
+
+const lede = 'Hand Jeevanto the appointments, the bookings, the reminders and the family logistics — so you can put the phone down and be with the people who matter.';
+const doorCards = [
+  { label: 'WHO IT’S FOR', line: 'Jeevanto works for you, and for those in your Circle.', circle: true },
+  { label: 'HOW IT WORKS', line: 'Everything it knows comes from you. Every fact has a source. Every action has your hand on it. Anything it knows, you can take back.' },
+  { label: 'WHAT IT GIVES YOU', line: 'Time back, and a clear head. Say it once, and Jeevanto carries it all the way through.' },
+];
+const ledeStyle = "font-family:'Newsreader',serif; font-size:var(--lede); line-height:var(--ledelh); color:var(--quiet); max-width:680px; text-wrap:pretty;";
+const statement = "font-family:'Newsreader',serif; font-size:var(--statement); line-height:var(--statementlh); color:var(--ink);";
+---
+<Shell path="/">
+  <div data-screen-label="01 Front door" style="box-sizing:border-box; max-width:960px; margin:0 auto; padding:var(--heroTop) var(--gut) 0; display:flex; flex-direction:column; align-items:center; text-align:center; gap:var(--grp);">
+    <div class="lap-only tall-only"><Identity kind="orb" size={140} /></div>
+    <div class="short-only"><Identity kind="orb" size={112} /></div>
+    <div class="phone-only"><Identity kind="orb" size={80} /></div>
+    <div style="display:flex; flex-direction:column; gap:var(--par); align-items:center;">
+      <h1 style="font-family:'Newsreader',serif; font-weight:400; font-size:var(--h1); line-height:var(--h1lh); letter-spacing:-0.3px; color:var(--ink); text-wrap:balance;">Your personal control system, <span style="display:var(--brD);"></span>built for a world that won’t slow down.</h1>
+      <p class="tall-only" style={ledeStyle}>{lede}</p>
+    </div>
+    {soon && (
+      <div style="box-sizing:border-box; width:100%; max-width:440px; background:var(--card); border-radius:16px; padding:22px 24px; display:flex; flex-direction:column; gap:12px; text-align:left;">
+        <h2 style="font-family:'Newsreader',serif; font-weight:400; font-size:22px; line-height:30.8px; color:var(--ink);">Tell me when Jeevanto is live</h2>
+        <p style="font-size:15px; line-height:21px; color:var(--quiet); text-wrap:pretty;">Want to hear when we’re live? Write to <a href={`mailto:${config.supportEmail}`} style="color:var(--brass); font-weight:600;">{config.supportEmail}</a>.</p>
+      </div>
+    )}
+    <p class="short-only" style={ledeStyle}>{lede}</p>
+  </div>
+
+  <section style="box-sizing:border-box; max-width:960px; margin:0 auto; padding:var(--sec) var(--gut) 0; display:flex; flex-direction:column; gap:24px;">
+    <Eyebrow as="h2">WHAT JEEVANTO IS</Eyebrow>
+    <p style={`${statement} display:flex; flex-direction:column;`}>
+      <span>Every complex system has a control system.</span>
+      <span style="color:var(--quiet);">Aircraft have flight control.</span>
+      <span style="color:var(--quiet);">Power grids have grid control.</span>
+      <span style="color:var(--quiet);">Trading desks have risk control.</span>
+      <span>When complexity rises, control becomes non-negotiable.</span>
+      <span>Jeevanto is the control system for your commitments, relationships, goals, and decisions.</span>
+    </p>
+  </section>
+
+  <section aria-label="The opening film" style="box-sizing:border-box; max-width:1152px; margin:0 auto; padding:var(--sec) var(--gut) 0;">
+    <div style="display:flex; justify-content:center;"><div style="display:flex; flex-direction:column; align-items:center; gap:14px;">
+      <Film film="opening" id="film-opening" title="The opening film" w="--openW" />
+      <Replay target="film-opening" />
+    </div></div>
+    <div style="display:flex; justify-content:center; margin-top:var(--grp);"><More href="/what-it-does">See what Jeevanto can do</More></div>
+  </section>
+
+  <section style="box-sizing:border-box; max-width:960px; margin:0 auto; padding:var(--sec) var(--gut) 0;">
+    <div style="display:flex; flex-direction:column; gap:var(--par);">
+      <p style={`${statement} text-wrap:pretty;`}>You’re raising your children, caring for your parents and building your career, and holding every detail together yourself.</p>
+      <p style={`${statement} text-wrap:pretty;`}>Let Jeevanto hold the details, so you can be there for them.</p>
+    </div>
+  </section>
+
+  <section style="box-sizing:border-box; max-width:960px; margin:0 auto; padding:var(--sec) var(--gut) 0; display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:12px;">
+    {doorCards.map(d => (
+      <div style="background:var(--card); border-radius:16px; padding:22px 24px; display:flex; flex-direction:column; gap:12px;">
+        <Eyebrow as="h2">{d.label}</Eyebrow>
+        <p style="font-family:'Newsreader',serif; font-size:var(--lede); line-height:var(--ledelh); color:var(--ink);">{d.line}</p>
+        {d.circle && <More href="/circle" style="align-self:flex-start; margin-top:auto; padding-top:4px;">Look after your family with it</More>}
+      </div>
+    ))}
+  </section>
+
+  <section style="box-sizing:border-box; max-width:960px; margin:0 auto; padding:var(--sec) var(--gut) var(--sec); display:flex; flex-direction:column; gap:24px;">
+    <Eyebrow as="h2">OUR PROMISE</Eyebrow>
+    <p style={`${statement} display:flex; flex-direction:column;`}>
+      <span>We never train AI on your data, and we never sell it.</span>
+      <span>No one sees it unless you say yes. Not your family, not the one who looks after you.</span>
+      <span>Delete your account any time, and everything goes.</span>
+    </p>
+    <More href="/our-promise" style="align-self:flex-start; margin-top:calc(var(--grp) - 24px);">Read what we believe about privacy</More>
+  </section>
+  <FilmFullScreen />
+</Shell>

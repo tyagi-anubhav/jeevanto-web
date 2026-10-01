@@ -1,0 +1,78 @@
+--- proofs/text/refunds.design.txt	2026-10-01 08:53:44
++++ proofs/text/refunds.site.txt	2026-10-01 08:53:44
+@@ -9,7 +9,8 @@
+ Your plan runs to the end of the month you've paid for. Then you're on Express, free, with everything you've made kept.
+ No refund for a month already started.
+ Yearly Plus: if you leave early, the months you've used are charged at the monthly price, and the rest comes back to you.
+-Paid, but never started? If nobody on your plan opens the app within 3 months, we refund your first payment and cancel the plan.
++Everyone pays on the 1st of the month. Your first payment covers the rest of the month you start in; after that, the full price on the 1st.
++Chose a plan but never started? Nothing is charged until your free months end. If you don't open the app within 3 months, we cancel the plan, and you'll never have paid anything.
+ We remind you before every automatic payment.
+ Questions: help@jeevanto.com.
+ The full policy follows. If anything below seems to say something different from this summary, the full policy applies.
+@@ -53,12 +54,13 @@
+ 3.1 Plus is free for your first 3 months. Once per person: they're never given twice to the same email address, mobile number or sign-in account, even on a new account.
+ 3.2 They start the first time you open the app, not when you sign up on the website.
+ 3.3 Nothing is charged when they end unless you've chosen Plus or Family. We tell you before they end.
+-3.4 Subscribing early never shortens them. If you pay during your free months, your paid months start the day after your free months end.
++3.4 Choosing a plan early never shortens them. If you choose Plus or Family during your free months, nothing is charged that day. Your paid months start the day after your free months end, and that's when your first payment is taken.
+ 3.5 Joining a Family during your free months doesn't restart or extend them. You keep what's left, and the Family pays for your seat from the day they end.
+ 3.6 A person added to a Family gets the free months only if they've never had them. Their seat isn't charged until those months end. Someone who has already had them is charged from the day they join.
+ 4 How you pay
+ 4.1 You pay on the website, on Razorpay's secure page, with UPI Autopay or a card. Your card or UPI details stay with Razorpay; we never see them.
+-4.2 When you choose Plus or Family, you set up a standing instruction (an e-mandate) with your bank or UPI app. You pay the first payment that day. After that, your plan renews by itself on the same date each month, or each year for yearly Plus.
++4.2 When you choose Plus or Family, you set up a standing instruction (an e-mandate) with your bank or UPI app. Everyone is billed on the 1st of the month. Your first payment covers only the rest of the month you start in (for example, starting on 22 December, you pay for 22 to 31 December). After that, your plan renews by itself on the 1st of each month, or on the 1st of the same month each year for yearly Plus.
++4.2A When the first payment is taken. If you choose a plan after your free months, you pay the first payment that day. If you choose it before or during your free months, nothing is charged that day: the first payment is taken the day after your free months end.
+ 4.3 We remind you before every automatic payment: at least 24 hours before, with the amount and the date. You'll also get a receipt after each one.
+ 4.4 You can stop the standing instruction at any time, in your bank or UPI app, as well as by cancelling with us.
+ 4.5 Invoices, showing the tax, are in Your account on the website.
+@@ -66,8 +68,10 @@
+ 5.1 Cancel any time, in two clicks, from Your account on the website. We never make cancelling harder than subscribing, and there's no charge for it.
+ 5.2 Cancelling stops your next payment. Your plan carries on to the end of the period you've paid for. Then you're on Express.
+ 5.3 Everything you've made stays yours. Your notes, reminders, documents and history are all kept. Anything that needs a paid plan waits until you choose one again.
+-5.4 Moving from Family to Plus takes effect at your next renewal. Everyone keeps Family until the paid month ends. The others on the plan are told the Family plan is ending, never why, and each can take their own plan with nothing lost.
++5.4 Moving from Family to Plus takes effect on the next 1st of the month. Everyone keeps Family until the paid month ends. The others on the plan are told the Family plan is ending, never why, and each can take their own plan with nothing lost.
+ 5.5 If a Family plan ends and nobody takes a plan, everyone on it moves to Express, with nothing lost.
++5.6 Switching between monthly and yearly Plus. Monthly to yearly starts on the next 1st of the month; nothing is charged that day. Yearly to monthly starts when your paid year ends, with no refund, because you're staying.
++5.7 Deleting your account cancels your plan at the same moment, and nothing more is charged. Refunds follow section 6 as if you had cancelled.
+ 6 Refunds
+ 6.1 Monthly plans: no refund for a month already started. The plan runs to the end of that month.
+ 6.2 Yearly Plus, if you leave early (cancel, or move to a Family):
+@@ -75,23 +79,24 @@
+ whatever is left of your yearly payment is refunded. If you're moving to your own Family plan, it becomes credit on that plan instead;
+ the yearly price is lower because it rewards staying the whole year, so leaving early doesn't keep that saving.
+ Example, with sample prices (not our prices): you pay ₹3,499 for a year. You cancel in your fourth month. Four months at ₹349 is ₹1,396, so you get ₹2,103 back. If you cancel in your tenth month, you get about ₹9 back.
+-6.3 Paid, but never started. If you subscribe on the website and nobody on your plan opens the app within 3 months, we refund your first payment in full and cancel the plan. We remind you after a week and after a month while we hold your place. We never keep money for something nobody used.
++6.3 Chosen, but never started. Nothing is charged until your free months end, and they start only when you first open the app. If you don't within 3 months, we cancel the plan and stop the standing instruction. You'll never have paid anything. We remind you after a week and after a month while we hold your place.
+ 6.4 Our mistake. If we charge you twice, charge the wrong amount, or charge you after you cancelled, we refund the difference in full, as soon as we find it or you tell us.
+ 6.5 If we close your account for a reason that isn't your fault, we refund the unused part of what you've paid.
+ 6.6 Apart from these, payments aren't refunded, except where the law says otherwise. Nothing in this policy takes away your rights under the Consumer Protection Act, 2019.
+ 7 Family plans: adding, removing and leaving
+-7.1 Adding a seat takes effect at once. Every seat moves to the new family price that day. You pay only the difference for the days left in your billing month, then the new price from your next payment.
+-7.2 Removing a seat takes effect at your next renewal. The seat stays usable until then. Nothing is refunded for the rest of that month.
++7.1 Adding a seat takes effect at once. Every seat moves to the new family price that day. You pay only the difference for the rest of this month, then the new price on the 1st.
++7.2 Removing a seat takes effect on the next 1st of the month. The seat stays usable until then. Nothing is refunded for the rest of that month.
+ 7.3 When someone leaves your Family, they keep everything they made and move to Express, or to their own Plus. Their seat stays on your plan, empty, and stays paid until you remove it. We tell you they've left.
+-7.4 Founding seats. When a founding Family removes a seat, its founding place goes back to the pool when the removal takes effect. A seat added later gets the founding price only if a founding place is free and the offer is still open; otherwise it pays the regular price.
++7.4 Founding seats. When a Family has both founding and regular-price seats and removes a person, a regular-price seat goes first, whoever that person is. A founding seat goes only when no regular seat is left; its place can then go to someone new while the founding offer is open. Nobody already paying the regular price is moved to the founding price. The founding offer closes for good once all 1,000 places are taken. A seat added later gets the founding price only if a founding place is free and the offer is still open; otherwise it pays the regular price.
+ 7.5 A Family with both kinds of seat. Founding seats pay the flat founding price, with no family price on top. The family price counts only the regular-price seats: one regular seat pays the full price; two or more move down the family price steps together.
+ 8 Kin seats
+ 8.1 Express includes 1 kin seat. Plus and Family include 2, for the whole plan.
+-8.2 On Plus or Family you can add more, at one flat price per seat per month. An added kin seat works at once. You pay only for the days left in your billing month, then the full price from your next payment.
++8.2 On Plus or Family you can add more, at one flat price per seat per month. An added kin seat works at once. You pay only for the rest of this month, then the full price on the 1st. Kin seats have no free months: an extra one is paid from the day you add it, even during your free months.
+ 8.3 Removing a kin seat works like removing a Family seat (7.2).
+ 9 When a payment fails
+ 9.1 If an automatic payment fails, we tell you straight away, and try again. Your plan carries on for 7 more days while you put it right.
+-9.2 If it still hasn't gone through after 7 days, the plan ends and everyone on it moves to Express, with nothing lost. On a Family plan, the others are told the plan has ended, never why.
++9.2 While a payment is failing, you can cancel, move down or remove seats as usual, but moving up or adding seats waits until the failed payment is paid. This includes a first payment that fails.
++9.3 If it still hasn't gone through after 7 days, the plan ends and everyone on it moves to Express, with nothing lost. On a Family plan, the others are told the plan has ended, never why.
+ 10 When we change or stop something
+ 10.1 Price changes. We tell you at least 30 days before your next payment at a new price. You can cancel before then. A founding price doesn't change during its 2 years.
+ 10.2 If we remove a feature that's part of your paid plan, we tell you in advance. If you cancel because of it, we refund the unused part of the period you've paid for.
+@@ -105,5 +110,5 @@
+ 13 Questions and complaints
+ Help with a payment or a refund: help@jeevanto.com. A person reads every message, and replies within 2 working days.
+ Complaints: our Grievance Officer, Anubhav Tyagi, at privacy@jeevanto.com. You'll hear from us within 24 hours, and a person will reply within 2 working days. If something needs putting right, we'll do it within 15 days at the latest.
+-By post: Nistula Tech Labs OPC Private Limited, Sector-66, Gurugram, Haryana 122102, India.
++By post: Anubhav Tyagi (Jeevanto), Sector-66, Gurugram, Haryana 122102, India.
+ Questions about this page? We’re happy to help.

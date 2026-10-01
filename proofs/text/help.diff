@@ -1,0 +1,122 @@
+--- proofs/text/help.design.txt	2026-10-01 08:53:40
++++ proofs/text/help.site.txt	2026-10-01 08:53:40
+@@ -3,16 +3,14 @@
+ COMMON QUESTIONS
+ What happens when my free months end?
+ Your 3 free months of Plus start the day you first open the app. We tell you before they end, and nothing is charged by itself. Choose a paid plan to keep going, or carry on free on Express, with nothing lost.
+-How do I cancel?
+ Can others on my Family plan see my Jeevanto?
+ Can I use Jeevanto to look after my parent?
+ What does Jeevanto read, and what does it keep?
+-Can I delete my account without the app?
+ WRITE TO US
+ help@jeevanto.com
+ We reply within 2 working days.
+ THE COMPANY
+-Nistula Tech Labs OPC Private Limited · Sector-66, Gurugram, Haryana 122102, India
++Anubhav Tyagi (Jeevanto) · Sector-66, Gurugram, Haryana 122102, India
+ CIN (To be confirmed) · GSTIN (To be confirmed)
+ QUESTIONS ABOUT YOUR DATA
+ Anubhav Tyagi, Founder · Grievance Officer
+@@ -21,38 +19,16 @@
+ Ask us anything. A person reads every message.
+ COMMON QUESTIONS
+ What happens when my free months end?
+-How do I cancel?
+-Sign in to Your account on this site, choose Cancel plan, then confirm. Your plan stays until the end of the month you’ve paid for, then you carry on free on Express with everything you’ve made. On yearly Plus, the months you’ve used are charged at the monthly price, and the rest is refunded.
+-Sign in
+ Can others on my Family plan see my Jeevanto?
+-Can I use Jeevanto to look after my parent?
+-What does Jeevanto read, and what does it keep?
+-Can I delete my account without the app?
+-WRITE TO US
+-help@jeevanto.com
+-We reply within 2 working days.
+-THE COMPANY
+-Nistula Tech Labs OPC Private Limited · Sector-66, Gurugram, Haryana 122102, India
+-CIN (To be confirmed) · GSTIN (To be confirmed)
+-QUESTIONS ABOUT YOUR DATA
+-Anubhav Tyagi, Founder · Grievance Officer
+-privacy@jeevanto.com
+-HELP
+-Ask us anything. A person reads every message.
+-COMMON QUESTIONS
+-What happens when my free months end?
+-How do I cancel?
+-Can others on my Family plan see my Jeevanto?
+ No. Each person’s Jeevanto is private to them. Being on one plan opens nobody’s account, not even to the person who pays. They see only what you choose to share.
+ See how Circle works
+ Can I use Jeevanto to look after my parent?
+ What does Jeevanto read, and what does it keep?
+-Can I delete my account without the app?
+ WRITE TO US
+ help@jeevanto.com
+ We reply within 2 working days.
+ THE COMPANY
+-Nistula Tech Labs OPC Private Limited · Sector-66, Gurugram, Haryana 122102, India
++Anubhav Tyagi (Jeevanto) · Sector-66, Gurugram, Haryana 122102, India
+ CIN (To be confirmed) · GSTIN (To be confirmed)
+ QUESTIONS ABOUT YOUR DATA
+ Anubhav Tyagi, Founder · Grievance Officer
+@@ -61,18 +37,16 @@
+ Ask us anything. A person reads every message.
+ COMMON QUESTIONS
+ What happens when my free months end?
+-How do I cancel?
+ Can others on my Family plan see my Jeevanto?
+ Can I use Jeevanto to look after my parent?
+ Yes, that’s kin mode. Your parent can invite you, or you can invite them. You help only with what they allow, and they see everything you do.
+ See kin mode
+ What does Jeevanto read, and what does it keep?
+-Can I delete my account without the app?
+ WRITE TO US
+ help@jeevanto.com
+ We reply within 2 working days.
+ THE COMPANY
+-Nistula Tech Labs OPC Private Limited · Sector-66, Gurugram, Haryana 122102, India
++Anubhav Tyagi (Jeevanto) · Sector-66, Gurugram, Haryana 122102, India
+ CIN (To be confirmed) · GSTIN (To be confirmed)
+ QUESTIONS ABOUT YOUR DATA
+ Anubhav Tyagi, Founder · Grievance Officer
+@@ -81,39 +55,17 @@
+ Ask us anything. A person reads every message.
+ COMMON QUESTIONS
+ What happens when my free months end?
+-How do I cancel?
+ Can others on my Family plan see my Jeevanto?
+ Can I use Jeevanto to look after my parent?
+ What does Jeevanto read, and what does it keep?
+-It reads only the accounts you choose to connect, what you tell it, and what people in your Circle choose to share with you. It keeps what matters from them, each with its source, never the mail itself. It shows you how much it read. Nothing trains on your data.
++It reads only the accounts you choose to connect, what you tell it, and what people in your Circle choose to share with you. It keeps what matters from them, each with its source, never the mail itself. It shows you how much it read. We never train AI on your data.
+ Read our promise
+-Can I delete my account without the app?
+ WRITE TO US
+ help@jeevanto.com
+ We reply within 2 working days.
+ THE COMPANY
+-Nistula Tech Labs OPC Private Limited · Sector-66, Gurugram, Haryana 122102, India
++Anubhav Tyagi (Jeevanto) · Sector-66, Gurugram, Haryana 122102, India
+ CIN (To be confirmed) · GSTIN (To be confirmed)
+ QUESTIONS ABOUT YOUR DATA
+ Anubhav Tyagi, Founder · Grievance Officer
+ privacy@jeevanto.com
+-HELP
+-Ask us anything. A person reads every message.
+-COMMON QUESTIONS
+-What happens when my free months end?
+-How do I cancel?
+-Can others on my Family plan see my Jeevanto?
+-Can I use Jeevanto to look after my parent?
+-What does Jeevanto read, and what does it keep?
+-Can I delete my account without the app?
+-Yes. The Delete your account page asks for the email or mobile number on your account, and a code we send to it.
+-Delete your account
+-WRITE TO US
+-help@jeevanto.com
+-We reply within 2 working days.
+-THE COMPANY
+-Nistula Tech Labs OPC Private Limited · Sector-66, Gurugram, Haryana 122102, India
+-CIN (To be confirmed) · GSTIN (To be confirmed)
+-QUESTIONS ABOUT YOUR DATA
+-Anubhav Tyagi, Founder · Grievance Officer
+-privacy@jeevanto.com

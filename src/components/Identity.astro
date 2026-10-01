@@ -1,0 +1,12 @@
+---
+// The Daystone orb and the illuminated wordmark, as Claude Design's jeevanto-identity.jsx renders them
+// (extracted once by tools/extract-identity.mjs, so the live site needs no React). Both themes are in the page;
+// the stylesheet shows the one that matches.
+import id from '../identity/identity.json';
+const { kind, size } = Astro.props;
+const dark = id[`${kind}-dark-${size}`], light = id[`${kind}-light-${size}`];
+const tag = kind === 'wordmark' ? 'span' : 'div';
+---
+{tag === 'span'
+  ? <><span class="in-dark" aria-hidden="true" set:html={dark}></span><span class="in-light" aria-hidden="true" set:html={light}></span></>
+  : <><div class="in-dark" aria-hidden="true" set:html={dark}></div><div class="in-light" aria-hidden="true" set:html={light}></div></>}

@@ -1,0 +1,61 @@
+---
+// 11 · Help. Coming-soon mode drops the plan questions, and the questions whose answer is a page that
+// isn't open yet (Sign in, Delete your account) — see the close-back.
+import Shell from '../layouts/Shell.astro';
+import Eyebrow from '../components/Eyebrow.astro';
+import More from '../components/More.astro';
+import Icon from '../components/Icon.astro';
+import { config, full, legalLine, regLine } from '../lib/config.mjs';
+
+const m = config.freeMonths;
+const faqData = [
+  ['What happens when my free months end?', `Your ${m} free months of Plus start the day you first open the app. We tell you before they end, and nothing is charged by itself. Choose a paid plan to keep going, or carry on free on Express, with nothing lost.`, full ? ['See Plans', '/plans'] : null],
+  ...(full ? [['Which plan is right for me?', 'Express is free for as long as you like, and does the everyday things: notes, reminders, getting ready and finding what you’ve kept. Plus is everything Jeevanto can do, for you. Family is everything, for everyone at home, each with their own Jeevanto, at the family price.', ['Compare the plans', '/plans']]] : []),
+  ...(full ? [['How do I cancel?', 'Sign in to Your account on this site, choose Cancel plan, then confirm. Your plan stays until the end of the month you’ve paid for, then you carry on free on Express with everything you’ve made. On yearly Plus, the months you’ve used are charged at the monthly price, and the rest is refunded.', ['Sign in', '/sign-in']]] : []),
+  ...(full ? [['What does Family cost?', 'Every seat on Family pays the same price, below the Plus price from the first seat, and lower as you add seats. Pick how many seats you need on Plans to see the price.', ['See Family on Plans', '/plans']]] : []),
+  ['Can others on my Family plan see my Jeevanto?', 'No. Each person’s Jeevanto is private to them. Being on one plan opens nobody’s account, not even to the person who pays. They see only what you choose to share.', ['See how Circle works', '/circle']],
+  ['Can I use Jeevanto to look after my parent?', 'Yes, that’s kin mode. Your parent can invite you, or you can invite them. You help only with what they allow, and they see everything you do.', ['See kin mode', '/kin-mode']],
+  ['What does Jeevanto read, and what does it keep?', 'It reads only the accounts you choose to connect, what you tell it, and what people in your Circle choose to share with you. It keeps what matters from them, each with its source, never the mail itself. It shows you how much it read. We never train AI on your data.', ['Read our promise', '/our-promise']],
+  ...(full ? [['Can I delete my account without the app?', 'Yes. The Delete your account page asks for the email or mobile number on your account, and a code we send to it.', ['Delete your account', '/delete-account']]] : []),
+];
+const faqs = faqData.map(([q, a, link], i) => ({ q, a, link, open: i === 0, last: i === faqData.length - 1, id: 'faq-' + i }));
+const card = 'background:var(--card); border-radius:16px; padding:18px 20px; display:flex; flex-direction:column;';
+---
+<Shell title="Help" here="Help" path="/help" description="Ask us anything. A person reads every message.">
+  <div data-screen-label="11 Help" style="box-sizing:border-box; max-width:1152px; margin:0 auto; padding:var(--top) var(--gut) 0; display:flex; flex-direction:column; gap:var(--par);">
+    <Eyebrow>HELP</Eyebrow>
+    <h1 style="font-family:'Newsreader',serif; font-weight:400; font-size:var(--h1); line-height:var(--h1lh); letter-spacing:-0.3px; color:var(--ink); text-wrap:balance;">Ask us anything. A person reads every message.</h1>
+  </div>
+  <div style="box-sizing:border-box; max-width:1152px; margin:0 auto; padding:40px var(--gut) var(--sec); display:flex; flex-wrap:wrap; gap:32px; align-items:flex-start;">
+    <section aria-labelledby="h-faq" style="flex:2 1 460px; min-width:0; display:flex; flex-direction:column; gap:8px;">
+      <Eyebrow as="h2" style="" ><span id="h-faq">COMMON QUESTIONS</span></Eyebrow>
+      <div style="background:var(--card); border-radius:16px; padding:0 20px;">
+        {faqs.map(q => (
+          <div style={`border-bottom:${q.last ? 'none' : '1px solid var(--line)'};`}>
+            <h3 style="margin:0;"><button type="button" data-faq aria-expanded={q.open ? 'true' : 'false'} aria-controls={q.id} style="width:100%; min-height:56px; display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 0; box-sizing:border-box;"><span style="font-size:15px; font-weight:600; line-height:21px; color:var(--ink);">{q.q}</span><span data-chev style={`display:inline-flex; color:var(--nav); flex:none; transform:${q.open ? 'rotate(180deg)' : 'none'}; transition:transform .2s;`}><Icon name="chevDown" size={20} /></span></button></h3>
+            <div id={q.id} hidden={!q.open} style="padding:0 0 18px; display:flex; flex-direction:column; gap:10px; max-width:620px;">
+              <p style="font-size:15px; line-height:21px; color:var(--quiet); text-wrap:pretty;">{q.a}</p>
+              {q.link && <More href={q.link[1]} style="align-self:flex-start;">{q.link[0]}</More>}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+    <div style="flex:1 1 300px; min-width:0; display:flex; flex-direction:column; gap:12px;">
+      <section id="write-to-us" aria-labelledby="h-write" style={`${card} gap:8px;`}>
+        <Eyebrow as="h2"><span id="h-write">WRITE TO US</span></Eyebrow>
+        <a href={`mailto:${config.supportEmail}`} style="font-size:17px; font-weight:600; color:var(--brass);">{config.supportEmail}</a>
+        <div style="font-size:14px; line-height:20px; color:var(--quiet);">We reply within {Number(config.replyDays) || 2} working days.</div>
+      </section>
+      <section aria-labelledby="h-company" style={`${card} gap:6px;`}>
+        <Eyebrow as="h2"><span id="h-company">THE COMPANY</span></Eyebrow>
+        <div style="font-size:14px; line-height:20px; color:var(--ink);">{legalLine}</div><div style="font-size:14px; line-height:20px; color:var(--quiet);">{regLine}</div>
+      </section>
+      <section aria-labelledby="h-data" style={`${card} gap:6px;`}>
+        <Eyebrow as="h2"><span id="h-data">QUESTIONS ABOUT YOUR DATA</span></Eyebrow>
+        <div style="font-size:14px; line-height:20px; color:var(--ink);">{config.privacyContact}</div>
+        <a href={`mailto:${config.privacyEmail}`} style="font-size:14px; line-height:20px; font-weight:600; color:var(--brass);">{config.privacyEmail}</a>
+      </section>
+    </div>
+  </div>
+</Shell>

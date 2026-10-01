@@ -1,0 +1,6 @@
+---
+// The brass "go on" link with an arrow (Lucide arrow-right), as on every page.
+import Icon from './Icon.astro';
+const { href, style = '' } = Astro.props;
+---
+<a href={href} style={`display:inline-flex; align-items:center; gap:6px; font-size:14px; font-weight:600; color:var(--brass); ${style}`}><slot /><Icon name="arrow" /></a>

@@ -1,0 +1,14 @@
+---
+// Not found, in the site's own style.
+import Shell from '../layouts/Shell.astro';
+import Eyebrow from '../components/Eyebrow.astro';
+import More from '../components/More.astro';
+---
+<Shell title="Page not found" path="/404" description="There’s nothing at this address.">
+  <div style="box-sizing:border-box; max-width:600px; margin:0 auto; padding:var(--top) var(--gut) var(--sec); display:flex; flex-direction:column; gap:22px;">
+    <Eyebrow>PAGE NOT FOUND</Eyebrow>
+    <h1 style="font-family:'Newsreader',serif; font-weight:400; font-size:var(--h2); line-height:var(--h2lh); color:var(--ink); text-wrap:balance;">There’s nothing at this address.</h1>
+    <p style="font-family:'Newsreader',serif; font-size:var(--lede); line-height:var(--ledelh); color:var(--quiet); text-wrap:pretty;">It may have been typed wrongly, or the page isn’t open yet.</p>
+    <More href="/" style="align-self:flex-start;">Go to the front door</More>
+  </div>
+</Shell>

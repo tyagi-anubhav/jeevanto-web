@@ -1,0 +1,97 @@
+---
+// Template 1, the page shell: header, footer, theme, section spacing and page width. Used by every page.
+import '../styles/site.css';
+import Identity from '../components/Identity.astro';
+import Icon from '../components/Icon.astro';
+import { config, full, legalLine, regLine } from '../lib/config.mjs';
+
+const { title, description, here = '', path = '/' } = Astro.props;
+const pageTitle = title ? `${title} · Jeevanto` : 'Jeevanto: your personal control system';
+const desc = description || 'Jeevanto is a personal assistant on your phone. Hand it the appointments, the bookings, the reminders and the family logistics, so you can put the phone down and be with the people who matter.';
+
+// No request may leave jeevanto.com: everything is self-hosted, and the policy below says so to the browser.
+const csp = [
+  "default-src 'self'", "script-src 'self'", "style-src 'self' 'unsafe-inline'", "img-src 'self' data:", "media-src 'self'",
+  "font-src 'self'", "connect-src 'self'", "frame-src 'none'", "object-src 'none'", "base-uri 'self'", "form-action 'none'",
+].join('; '); // every address is relative and Pages enforces HTTPS, so no upgrade-insecure-requests (it breaks local WebKit tests)
+
+const navItems = [['What it does', '/what-it-does'], ['Circle', '/circle'], ['Kin mode', '/kin-mode']]
+  .concat(full ? [['Plans', '/plans']] : []).concat([['Our promise', '/our-promise'], ['Help', '/help']]);
+const nav = navItems.map(([label, href]) => ({ label, href, on: here === label }));
+
+const footer = [
+  { title: 'Jeevanto', links: [['What it does', '/what-it-does'], ['Circle', '/circle'], ['Kin mode', '/kin-mode'], ['Our promise', '/our-promise']] },
+  full ? { title: 'Plans and account', links: [['Plans', '/plans'], ['Sign in', '/sign-in'], ['Your account', '/account']], apart: true } : null,
+  { title: 'The paperwork', links: [['Privacy policy', '/privacy-policy'], ['Terms of use', '/terms'], ['Refunds and cancellation', '/refunds']] },
+  { title: 'Help', links: [['Common questions', '/help'], ['Write to us', '/help#write-to-us']] },
+].filter(Boolean);
+---
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content={csp}>
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>{pageTitle}</title>
+<meta name="description" content={desc}>
+{path !== '/404' && <link rel="canonical" href={new URL(path, 'https://jeevanto.com').href}>}
+<meta name="theme-color" content="#0A0A0F" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#F5F5F7" media="(prefers-color-scheme: light)">
+<meta property="og:site_name" content="Jeevanto">
+<meta property="og:title" content={pageTitle}>
+<meta property="og:description" content={desc}>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/newsreader-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/source-sans-3-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<script is:inline src="/js/theme-init.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header style="position:sticky; top:0; z-index:20; background:var(--navBg); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border-bottom:1px solid var(--line);">
+  <div style="box-sizing:border-box; max-width:1280px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:12px 24px; flex-wrap:wrap; padding:10px var(--gut);">
+    <a href="/" aria-label="Jeevanto, the front door" style="height:40px; display:flex; align-items:center;"><Identity kind="wordmark" size={24} /></a>
+    <nav class="lap-only" aria-label="Main" style="display:flex; align-items:center; gap:8px 28px; flex-wrap:wrap;">
+      {nav.map(n => <a href={n.href} class="hover-ink" aria-current={n.on ? 'page' : undefined} style={`font-size:14px; line-height:20px; color:${n.on ? 'var(--ink)' : 'var(--nav)'}; font-weight:${n.on ? 600 : 400};`}>{n.label}</a>)}
+    </nav>
+    <div style="display:flex; align-items:center; gap:12px;">
+      {full && <a href="/sign-in" style="font-size:14px; font-weight:600; color:var(--brass); padding:0 4px;">Sign in</a>}
+      <button type="button" class="phone-only" data-menu-toggle aria-expanded="false" aria-controls="phone-menu" style="display:inline-flex; align-items:center; gap:6px; height:40px; box-sizing:border-box; padding:0 14px; border:1px solid var(--line); border-radius:999px; font-size:14px; font-weight:600; color:var(--ink);"><Icon name="menu" />Menu</button>
+    </div>
+  </div>
+  <nav id="phone-menu" class="phone-only" aria-label="Main" hidden style="box-sizing:border-box; padding:0 var(--gut) 10px; flex-direction:column; border-top:1px solid var(--line);">
+    {nav.map(n => <a href={n.href} aria-current={n.on ? 'page' : undefined} style={`min-height:48px; display:flex; align-items:center; font-size:16px; color:${n.on ? 'var(--ink)' : 'var(--nav)'}; font-weight:${n.on ? 600 : 400}; border-bottom:1px solid var(--line);`}>{n.label}</a>)}
+  </nav>
+</header>
+
+<main id="main">
+<slot />
+</main>
+
+<footer style="box-sizing:border-box; border-top:1px solid var(--line);">
+  <div style="box-sizing:border-box; max-width:1280px; margin:0 auto; padding:var(--footTop) var(--gut) 36px; display:flex; flex-direction:column; gap:36px;">
+    <div style="display:grid; grid-template-columns:var(--footCols); gap:28px 24px;">
+      {footer.map(col => (
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <h2 style="font-size:11px; font-weight:600; letter-spacing:1.6px; color:var(--quiet); text-transform:uppercase; margin-bottom:4px;">{col.title}</h2>
+          {col.links.map(([label, href]) => <a href={href} class="hover-brass" style="font-size:14px; line-height:24px; color:var(--ink); align-self:flex-start;">{label}</a>)}
+          {col.apart && <a href="/delete-account" style="margin-top:18px; font-size:14px; line-height:24px; color:var(--danger); align-self:flex-start;">Delete your account</a>}
+        </div>
+      ))}
+    </div>
+    <div style="display:flex; flex-wrap:wrap; gap:20px; justify-content:space-between; align-items:center;">
+      <div style="display:flex; flex-direction:column; gap:4px; font-size:12px; line-height:16.8px; color:var(--quiet);">
+        <span style="margin-bottom:8px;">No trackers. No ads. One cookie, only if you sign in.</span>
+        <span>{legalLine}</span><span>{regLine}</span>
+      </div>
+      <div role="group" aria-label="Theme" data-theme-switch style="display:flex; gap:4px; padding:3px; border:1px solid var(--line); border-radius:999px;">
+        {[['device', 'Device'], ['light', 'Light'], ['dark', 'Dark']].map(([k, label]) => (
+          <button type="button" data-theme-choice={k} aria-pressed={k === 'device' ? 'true' : 'false'} style="display:inline-flex; align-items:center; height:32px; padding:0 14px; border-radius:999px; border:1px solid transparent; color:var(--nav); font-size:13px; font-weight:500; letter-spacing:.4px;">{label}</button>
+        ))}
+      </div>
+    </div>
+  </div>
+</footer>
+<script is:inline src="/js/site.js" defer></script>
+</body>
+</html>

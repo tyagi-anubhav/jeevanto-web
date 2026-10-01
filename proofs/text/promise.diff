@@ -1,0 +1,22 @@
+--- proofs/text/promise.design.txt	2026-10-01 08:53:37
++++ proofs/text/promise.site.txt	2026-10-01 08:53:37
+@@ -1,8 +1,8 @@
+ OUR PROMISE TO YOU
+-Nothing trains on your data, and it’s never sold.
++We never train AI on your data, and we never sell it.
+ 1
+ WHAT JEEVANTO READS
+-Only the accounts you choose to connect, what you tell it, and what people in your Circle choose to share with you. That’s how it knows what needs doing.
++Only the accounts you choose to connect, what you tell it, and what people in your Circle choose to share with you. That’s how it knows what needs doing. If you connect Google, exactly what Jeevanto does with your Gmail, Google Calendar and Google Contacts is in our privacy policy, section 14.
+ 2
+ WHAT IT KEEPS
+ What matters from it, like a date, a promise or an offer, each pointing to where it came from. Never the mail itself.
+@@ -23,7 +23,7 @@
+ No one, unless you say yes. Not your family, not the one who looks after you.
+ 8
+ IF YOU LEAVE
+-Delete your account any time. Everything goes, and copies in our backups are gone within 7 days. The only thing we keep is a scrambled fingerprint of your email or mobile number, so offers like the free months are given once per person.
++Delete your account any time. Everything goes, and copies in our backups are gone within 7 days. We keep only what the law or fairness needs: a scrambled fingerprint of your email or mobile number, so the free months are given once per person; invoices, for as long as tax law asks; and a record of sign-ins for a year, never what anything said.
+ 9
+ THIS WEBSITE
+ No trackers. No ads. One cookie, only if you sign in.

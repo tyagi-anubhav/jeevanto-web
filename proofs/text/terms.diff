@@ -1,0 +1,29 @@
+--- proofs/text/terms.design.txt	2026-10-01 08:53:43
++++ proofs/text/terms.site.txt	2026-10-01 08:53:43
+@@ -57,8 +57,8 @@
+ 21
+ Contact us
+ 1 Who we are
+-1.1 Jeevanto is provided by Nistula Tech Labs OPC Private Limited, a One Person Company registered in India. Its registered office is at Sector-66, Gurugram, Haryana 122102, India. Corporate Identity Number (CIN): (To be confirmed). GSTIN: (To be confirmed).
+-1.2 In these terms, "we", "us" and "our" mean Nistula Tech Labs OPC Private Limited. "You" means the person using Jeevanto. "Jeevanto" means the Jeevanto app, the website jeevanto.com, and the services we provide through them.
++1.1 Jeevanto is provided by Anubhav Tyagi (Jeevanto), a One Person Company registered in India. Its registered office is at Sector-66, Gurugram, Haryana 122102, India. Corporate Identity Number (CIN): (To be confirmed). GSTIN: (To be confirmed).
++1.2 In these terms, "we", "us" and "our" mean Anubhav Tyagi (Jeevanto). "You" means the person using Jeevanto. "Jeevanto" means the Jeevanto app, the website jeevanto.com, and the services we provide through them.
+ 2 Agreeing to these terms
+ 2.1 By creating an account, or by using Jeevanto, you agree to these terms, our Privacy policy and our Refunds and cancellation policy. Please read all three.
+ 2.2 We ask you to agree with a clear action of your own, such as a tick or a button. We never tick a box for you.
+@@ -107,7 +107,7 @@
+ 9.1 Express is free, for as long as you like. Plus and Family are paid. Prices are on the Plans page, include tax, and are set for your country.
+ 9.2 Free months. Your first 3 months of Plus are free, once per person. They start the first time you open the app. Joining again, or joining a Family, never restarts or extends them.
+ 9.3 Founding price. The first 1,000 people to choose Plus, or each seat of a founding Family, keep the founding price for their first 2 years.
+-9.4 Paying. On the website, you pay through Razorpay, with UPI Autopay or a card. You set up a standing instruction that renews your plan on the same date each month (or each year, for yearly Plus). We remind you before each payment. Your card or UPI details stay with Razorpay; we never see them.
++9.4 Paying. On the website, you pay through Razorpay, with UPI Autopay or a card. You set up a standing instruction. Everyone is billed on the 1st of the month: your first payment covers the rest of the month you start in, then your plan renews by itself on the 1st of each month (or once a year, for yearly Plus). Nothing is charged before your free months end. We remind you before each payment. Your card or UPI details stay with Razorpay; we never see them.
+ 9.5 We don't sell plans inside the app. You choose and pay for a plan on jeevanto.com. If we ever offer payment inside the iPhone or Android app, Apple's or Google's own rules will apply to those payments, and we'll update these terms first.
+ 9.6 Cancelling. You can cancel any time, in two clicks, from Your account. Cancelling stops the next payment. Your plan carries on to the end of the period you've paid for. Then you're on Express, with everything you've made kept.
+ 9.7 Refunds are set out in our Refunds and cancellation policy. It forms part of these terms.
+@@ -166,5 +166,5 @@
+ 21 Contact us
+ Help with anything: help@jeevanto.com. A person reads every message, and replies within 2 working days.
+ Privacy and complaints: privacy@jeevanto.com.
+-By post: Nistula Tech Labs OPC Private Limited, Sector-66, Gurugram, Haryana 122102, India.
++By post: Anubhav Tyagi (Jeevanto), Sector-66, Gurugram, Haryana 122102, India.
+ Questions about this page? We’re happy to help.

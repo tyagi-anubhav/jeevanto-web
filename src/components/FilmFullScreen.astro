@@ -1,0 +1,9 @@
+---
+// Phones: a film opened full screen (design: fsOn). One per page that has films.
+import Icon from './Icon.astro';
+---
+<div id="film-fs" role="dialog" aria-modal="true" aria-label="The film" hidden style="position:fixed; inset:0; z-index:60; background:var(--bg); display:flex; align-items:center; justify-content:center; overscroll-behavior:contain;">
+  <video muted playsinline disablepictureinpicture style="display:block; width:var(--fsW); height:calc(var(--fsW) * 1.944444); border-radius:calc(var(--fsW) * 0.0889); object-fit:cover; background:#0B0B0D;"></video>
+  <button type="button" data-fs-close aria-label="Close" style="position:absolute; top:10px; right:10px; width:44px; height:44px; box-sizing:border-box; border-radius:50%; background:rgba(10,10,15,.78); border:1px solid rgba(255,255,255,.28); color:#FFFFFF; display:flex; align-items:center; justify-content:center;"><Icon name="x" size={20} sw={2.2} /></button>
+</div>
+<style is:global>#film-fs[hidden]{display:none !important;}</style>

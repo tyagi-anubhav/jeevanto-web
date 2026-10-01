@@ -1,0 +1,13 @@
+---
+// A page that isn't open yet (coming-soon mode, before ENGINES' doors). Nothing here calls the engine.
+import Shell from '../layouts/Shell.astro';
+import Eyebrow from './Eyebrow.astro';
+const { eyebrow, heading, title, path, description } = Astro.props;
+---
+<Shell title={title} path={path} description={description}>
+  <div style="box-sizing:border-box; max-width:600px; margin:0 auto; padding:var(--top) var(--gut) var(--sec); display:flex; flex-direction:column; gap:22px;">
+    <Eyebrow>{eyebrow}</Eyebrow>
+    <h1 style="font-family:'Newsreader',serif; font-weight:400; font-size:var(--h2); line-height:var(--h2lh); color:var(--ink); text-wrap:balance;">{heading}</h1>
+    <slot />
+  </div>
+</Shell>
