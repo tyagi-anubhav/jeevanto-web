@@ -6,10 +6,10 @@
 // Usage: node tools/check-site.mjs <base url>   → proofs/site-check-<host>.json and a printed summary.
 import { chromium } from 'playwright';
 import AxeBuilder from '@axe-core/playwright';
-import { writeFileSync, mkdirSync } from 'node:fs';
+import { writeFileSync, mkdirSync, readFileSync } from 'node:fs';
 const BASE = (process.argv[2] || 'http://127.0.0.1:4321').replace(/\/$/, '');
 const host = new URL(BASE).host;
-const FIXED = ['/', '/what-it-does', '/circle', '/kin-mode', '/our-promise', '/help', '/privacy-policy', '/terms', '/refunds', '/check', '/recover', '/invited'];
+const FIXED = ['/', '/what-it-does', '/circle', '/kin-mode', '/our-promise', '/help', '/privacy-policy', '/terms', '/refunds', '/check', '/recover', '/recover/answer', '/invited'];
 const out = { base: BASE, when: new Date().toISOString(), pages: {}, links: {}, offHost: [], cookies: [], axe: [], consoleErrors: [] };
 const b = await chromium.launch();
 const seen = new Set(FIXED), queue = [...FIXED], anchors = {}, linkTargets = new Map();
@@ -56,6 +56,15 @@ for (const [k, t] of linkTargets) {
   if (ok && t.hash) { if (!anchors[t.path]) { const pg = await b.newPage(); await pg.goto(BASE + t.path); anchors[t.path] = await pg.evaluate(() => [...document.querySelectorAll('[id]')].map(e => e.id)); await pg.close(); } ok = anchors[t.path].includes(t.hash); }
   out.links[k] = ok ? 'OK ' + r.status : 'BROKEN ' + r.status + (t.hash ? ' #' + t.hash : '');
 }
+// Every fixed address (addresses.json): 'shows' answers 200 (and its #anchor exists), 'hidden' answers 404 in coming-soon mode
+const { addresses } = JSON.parse(readFileSync(new URL('../addresses.json', import.meta.url), 'utf8'));
+out.fixed = {};
+for (const a of addresses) {
+  const [p, hash] = a.path.split('#'); const r = await fetch(BASE + p, { redirect: 'manual' });
+  let okA = a.soon === 'shows' ? r.status === 200 : r.status === 404;
+  if (okA && hash) { const html = await r.text(); okA = html.includes(`id="${hash}"`); }
+  out.fixed[a.path] = (okA ? 'OK ' : 'WRONG ') + r.status + ' (' + a.soon + ')';
+}
 // The 404 page, and that an unknown address really answers 404
 const nf = await fetch(BASE + '/no-such-page'); out.notFound = nf.status;
 await b.close();
@@ -69,6 +78,8 @@ console.log(`requests to other hosts: ${out.offHost.length}`); out.offHost.slice
 console.log(`cookies set: ${out.cookies.length}`);
 console.log(`console errors: ${out.consoleErrors.length}`); [...new Set(out.consoleErrors.map(e => e.text))].slice(0, 8).forEach(t => console.log('  ', t.slice(0, 200)));
 console.log(`unknown address → ${out.notFound}`);
+const wrong = Object.entries(out.fixed).filter(([, v]) => v.startsWith('WRONG'));
+console.log(`fixed addresses: ${Object.keys(out.fixed).length}, as they should be: ${Object.keys(out.fixed).length - wrong.length}`); wrong.forEach(([k, v]) => console.log('  ', k, v));
 console.log(`axe violations: ${out.axe.length} (serious/critical: ${axeSerious.length})`);
 const byId = {}; out.axe.forEach(v => { const k = v.id + ' [' + v.impact + ']'; byId[k] = byId[k] || []; byId[k].push(v.page + ' ' + v.dev + '/' + v.theme + ' ' + v.sample.join(' | ')); });
 Object.entries(byId).forEach(([k, v]) => { console.log('  ' + k + ' ×' + v.length); v.slice(0, 4).forEach(s => console.log('     ' + s.slice(0, 220))); });

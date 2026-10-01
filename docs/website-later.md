@@ -28,7 +28,7 @@ The three tiles (Family, Plus, Express), the seat stepper, "The plans side by si
   only the country code from the request (no logging, nothing stored), or the plans page reads it at the moment
   of paying. ENGINES and Cowork to choose; the page must say "Prices for <country>…" truthfully.
 
-## 2. Before you pay, and the result pages (`/plans` → Razorpay → back)
+## 2. Before you pay, and the result pages (`/plans/pay` → Razorpay → `/welcome`)
 Before you pay (summary table, ⓘ sums, step marker), Welcome back / Not paid / every plan-change result
 (decision 205's 29 rows: paid, set up only, failed, switch, modify, undo).
 **Needs from ENGINES:**
@@ -39,7 +39,7 @@ Before you pay (summary table, ⓘ sums, step marker), Welcome back / Not paid /
   word): confirmed, set up only, not completed, failed;
 - receipt versus confirmation (brief A7): the outcome must say whether money moved.
 
-## 3. Your account (`/account`), Modify plan, Cancel
+## 3. Your account (`/account`), Modify plan (`/account/modify`), Cancel
 The plan table, invoices (with GSTIN), founding line, modify seats, cancel monthly and yearly (refund maths, 172),
 "Changed your mind? Keep Plus", pending change and Undo.
 **Needs from ENGINES:**
@@ -48,7 +48,7 @@ The plan table, invoices (with GSTIN), founding line, modify seats, cancel month
 - doors to **modify**, **cancel** (with the refund it will make, before confirming), **undo a cancel** and
   **undo a pending change**, each idempotent and recorded.
 
-## 4. Sign in and create your account (`/sign-in`, `/create-account`, `/get-the-app`)
+## 4. Sign in and create your account (`/sign-in`, `/create-account`, `/get-the-app`, the code page `/code`)
 Email-or-mobile field (adaptive), the code page, Continue with Google / Apple / Microsoft (Google's words in
 Roboto Medium 14px, brief B3: the Roboto font is to be self-hosted too), "By continuing, you agree to our Terms
 of use and Privacy policy" (decision 204), Get the app for visitors not signed in.

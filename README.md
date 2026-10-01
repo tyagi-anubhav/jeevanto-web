@@ -26,10 +26,10 @@ fonts: every file the site loads comes from jeevanto.com, and the Content-Securi
 
 ## Fixed addresses (never change once live)
 
-Open now: `/` · `/what-it-does` · `/circle` · `/kin-mode` · `/our-promise` · `/help` · `/privacy-policy` (Google
-data: `/privacy-policy#google-user-data`) · `/terms` · `/refunds` · `/check` · `/recover` (and `/recover/answer`, the
-ask's link) · `/invited`. The last three call ENGINES' doors from the browser, and only when the visitor asks.
-Come back when coming-soon mode ends: `/plans` · `/sign-in` · `/create-account` · `/account` · `/delete-account` · `/get-the-app`.
+The list is **`addresses.json`** (Site v10's TEMPLATES.md, plus `/recover/answer`, the link in ENGINES' ask email):
+each address, its page, and what coming-soon mode does with it. `tools/check-site.mjs` checks every one: a page
+that shows answers 200, a hidden one 404. Reserved and hidden today: `/plans`, `/plans/pay`, `/welcome`,
+`/sign-in`, `/create-account`, `/get-the-app`, `/account`, `/account/modify`, `/delete-account`, `/code`.
 
 ## Build and check
 
