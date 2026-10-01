@@ -1,0 +1,23 @@
+PASS chromium /check: empty → asks for the reference
+PASS chromium /check: a made-up reference → NOT ONE OF OURS (live engine)
+PASS chromium /invited: a made-up code → "Someone" (live engine) — Someone has invited you to Jeevanto.
+PASS chromium /invited?c=: read from a link the same way
+PASS chromium /recover: empty → "Enter your email or mobile number."
+PASS chromium /recover: nonsense → "Check the email or mobile number."
+PASS chromium /recover: a stranger gets the same answer as a contact (live engine) — If that’s a recovery contact’s email or mobile, a code is on its way.
+PASS chromium /recover: a wrong code is refused, with tries left (live engine) — That code isn’t right. 4 tries left.
+PASS chromium /recover/answer: no link → "This link doesn’t work any more."
+PASS chromium /recover/answer: a made-up link → "doesn’t work any more" (live engine)
+PASS webkit /check: empty → asks for the reference
+PASS webkit /check: a made-up reference → NOT ONE OF OURS (live engine)
+PASS webkit /invited: a made-up code → "Someone" (live engine) — Someone has invited you to Jeevanto.
+PASS webkit /invited?c=: read from a link the same way
+PASS webkit /recover: empty → "Enter your email or mobile number."
+PASS webkit /recover: nonsense → "Check the email or mobile number."
+PASS webkit /recover: a stranger gets the same answer as a contact (live engine) — If that’s a recovery contact’s email or mobile, a code is on its way.
+PASS webkit /recover: a wrong code is refused, with tries left (live engine) — That code isn’t right. 4 tries left.
+PASS webkit /recover/answer: no link → "This link doesn’t work any more."
+PASS webkit /recover/answer: a made-up link → "doesn’t work any more" (live engine)
+requests by host: {"jeevanto.com":115,"qexfuwhyfeztwanihjye.supabase.co":12}
+requests to any other host: 0 
+cookies: 0
