@@ -16,6 +16,7 @@ const seen = new Set(FIXED), queue = [...FIXED], anchors = {}, linkTargets = new
 
 for (const [dev, vp] of Object.entries({ laptop: { width: 1440, height: 900 }, phone: { width: 390, height: 844 } })) for (const theme of ['dark', 'light']) {
   const ctx = await b.newContext({ viewport: vp, colorScheme: theme, isMobile: dev === 'phone', hasTouch: dev === 'phone' });
+  await ctx.addInitScript(t => { try { localStorage.setItem('jv-theme', t); } catch (e) {} }, theme);
   const page = await ctx.newPage();
   page.on('request', r => { const u = new URL(r.url()); if (!['data:', 'blob:'].includes(u.protocol) && u.host !== host) out.offHost.push({ page: page.url(), url: r.url() }); });
   page.on('console', m => { if (m.type() === 'error') out.consoleErrors.push({ page: page.url(), dev, theme, text: m.text() }); });

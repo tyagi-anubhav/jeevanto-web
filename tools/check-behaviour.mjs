@@ -25,7 +25,7 @@ for (const [ename, engine] of [['chromium', chromium], ['webkit', webkit]]) {
   ok(`${ename}: theme remembered on the next page`, st.attr === 'light' && st.pressed === 'true', JSON.stringify(st));
   await p.click('[data-theme-choice="device"]');
   st = await p.evaluate(() => ({ attr: document.documentElement.getAttribute('data-theme'), stored: localStorage.getItem('jv-theme'), bg: getComputedStyle(document.body).backgroundColor }));
-  ok(`${ename}: Device follows the visitor's setting again`, st.attr === null && st.stored === null && st.bg === 'rgb(10, 10, 15)', JSON.stringify(st));
+  ok(`${ename}: Device follows the visitor's setting (dark here), and is remembered`, st.attr === 'device' && st.stored === 'device' && st.bg === 'rgb(10, 10, 15)', JSON.stringify(st));
   const q = p.locator('[data-faq]').nth(2); await q.click();
   st = await p.evaluate(() => [...document.querySelectorAll('[data-faq]')].map(b => b.getAttribute('aria-expanded') + ':' + !document.getElementById(b.getAttribute('aria-controls')).hidden));
   ok(`${ename}: Help opens one answer at a time`, st.filter(x => x === 'true:true').length === 1 && st[2] === 'true:true', st.join(','));
@@ -39,8 +39,19 @@ for (const [ename, engine] of [['chromium', chromium], ['webkit', webkit]]) {
   st = await p.evaluate(() => [...document.querySelectorAll('[data-arrows]')].map(a => a.id || a.getAttribute('data-arrows') + ':' + !a.hidden));
   ok(`${ename}: carousel arrows only where a row overflows`, st.join() === 'rail-remember:true,rail-done:true,rail-watch:false', st.join());
   await ctx.close();
-  // Phone
-  ctx = await b.newContext({ viewport: { width: 390, height: 844 }, colorScheme: 'light', isMobile: ename === 'chromium', hasTouch: true }); p = await ctx.newPage();
+  // Dark by default (founder, 1 Oct), even when the visitor's own setting is light
+  ctx = await b.newContext({ viewport: { width: 1440, height: 900 }, colorScheme: 'light' }); p = await ctx.newPage();
+  await p.goto(BASE + '/'); await p.locator('#film-opening').scrollIntoViewIfNeeded(); await p.waitForTimeout(1500);
+  st = await p.evaluate(() => { const vd = document.querySelector('#film-opening video.in-dark'), vl = document.querySelector('#film-opening video.in-light');
+    return { bg: getComputedStyle(document.body).backgroundColor, ink: getComputedStyle(document.body).color, darkFilm: !!vd.offsetParent, lightFilm: !!vl.offsetParent, playing: !vd.paused, src: vd.currentSrc, pressed: document.querySelector('[aria-pressed="true"]').getAttribute('data-theme-choice'), orbDark: !!document.querySelector('.in-dark .orb-root')?.offsetParent }; });
+  ok(`${ename}: a light-set visitor who hasn't chosen sees dark: colours, orb, film, switch`, st.bg === 'rgb(10, 10, 15)' && st.ink === 'rgb(240, 240, 245)' && st.darkFilm && !st.lightFilm && st.playing && /opening-dark\.mp4$/.test(st.src) && st.pressed === 'dark' && st.orbDark, JSON.stringify(st));
+  await p.evaluate(() => document.querySelector('[data-theme-choice="device"]').click()); await p.waitForTimeout(300);
+  st = await p.evaluate(() => ({ bg: getComputedStyle(document.body).backgroundColor, lightFilm: !!document.querySelector('#film-opening video.in-light').offsetParent }));
+  ok(`${ename}: Device then follows the light setting`, st.bg === 'rgb(245, 245, 247)' && st.lightFilm, JSON.stringify(st));
+  await ctx.close();
+  // Phone, having chosen Light
+  ctx = await b.newContext({ viewport: { width: 390, height: 844 }, colorScheme: 'light', isMobile: ename === 'chromium', hasTouch: true });
+  await ctx.addInitScript(() => { try { localStorage.setItem('jv-theme', 'light'); } catch (e) {} }); p = await ctx.newPage();
   await p.goto(BASE + '/what-it-does');
   await p.locator('[data-menu-toggle]').click();
   st = await p.evaluate(() => ({ open: !document.getElementById('phone-menu').hidden, exp: document.querySelector('[data-menu-toggle]').getAttribute('aria-expanded') }));

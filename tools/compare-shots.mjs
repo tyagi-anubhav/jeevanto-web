@@ -19,6 +19,7 @@ const FF = process.env.FFMPEG;
 const b = await chromium.launch();
 for (const [dev, vp] of Object.entries(DEV)) for (const theme of ['dark', 'light']) {
   const sctx = await b.newContext({ viewport: { width: vp.w, height: vp.h }, deviceScaleFactor: 1, colorScheme: theme, reducedMotion: 'reduce' });
+  await sctx.addInitScript(t => { try { localStorage.setItem('jv-theme', t); } catch (e) {} }, theme); // dark by default; light is the visitor's choice
   const sp = await sctx.newPage();
   const { ctx: dctx, page: dp } = await openDesign(b, { w: vp.w, h: vp.h, theme, scheme: theme, dsf: 1 });
   for (const [key, path, nav, extra] of PAGES) {

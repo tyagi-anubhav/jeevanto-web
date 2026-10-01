@@ -5,17 +5,18 @@
   var phoneMq = window.matchMedia('(max-width: 719px)');
   var lightMq = window.matchMedia('(prefers-color-scheme: light)');
   var still = window.matchMedia('(prefers-reduced-motion: reduce)');
-  function theme() { var t = root.getAttribute('data-theme'); return t === 'light' || t === 'dark' ? t : (lightMq.matches ? 'light' : 'dark'); }
+  // Dark unless chosen otherwise; "device" follows the visitor's setting.
+  function theme() { var t = root.getAttribute('data-theme'); return t === 'light' ? 'light' : t === 'device' ? (lightMq.matches ? 'light' : 'dark') : 'dark'; }
   function listen(mq, fn) { try { mq.addEventListener('change', fn); } catch (e) { try { mq.addListener(fn); } catch (e2) {} } }
 
   // ---- Device / Light / Dark (footer). Kept in this browser only.
-  function choice() { var t = root.getAttribute('data-theme'); return t === 'light' || t === 'dark' ? t : 'device'; }
+  function choice() { var t = root.getAttribute('data-theme'); return t === 'light' || t === 'device' ? t : 'dark'; }
   function paintSwitch() { document.querySelectorAll('[data-theme-choice]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-theme-choice') === choice())); }); }
   document.querySelectorAll('[data-theme-choice]').forEach(function (b) {
     b.addEventListener('click', function () {
       var k = b.getAttribute('data-theme-choice');
-      if (k === 'device') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', k);
-      try { if (k === 'device') localStorage.removeItem('jv-theme'); else localStorage.setItem('jv-theme', k); } catch (e) {}
+      root.setAttribute('data-theme', k);
+      try { localStorage.setItem('jv-theme', k); } catch (e) {}
       paintSwitch(); themeChanged();
     });
   });

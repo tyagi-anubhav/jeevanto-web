@@ -27,7 +27,8 @@
   src: url(/fonts/cormorant-garamond-latin-ext-300-normal.woff2) format('woff2');
   unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
 
-/* ---- Colours: dark (the default), light by the visitor's setting or the footer switch ---- */
+/* ---- Colours: dark by default (founder, 1 Oct: the app is dark only in V1). Light only by the footer switch:
+   "Light", or "Device" with the visitor's setting light. ---- */
 :root {
   color-scheme: dark;
   --bg:#0A0A0F; --navBg:rgba(10,10,15,.88); --card:#12121A; --raised:#1A1A26; --line:#22223A; --ink:#F0F0F5; --quiet:#8888A0; --nav:#8888A0;
@@ -38,7 +39,7 @@
   --fsClose:rgba(10,10,15,.78);
 }
 @media (prefers-color-scheme: light) {
-  :root:not([data-theme="dark"]) {
+  :root[data-theme="device"] {
     color-scheme: light;
     --bg:#F5F5F7; --navBg:rgba(245,245,247,.9); --card:#FFFFFF; --raised:#F0F0F5; --line:#DDDDE8; --ink:#0A0A0F; --quiet:#67677A; --nav:#6B6B7D;
     --brass:#8F6218; --brassEdge:#A17624; --brassHover:rgba(143,98,24,.06); --chipEdge:#D9C49A;
@@ -56,11 +57,12 @@
   --lift:0 6px 18px rgba(20,16,40,.08); --sheetShadow:0 24px 70px rgba(20,16,40,.18); --register:#D9C49A; --scrim:rgba(10,10,15,.35);
 }
 
-/* What shows in which theme (orb, wordmark, app screens, films). Only ever hides, so each element keeps its own display. */
-:root[data-theme="dark"] .in-light { display:none !important; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .in-light { display:none !important; } }
+/* What shows in which theme (orb, wordmark, app screens, films). Only ever hides, so each element keeps its own display.
+   Light = data-theme "light", or "device" with the visitor's setting light; everything else is dark. */
+:root:not([data-theme="light"]):not([data-theme="device"]) .in-light { display:none !important; }
 :root[data-theme="light"] .in-dark { display:none !important; }
-@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .in-dark { display:none !important; } }
+@media (prefers-color-scheme: light) { :root[data-theme="device"] .in-dark { display:none !important; } }
+@media not all and (prefers-color-scheme: light) { :root[data-theme="device"] .in-light { display:none !important; } }
 
 /* ---- Layout values: laptop ---- */
 :root {

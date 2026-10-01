@@ -24,6 +24,7 @@ const ok = (name, cond, extra = '') => { out.results.push(`${cond ? 'PASS' : 'FA
 
 async function context(b, opts, mocks) {
   const ctx = await b.newContext(opts);
+  if (opts.colorScheme) await ctx.addInitScript(t => { try { localStorage.setItem('jv-theme', t); } catch (e) {} }, opts.colorScheme);
   ctx.on('request', r => { const h = new URL(r.url()).host; out.requests[h] = (out.requests[h] || 0) + 1; if (h !== siteHost && h !== engineHost && !r.url().startsWith('data:')) out.offHost.push(r.url()); });
   // On jeevanto.com the browser's calls go out untouched: intercepting them would skip the CORS preflight, and a
   // proof that passes because of the harness is no proof (it did, once, in Chromium).
