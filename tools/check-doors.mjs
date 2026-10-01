@@ -25,6 +25,9 @@ const ok = (name, cond, extra = '') => { out.results.push(`${cond ? 'PASS' : 'FA
 async function context(b, opts, mocks) {
   const ctx = await b.newContext(opts);
   ctx.on('request', r => { const h = new URL(r.url()).host; out.requests[h] = (out.requests[h] || 0) + 1; if (h !== siteHost && h !== engineHost && !r.url().startsWith('data:')) out.offHost.push(r.url()); });
+  // On jeevanto.com the browser's calls go out untouched: intercepting them would skip the CORS preflight, and a
+  // proof that passes because of the harness is no proof (it did, once, in Chromium).
+  if (onLive && !mocks) return ctx;
   await ctx.route(engine.url + '/**', async route => {
     const req = route.request();
     if (req.method() === 'OPTIONS') return onLive ? route.continue() : route.fulfill({ status: 204, headers: cors() });
@@ -46,10 +49,10 @@ if (mode === 'live') {
     await p.goto(BASE + '/check'); await p.click('form button[type=submit]');
     ok(`${en} /check: empty → asks for the reference`, (await txt(p, '[data-err]')).includes('Type the reference'));
     await p.fill('#chk-ref', 'JV-ZZZZ-ZZZZ'); await p.click('form button[type=submit]'); await p.waitForSelector('[data-state="none"]:not([hidden])', { timeout: 15000 }).catch(() => {});
-    ok(`${en} /check: a made-up reference → NOT ONE OF OURS (live engine)`, await visible(p, '[data-state="none"]'));
+    ok(`${en} /check: a made-up reference → NOT ONE OF OURS (live engine)`, await visible(p, '[data-state="none"]'), (await visible(p, '[data-err]')) ? await txt(p, '[data-err]') : '');
     // /invited
     await p.goto(BASE + '/invited'); await p.fill('#inv-code', 'ZZZZZZ'); await p.click('[data-invite] button[type=submit]'); await p.waitForTimeout(2500);
-    ok(`${en} /invited: a made-up code → "Someone" (live engine)`, (await txt(p, 'h1')).startsWith('Someone has invited you') && !(await visible(p, '[data-invite] [data-err]')), await txt(p, 'h1'));
+    ok(`${en} /invited: a made-up code → "Someone" (live engine)`, (await txt(p, 'h1')).startsWith('Someone has invited you') && !(await visible(p, '[data-invite] [data-err]')), (await visible(p, '[data-invite] [data-err]')) ? await txt(p, '[data-invite] [data-err]') : await txt(p, 'h1'));
     await p.goto(BASE + '/invited?c=ZZZZZZ'); await p.waitForTimeout(2500);
     ok(`${en} /invited?c=: read from a link the same way`, (await p.inputValue('#inv-code')) === 'ZZZZZZ' && (await txt(p, 'h1')).startsWith('Someone'));
     // /recover
@@ -58,9 +61,9 @@ if (mode === 'live') {
     await p.fill('#rc-dest', 'not an address'); await p.click('[data-send]');
     ok(`${en} /recover: nonsense → "Check the email or mobile number."`, (await txt(p, '#rc-front-err')) === 'Check the email or mobile number.');
     await p.fill('#rc-dest', `nobody-${en}@example.com`); await p.click('[data-send]'); await p.waitForSelector('[data-sent]:not([hidden])', { timeout: 15000 }).catch(() => {});
-    ok(`${en} /recover: a stranger gets the same answer as a contact (live engine)`, await visible(p, '[data-sent]'), await txt(p, '[data-sent] p'));
-    await p.fill('#rc-code', '000000'); await p.click('[data-verify]'); await p.waitForTimeout(3000);
-    const ce = await txt(p, '#rc-code-err');
+    ok(`${en} /recover: a stranger gets the same answer as a contact (live engine)`, await visible(p, '[data-sent]'), await txt(p, '[data-sent] p[role=status]'));
+    if (await visible(p, '[data-sent]')) { await p.fill('#rc-code', '000000'); await p.click('[data-verify]'); await p.waitForTimeout(3000); }
+    const ce = (await visible(p, '[data-sent]')) ? await txt(p, '#rc-code-err') : 'not reached: ' + await txt(p, '#rc-front-err');
     ok(`${en} /recover: a wrong code is refused, with tries left (live engine)`, /isn’t right|Too many tries/.test(ce), ce);
     // /recover/answer
     await p.goto(BASE + '/recover/answer'); ok(`${en} /recover/answer: no link → "This link doesn’t work any more."`, await visible(p, '[data-state="gone"]'));

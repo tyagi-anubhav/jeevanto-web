@@ -1,0 +1,34 @@
+{
+ "mode": "live",
+ "base": "https://jeevanto.com",
+ "when": "2026-10-01T04:23:00.181Z",
+ "results": [
+  "PASS chromium /check: empty → asks for the reference",
+  "FAIL chromium /check: a made-up reference → NOT ONE OF OURS (live engine) — We couldn’t reach Jeevanto just now. Try again in a little while.",
+  "FAIL chromium /invited: a made-up code → \"Someone\" (live engine) — We couldn’t reach Jeevanto just now. Try again in a little while.",
+  "PASS chromium /invited?c=: read from a link the same way",
+  "PASS chromium /recover: empty → \"Enter your email or mobile number.\"",
+  "PASS chromium /recover: nonsense → \"Check the email or mobile number.\"",
+  "FAIL chromium /recover: a stranger gets the same answer as a contact (live engine) — If that’s a recovery contact’s email or mobile, a code is on its way.",
+  "FAIL chromium /recover: a wrong code is refused, with tries left (live engine) — not reached: We couldn’t reach Jeevanto just now. Try again in a little while.",
+  "PASS chromium /recover/answer: no link → \"This link doesn’t work any more.\"",
+  "FAIL chromium /recover/answer: a made-up link → \"doesn’t work any more\" (live engine) — We couldn’t reach Jeevanto just now. Try again in a little while.",
+  "PASS webkit /check: empty → asks for the reference",
+  "FAIL webkit /check: a made-up reference → NOT ONE OF OURS (live engine) — We couldn’t reach Jeevanto just now. Try again in a little while.",
+  "FAIL webkit /invited: a made-up code → \"Someone\" (live engine) — We couldn’t reach Jeevanto just now. Try again in a little while.",
+  "PASS webkit /invited?c=: read from a link the same way",
+  "PASS webkit /recover: empty → \"Enter your email or mobile number.\"",
+  "PASS webkit /recover: nonsense → \"Check the email or mobile number.\"",
+  "FAIL webkit /recover: a stranger gets the same answer as a contact (live engine) — If that’s a recovery contact’s email or mobile, a code is on its way.",
+  "FAIL webkit /recover: a wrong code is refused, with tries left (live engine) — not reached: We couldn’t reach Jeevanto just now. Try again in a little while.",
+  "PASS webkit /recover/answer: no link → \"This link doesn’t work any more.\"",
+  "FAIL webkit /recover/answer: a made-up link → \"doesn’t work any more\" (live engine) — We couldn’t reach Jeevanto just now. Try again in a little while."
+ ],
+ "requests": {
+  "jeevanto.com": 115,
+  "qexfuwhyfeztwanihjye.supabase.co": 10
+ },
+ "offHost": [],
+ "cookies": [],
+ "axe": []
+}
