@@ -55,4 +55,6 @@ console.log('[site-config] ' + configSource + ' · siteMode=' + config.siteMode 
 export const soon = config.siteMode === 'coming soon';
 export const full = !soon;
 export const legalLine = [config.legalName, config.registeredAddress].filter(Boolean).join(' · ');
-export const regLine = 'CIN ' + (config.cin || '(To be confirmed)') + ' · GSTIN ' + (config.gstin || '(To be confirmed)');
+// A person has no CIN or GSTIN: the line shows only once legalName is the company (Cowork, row 835, 1 Oct).
+export const preRegistration = !/Private Limited/i.test(config.legalName || '');
+export const regLine = preRegistration ? '' : 'CIN ' + (config.cin || '(To be confirmed)') + ' · GSTIN ' + (config.gstin || '(To be confirmed)');

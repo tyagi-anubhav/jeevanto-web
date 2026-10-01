@@ -12,7 +12,7 @@
 
 - Jeevanto is a personal assistant. It helps you keep track of what you've promised, what's coming up and what needs doing, and does things for you when you say go.
 - You must be 18 or over to use it.
-- Your account, and everything in it, is yours. We don't sell it, and nothing trains on it.
+- Your account, and everything in it, is yours. We don't sell it, and we never train AI on it.
 - Jeevanto never pretends to be you. When it books, orders, sends or fills something in, it does it as your assistant, and only after you say go.
 - Jeevanto can make mistakes. Check anything important before you rely on it.
 - Express is free. Plus and Family are paid. You can cancel any time, in two clicks.

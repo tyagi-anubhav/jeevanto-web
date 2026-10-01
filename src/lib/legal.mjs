@@ -32,12 +32,18 @@ function prepare(md) {
     .replace(/Nistula Tech Labs OPC Private Limited/g, '{{legal_name}}')
     .replace(/Sector-66, Gurugram, Haryana - 122102, India/g, '{{registered_address}}')
     .replace('*Example, at the founding prices:*', '*Example, with sample prices (not our prices):*')
-    .replace(PRE_REG.from, preRegistration() ? PRE_REG.to : PRE_REG.from);
+    .replace(PRE_REG.terms.from, preRegistration() ? PRE_REG.terms.to : PRE_REG.terms.from)
+    .replace(PRE_REG.privacy.from, preRegistration() ? PRE_REG.privacy.to : PRE_REG.privacy.from);
 }
-// Founder, 1 Oct (with decision 207): until the company is registered, Terms 1.1 doesn't call the provider a One
-// Person Company with a registered office. Switches off by itself once legalName is the company. Flagged to Cowork.
-const PRE_REG = { from: '{{legal_name}}**, a One Person Company registered in India. Its registered office is at {{registered_address}}.', to: '{{legal_name}}**, {{registered_address}}.' };
-export const preRegistration = () => !/Private Limited/i.test(config.legalName || '');
+// Until the company is registered (decision 207; founder, then Cowork on row 835, 1 Oct): the provider is a person,
+// who has no CIN or GSTIN, so Terms 1.1 is only the name and address, and Privacy 1.1 drops "(CIN …)". Both come
+// back by themselves once legalName is the company.
+const PRE_REG = {
+  terms: { from: '{{legal_name}}**, a One Person Company registered in India. Its registered office is at {{registered_address}}. Corporate Identity Number (CIN): {{cin}}. GSTIN: {{gstin}}.', to: '{{legal_name}}**, {{registered_address}}.' },
+  privacy: { from: '{{legal_name}}**, {{registered_address}} (CIN {{cin}}).', to: '{{legal_name}}**, {{registered_address}}.' },
+};
+import { preRegistration as PRE } from './config.mjs';
+export const preRegistration = () => PRE;
 
 function runs(str, forceBold) {
   let out = '', b = false, i = false, last = 0, m;

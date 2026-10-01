@@ -10,7 +10,7 @@
 
 ## In short
 
-- **Nothing trains on your data, and it's never sold.**
+- **We never train AI on your data, and we never sell it.**
 - Jeevanto reads only the accounts you choose to connect, what you tell it, and what people in your Circle choose to share with you.
 - It keeps what matters (a date, a promise, an offer), each pointing to where it came from. **Never the mail itself.**
 - It shows you how much it read from each source, each day. Pause any source whenever you like.

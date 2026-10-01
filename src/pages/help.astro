@@ -49,7 +49,7 @@ const card = 'background:var(--card); border-radius:16px; padding:18px 20px; dis
       </section>
       <section aria-labelledby="h-company" style={`${card} gap:6px;`}>
         <Eyebrow as="h2"><span id="h-company">THE COMPANY</span></Eyebrow>
-        <div style="font-size:14px; line-height:20px; color:var(--ink);">{legalLine}</div><div style="font-size:14px; line-height:20px; color:var(--quiet);">{regLine}</div>
+        <div style="font-size:14px; line-height:20px; color:var(--ink);">{legalLine}</div>{regLine && <div style="font-size:14px; line-height:20px; color:var(--quiet);">{regLine}</div>}
       </section>
       <section aria-labelledby="h-data" style={`${card} gap:6px;`}>
         <Eyebrow as="h2"><span id="h-data">QUESTIONS ABOUT YOUR DATA</span></Eyebrow>

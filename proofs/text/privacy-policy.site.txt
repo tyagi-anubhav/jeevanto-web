@@ -5,7 +5,7 @@ Refunds and cancellation
 Privacy policy
 Version 1.0 · In force from launch date (To be confirmed)
 IN SHORT
-Nothing trains on your data, and it's never sold.
+We never train AI on your data, and we never sell it.
 Jeevanto reads only the accounts you choose to connect, what you tell it, and what people in your Circle choose to share with you.
 It keeps what matters (a date, a promise, an offer), each pointing to where it came from. Never the mail itself.
 It shows you how much it read from each source, each day. Pause any source whenever you like.
@@ -54,7 +54,7 @@ Changes to this policy
 19
 Complaints
 1 Who we are, and how to reach us
-1.1 Jeevanto is provided by Anubhav Tyagi (Jeevanto), Sector-66, Gurugram, Haryana 122102, India (CIN (To be confirmed)). Under India's Digital Personal Data Protection Act, 2023, we are the Data Fiduciary for your personal data: we decide why and how it is used.
+1.1 Jeevanto is provided by Anubhav Tyagi (Jeevanto), Sector-66, Gurugram, Haryana 122102, India. Under India's Digital Personal Data Protection Act, 2023, we are the Data Fiduciary for your personal data: we decide why and how it is used.
 1.2 For anything about your data, write to our Grievance Officer: Anubhav Tyagi, Founder, privacy@jeevanto.com. They're also the person to contact about your rights under the law.
 1.3 For help with anything else: help@jeevanto.com. A person reads every message, and replies within 2 working days.
 2 What this policy covers

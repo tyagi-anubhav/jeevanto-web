@@ -1,21 +1,12 @@
---- proofs/text/terms.design.txt	2026-10-01 10:40:09
-+++ proofs/text/terms.site.txt	2026-10-01 10:40:09
-@@ -7,7 +7,7 @@
- IN SHORT
- Jeevanto is a personal assistant. It helps you keep track of what you've promised, what's coming up and what needs doing, and does things for you when you say go.
- You must be 18 or over to use it.
--Your account, and everything in it, is yours. We don't sell it, and we never train AI on it.
-+Your account, and everything in it, is yours. We don't sell it, and nothing trains on it.
- Jeevanto never pretends to be you. When it books, orders, sends or fills something in, it does it as your assistant, and only after you say go.
- Jeevanto can make mistakes. Check anything important before you rely on it.
- Express is free. Plus and Family are paid. You can cancel any time, in two clicks.
+--- proofs/text/terms.design.txt	2026-10-01 10:41:13
++++ proofs/text/terms.site.txt	2026-10-01 10:41:13
 @@ -57,8 +57,8 @@
  21
  Contact us
  1 Who we are
 -1.1 Jeevanto is provided by Nistula Tech Labs OPC Private Limited, a One Person Company registered in India. Its registered office is at Sector-66, Gurugram, Haryana 122102, India. Corporate Identity Number (CIN): (To be confirmed). GSTIN: (To be confirmed).
 -1.2 In these terms, "we", "us" and "our" mean Nistula Tech Labs OPC Private Limited. "You" means the person using Jeevanto. "Jeevanto" means the Jeevanto app, the website jeevanto.com, and the services we provide through them.
-+1.1 Jeevanto is provided by Anubhav Tyagi (Jeevanto), Sector-66, Gurugram, Haryana 122102, India. Corporate Identity Number (CIN): (To be confirmed). GSTIN: (To be confirmed).
++1.1 Jeevanto is provided by Anubhav Tyagi (Jeevanto), Sector-66, Gurugram, Haryana 122102, India.
 +1.2 In these terms, "we", "us" and "our" mean Anubhav Tyagi (Jeevanto). "You" means the person using Jeevanto. "Jeevanto" means the Jeevanto app, the website jeevanto.com, and the services we provide through them.
  2 Agreeing to these terms
  2.1 By creating an account, or by using Jeevanto, you agree to these terms, our Privacy policy and our Refunds and cancellation policy. Please read all three.

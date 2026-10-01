@@ -11,8 +11,9 @@ fails = 0
 for key, f in [('privacy-policy','jeevanto-privacy-policy.md'),('terms','jeevanto-terms-of-use.md'),('refunds','jeevanto-refunds-and-cancellation.md')]:
   md = open('content/legal/'+f).read()
   md = md.replace('Nistula Tech Labs OPC Private Limited','{{legal_name}}').replace('Sector-66, Gurugram, Haryana - 122102, India','{{registered_address}}').replace('*Example, at the founding prices:*','*Example, with sample prices (not our prices):*')
-  if 'private limited' not in cfg['legalName'].lower():  # founder, 1 Oct: Terms 1.1 before registration
-    md = md.replace('{{legal_name}}**, a One Person Company registered in India. Its registered office is at {{registered_address}}.', '{{legal_name}}**, {{registered_address}}.')
+  if 'private limited' not in cfg['legalName'].lower():  # before registration: Terms 1.1 and Privacy 1.1 (row 835)
+    md = md.replace('{{legal_name}}**, a One Person Company registered in India. Its registered office is at {{registered_address}}. Corporate Identity Number (CIN): {{cin}}. GSTIN: {{gstin}}.', '{{legal_name}}**, {{registered_address}}.')
+    md = md.replace('{{legal_name}}**, {{registered_address}} (CIN {{cin}}).', '{{legal_name}}**, {{registered_address}}.')
   md = re.sub(r'\{\{\s*(\w+)\s*\}\}', lambda m: V[m.group(1)], md)
   site = open(f'proofs/text/{key}.site.txt').read()
   site_norm = re.sub(r'\s+', ' ', site)
