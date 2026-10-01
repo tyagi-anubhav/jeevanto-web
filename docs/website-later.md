@@ -5,6 +5,9 @@ Everything below is drawn and locked in Claude Design's Site v9 (with Cowork's r
 **not built yet** on the live site. Each part says what the website needs from ENGINES before it can be built
 honestly, with no sample data on the live path. Addresses are fixed: they never change once live.
 
+Already built (cc-website-01 JOB 2): /check, /recover, /recover/answer and /invited, on ENGINES' doors.
+Not listed below.
+
 Ground rules that hold for all of it:
 - the site keeps **no key beyond the public anon key**, and calls only ENGINES' named doors from the browser;
 - **one cookie, only when signed in** (the promise on every page and in Privacy 15), and none before;
