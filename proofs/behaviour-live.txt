@@ -1,31 +1,35 @@
-PASS chromium: opening film plays in view — {"t":2.467676,"paused":false,"src":"https://jeevanto.com/films/opening-dark.mp4"}
+PASS chromium: opening film plays in view — {"t":2.154219,"paused":false,"src":"https://jeevanto.com/films/opening-dark.mp4"}
 PASS chromium: plays once and holds the last frame — {"t":10.733333,"ended":true,"d":10.733333}
-PASS chromium: Replay plays again from the start — {"t":1.211586,"paused":false}
+PASS chromium: Replay plays again from the start — {"t":1.256893,"paused":false}
 PASS chromium: Light switch: colours, film and memory — {"attr":"light","bg":"rgb(245, 245, 247)","stored":"light","lightPlaying":true,"lightVisible":true,"darkVisible":false}
 PASS chromium: theme remembered on the next page — {"attr":"light","pressed":"true"}
-PASS chromium: Device follows the visitor's setting again — {"attr":null,"stored":null,"bg":"rgb(10, 10, 15)"}
-PASS chromium: Help opens one answer at a time — false:false,false:false,true:true,false:false
+PASS chromium: Device follows the visitor's setting (dark here), and is remembered — {"attr":"device","stored":"device","bg":"rgb(10, 10, 15)"}
+PASS chromium: Help opens one answer at a time — false:false,false:false,true:true
 PASS chromium: Circle laptop opens several sections — 2
 PASS chromium: Circle Less closes it — {"open":1,"more":true}
 PASS chromium: carousel arrows only where a row overflows — rail-remember:true,rail-done:true,rail-watch:false
+PASS chromium: a light-set visitor who hasn't chosen sees dark: colours, orb, film, switch — {"bg":"rgb(10, 10, 15)","ink":"rgb(240, 240, 245)","darkFilm":true,"lightFilm":false,"playing":true,"src":"https://jeevanto.com/films/opening-dark.mp4","pressed":"dark","orbDark":true}
+PASS chromium: Device then follows the light setting — {"bg":"rgb(245, 245, 247)","lightFilm":true}
 PASS chromium: phone menu opens — {"open":true,"exp":"true"}
-PASS chromium: phone opens a film full screen — {"open":true,"src":"https://jeevanto.com/films/find-light.mp4","t":1.478504,"w":374}
+PASS chromium: phone opens a film full screen — {"open":true,"src":"https://jeevanto.com/films/find-light.mp4","t":1.162972,"w":374}
 PASS chromium: Escape closes it
 PASS chromium: Circle phone keeps one section open — panel-kin
 PASS chromium: no sideways scroll on the phone — 390
 PASS chromium: reduced motion shows the still, no Replay — {"paused":true,"t":0,"poster":"/films/opening-dark.jpg","replay":false}
-PASS webkit: opening film plays in view — {"t":2.2658861659923724,"paused":false,"src":"https://jeevanto.com/films/opening-dark.mp4"}
+PASS webkit: opening film plays in view — {"t":2.2088875413441613,"paused":false,"src":"https://jeevanto.com/films/opening-dark.mp4"}
 PASS webkit: plays once and holds the last frame — {"t":10.734,"ended":true,"d":10.734}
-PASS webkit: Replay plays again from the start — {"t":1.196293542007529,"paused":false}
+PASS webkit: Replay plays again from the start — {"t":1.1978282083219514,"paused":false}
 PASS webkit: Light switch: colours, film and memory — {"attr":"light","bg":"rgb(245, 245, 247)","stored":"light","lightPlaying":true,"lightVisible":true,"darkVisible":false}
 PASS webkit: theme remembered on the next page — {"attr":"light","pressed":"true"}
-PASS webkit: Device follows the visitor's setting again — {"attr":null,"stored":null,"bg":"rgb(10, 10, 15)"}
-PASS webkit: Help opens one answer at a time — false:false,false:false,true:true,false:false
+PASS webkit: Device follows the visitor's setting (dark here), and is remembered — {"attr":"device","stored":"device","bg":"rgb(10, 10, 15)"}
+PASS webkit: Help opens one answer at a time — false:false,false:false,true:true
 PASS webkit: Circle laptop opens several sections — 2
 PASS webkit: Circle Less closes it — {"open":1,"more":true}
 PASS webkit: carousel arrows only where a row overflows — rail-remember:true,rail-done:true,rail-watch:false
+PASS webkit: a light-set visitor who hasn't chosen sees dark: colours, orb, film, switch — {"bg":"rgb(10, 10, 15)","ink":"rgb(240, 240, 245)","darkFilm":true,"lightFilm":false,"playing":true,"src":"https://jeevanto.com/films/opening-dark.mp4","pressed":"dark","orbDark":true}
+PASS webkit: Device then follows the light setting — {"bg":"rgb(245, 245, 247)","lightFilm":true}
 PASS webkit: phone menu opens — {"open":true,"exp":"true"}
-PASS webkit: phone opens a film full screen — {"open":true,"src":"https://jeevanto.com/films/find-light.mp4","t":1.4351749170087227,"w":374}
+PASS webkit: phone opens a film full screen — {"open":true,"src":"https://jeevanto.com/films/find-light.mp4","t":1.4413394579770988,"w":374}
 PASS webkit: Escape closes it
 PASS webkit: Circle phone keeps one section open — panel-kin
 PASS webkit: no sideways scroll on the phone — 390

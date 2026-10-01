@@ -1,6 +1,6 @@
 {
  "base": "https://jeevanto.com",
- "when": "2026-10-01T03:50:04.756Z",
+ "when": "2026-10-01T05:17:05.485Z",
  "pages": {
   "/": {
    "status": 200,
@@ -56,6 +56,11 @@
    "status": 200,
    "finalUrl": "https://jeevanto.com/recover",
    "title": "Help someone back in · Jeevanto"
+  },
+  "/recover/answer": {
+   "status": 200,
+   "finalUrl": "https://jeevanto.com/recover/answer",
+   "title": "A question for you · Jeevanto"
   },
   "/invited": {
    "status": 200,
@@ -244,6 +249,18 @@
   "/recover → /terms": "OK 200",
   "/recover → /refunds": "OK 200",
   "/recover → /help#write-to-us": "OK 200",
+  "/recover/answer → #main": "OK 200",
+  "/recover/answer → /": "OK 200",
+  "/recover/answer → /what-it-does": "OK 200",
+  "/recover/answer → /circle": "OK 200",
+  "/recover/answer → /kin-mode": "OK 200",
+  "/recover/answer → /our-promise": "OK 200",
+  "/recover/answer → /help": "OK 200",
+  "/recover/answer → /recover": "OK 200",
+  "/recover/answer → /privacy-policy": "OK 200",
+  "/recover/answer → /terms": "OK 200",
+  "/recover/answer → /refunds": "OK 200",
+  "/recover/answer → /help#write-to-us": "OK 200",
   "/invited → #main": "OK 200",
   "/invited → /": "OK 200",
   "/invited → /what-it-does": "OK 200",
@@ -260,5 +277,31 @@
  "cookies": [],
  "axe": [],
  "consoleErrors": [],
+ "fixed": {
+  "/": "OK 200 (shows)",
+  "/what-it-does": "OK 200 (shows)",
+  "/circle": "OK 200 (shows)",
+  "/kin-mode": "OK 200 (shows)",
+  "/plans": "OK 404 (hidden)",
+  "/plans/pay": "OK 404 (hidden)",
+  "/welcome": "OK 404 (hidden)",
+  "/our-promise": "OK 200 (shows)",
+  "/help": "OK 200 (shows)",
+  "/privacy-policy": "OK 200 (shows)",
+  "/privacy-policy#google-user-data": "OK 200 (shows)",
+  "/terms": "OK 200 (shows)",
+  "/refunds": "OK 200 (shows)",
+  "/check": "OK 200 (shows)",
+  "/recover": "OK 200 (shows)",
+  "/recover/answer": "OK 200 (shows)",
+  "/invited": "OK 200 (shows)",
+  "/sign-in": "OK 404 (hidden)",
+  "/create-account": "OK 404 (hidden)",
+  "/get-the-app": "OK 404 (hidden)",
+  "/account": "OK 404 (hidden)",
+  "/account/modify": "OK 404 (hidden)",
+  "/delete-account": "OK 404 (hidden)",
+  "/code": "OK 404 (hidden)"
+ },
  "notFound": 404
 }
