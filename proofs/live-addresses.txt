@@ -1,0 +1,38 @@
+/                https://jeevanto.com                 200 cert=0
+/                www (https)                       301 → https://jeevanto.com/ cert=0
+/                http                              301 → https://jeevanto.com/
+/what-it-does    https://jeevanto.com                 200 cert=0
+/what-it-does    www (https)                       301 → https://jeevanto.com/what-it-does cert=0
+/what-it-does    http                              301 → https://jeevanto.com/what-it-does
+/circle          https://jeevanto.com                 200 cert=0
+/circle          www (https)                       301 → https://jeevanto.com/circle cert=0
+/circle          http                              301 → https://jeevanto.com/circle
+/kin-mode        https://jeevanto.com                 200 cert=0
+/kin-mode        www (https)                       301 → https://jeevanto.com/kin-mode cert=0
+/kin-mode        http                              301 → https://jeevanto.com/kin-mode
+/our-promise     https://jeevanto.com                 200 cert=0
+/our-promise     www (https)                       301 → https://jeevanto.com/our-promise cert=0
+/our-promise     http                              301 → https://jeevanto.com/our-promise
+/help            https://jeevanto.com                 200 cert=0
+/help            www (https)                       301 → https://jeevanto.com/help cert=0
+/help            http                              301 → https://jeevanto.com/help
+/privacy-policy  https://jeevanto.com                 200 cert=0
+/privacy-policy  www (https)                       301 → https://jeevanto.com/privacy-policy cert=0
+/privacy-policy  http                              301 → https://jeevanto.com/privacy-policy
+/terms           https://jeevanto.com                 200 cert=0
+/terms           www (https)                       301 → https://jeevanto.com/terms cert=0
+/terms           http                              301 → https://jeevanto.com/terms
+/refunds         https://jeevanto.com                 200 cert=0
+/refunds         www (https)                       301 → https://jeevanto.com/refunds cert=0
+/refunds         http                              301 → https://jeevanto.com/refunds
+/check           https://jeevanto.com                 200 cert=0
+/check           www (https)                       301 → https://jeevanto.com/check cert=0
+/check           http                              301 → https://jeevanto.com/check
+/recover         https://jeevanto.com                 200 cert=0
+/recover         www (https)                       301 → https://jeevanto.com/recover cert=0
+/recover         http                              301 → https://jeevanto.com/recover
+/invited         https://jeevanto.com                 200 cert=0
+/invited         www (https)                       301 → https://jeevanto.com/invited cert=0
+/invited         http                              301 → https://jeevanto.com/invited
+unknown address  404
+www, followed    200 at https://jeevanto.com/privacy-policy

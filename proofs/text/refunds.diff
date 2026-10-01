@@ -1,5 +1,5 @@
---- proofs/text/refunds.design.txt	2026-10-01 08:53:44
-+++ proofs/text/refunds.site.txt	2026-10-01 08:53:44
+--- proofs/text/refunds.design.txt	2026-10-01 09:25:23
++++ proofs/text/refunds.site.txt	2026-10-01 09:25:23
 @@ -9,7 +9,8 @@
  Your plan runs to the end of the month you've paid for. Then you're on Express, free, with everything you've made kept.
  No refund for a month already started.
