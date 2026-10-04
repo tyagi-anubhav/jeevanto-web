@@ -149,3 +149,6 @@ button { font:inherit; color:inherit; background:none; border:0; padding:0; marg
 button[disabled] { opacity:.6; cursor:progress; }
 .visually-hidden { position:absolute !important; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
 [tabindex="-1"]:focus { outline:none; }
+
+/* /connect/google: while the page hands Google's answer on, "Nothing to do here" stays out of sight */
+html[data-forwarding] [data-nothing] { visibility:hidden; }

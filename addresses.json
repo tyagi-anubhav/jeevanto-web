@@ -1,5 +1,5 @@
 {
-  "_about": "Every fixed address (TEMPLATES.md, Site v10, 1 Oct 2026). Given to Google and others: never change one. 'soon' is what coming-soon mode does with it: 'shows' answers 200, 'hidden' answers 404 until the page is built. tools/check-site.mjs checks both. /recover/answer is not in v10's list: ENGINES' emails link to it (the ask), so it is reserved here too.",
+  "_about": "Every fixed address (TEMPLATES.md, Site v10, 1 Oct 2026). Given to Google and others: never change one. 'soon' is what coming-soon mode does with it: 'shows' answers 200, 'hidden' answers 404 until the page is built. tools/check-site.mjs checks both. /recover/answer is not in v10's list: ENGINES' emails link to it (the ask), so it is reserved here too. /connect/google (cc-website-02) is the address Google sends a person back to; registered with Google, so never change it.",
   "addresses": [
     { "page": "Front door", "path": "/", "soon": "shows" },
     { "page": "What it does", "path": "/what-it-does", "soon": "shows" },
@@ -24,6 +24,7 @@
     { "page": "Your account", "path": "/account", "soon": "hidden" },
     { "page": "Modify plan", "path": "/account/modify", "soon": "hidden" },
     { "page": "Delete your account", "path": "/delete-account", "soon": "hidden" },
-    { "page": "Code page", "path": "/code", "soon": "hidden" }
+    { "page": "Code page", "path": "/code", "soon": "hidden" },
+    { "page": "Google's return page (connecting Gmail, Calendar or Contacts)", "path": "/connect/google", "soon": "shows" }
   ]
 }

@@ -5,7 +5,7 @@ import Identity from '../components/Identity.astro';
 import Icon from '../components/Icon.astro';
 import { config, full, legalLine, regLine, engine } from '../lib/config.mjs';
 
-const { title, description, here = '', path = '/', doors = false } = Astro.props;
+const { title, description, here = '', path = '/', doors = false, referrer = 'strict-origin-when-cross-origin', noindex = false } = Astro.props;
 const pageTitle = title ? `${title} · Jeevanto` : 'Jeevanto: your personal control system';
 const desc = description || 'Jeevanto is a personal assistant on your phone. Hand it the appointments, the bookings, the reminders and the family logistics, so you can put the phone down and be with the people who matter.';
 
@@ -34,14 +34,16 @@ const footer = [
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content={csp}>
-<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="referrer" content={referrer}>
+{noindex && <meta name="robots" content="noindex, nofollow">}
 <title>{pageTitle}</title>
 <meta name="description" content={desc}>
-{path !== '/404' && <link rel="canonical" href={new URL(path, 'https://jeevanto.com').href}>}
+{path !== '/404' && !noindex && <link rel="canonical" href={new URL(path, 'https://jeevanto.com').href}>}
 <meta name="theme-color" content="#0A0A0F">
 <meta property="og:site_name" content="Jeevanto">
 <meta property="og:title" content={pageTitle}>
 <meta property="og:description" content={desc}>
+<slot name="head" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/fonts/newsreader-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/source-sans-3-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>

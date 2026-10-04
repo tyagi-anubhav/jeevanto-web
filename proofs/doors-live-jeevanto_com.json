@@ -1,7 +1,7 @@
 {
  "mode": "live",
  "base": "https://jeevanto.com",
- "when": "2026-10-01T10:20:22.301Z",
+ "when": "2026-10-04T08:35:46.376Z",
  "results": [
   "PASS chromium /check: empty → asks for the reference",
   "PASS chromium /check: a made-up reference → NOT ONE OF OURS (live engine)",
@@ -26,7 +26,7 @@
  ],
  "requests": {
   "jeevanto.com": 115,
-  "qexfuwhyfeztwanihjye.supabase.co": 12
+  "tqaiyxijluboflyoykoi.supabase.co": 12
  },
  "offHost": [],
  "cookies": [],

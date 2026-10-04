@@ -16,7 +16,7 @@ fonts: every file the site loads comes from jeevanto.com, and the Content-Securi
 | `src/lib/engine.json` | ENGINES' address and the **public anon key** (role `anon`, the key every app ships). The only key that may ever live here. |
 | `src/layouts/Shell.astro` | Template 1, the page shell: header, footer, theme switch, CSP. |
 | `src/components/` | The design blocks (TEMPLATES.md): eyebrow, row list, film, Replay, identity (orb and wordmark), the paperwork. |
-| `src/pages/` | One file per fixed address. |
+| `src/pages/` | One file per fixed address. `connect/google.astro` is Google's return page: `public/js/connect-google.js` hands `code`, `state`, `error` and `error_description` on to ENGINES' `connect-oauth/callback` (address from `engine.json`) and nothing else; not in the menu, sitemap or search. |
 | `content/legal/` | Cowork's three legal files, word for word. `src/lib/legal.mjs` renders them. |
 | `src/identity/identity.json` | The Daystone orb and the wordmark, rendered once from `jeevanto-identity.jsx` (no React on the live site). |
 | `public/films/` | The eleven films, recorded dark and light from Claude Design's player, with their stills and first frames. |
@@ -42,6 +42,7 @@ node tools/check-behaviour.mjs http://127.0.0.1:4321 # films, theme, menus, in C
 python3 tools/check-legal-text.py  # the legal pages against Cowork's files (run compare-text first)
 node tools/check-doors.mjs live https://jeevanto.com  # /check, /recover, /invited on the live doors (harmless inputs only)
 node tools/check-doors.mjs mock http://127.0.0.1:4321 # every page state, the engine's answers canned from its note
+node tools/check-connect.mjs https://jeevanto.com   # /connect/google hands Google's answer on, and nothing else
 ```
 
 The design-side tools (`design-probe.mjs`, `compare-shots.mjs`, `compare-text.mjs`, `extract-identity.mjs`,

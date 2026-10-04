@@ -1,0 +1,21 @@
+---
+// Google's return page (cc-website-02 JOB 3). When a person connects Gmail, Calendar or Contacts, Google sends them
+// back here, so Google's screen names jeevanto.com. /js/connect-google.js hands the answer on to ENGINES' callback at
+// once; with nothing to hand on, the page says so. Not in the menu, the sitemap or search; no referrer leaves it.
+import Shell from '../../layouts/Shell.astro';
+import Eyebrow from '../../components/Eyebrow.astro';
+import More from '../../components/More.astro';
+import { engine } from '../../lib/config.mjs';
+const callback = engine.url + '/functions/v1/connect-oauth/callback';
+---
+<Shell title="Connecting Google" path="/connect/google" description="Where Google sends you back to Jeevanto." referrer="no-referrer" noindex>
+  <meta slot="head" name="jv-callback" content={callback}>
+  <script is:inline slot="head" src="/js/connect-google.js"></script>
+  <div data-nothing style="box-sizing:border-box; max-width:600px; margin:0 auto; padding:var(--top) var(--gut) var(--sec); display:flex; flex-direction:column; gap:22px;">
+    <Eyebrow>CONNECTING GOOGLE</Eyebrow>
+    <h1 style="font-family:'Newsreader',serif; font-weight:400; font-size:var(--h2); line-height:var(--h2lh); color:var(--ink); text-wrap:balance;">Nothing to do here.</h1>
+    <p style="font-family:'Newsreader',serif; font-size:var(--lede); line-height:var(--ledelh); color:var(--quiet); text-wrap:pretty;">This page takes you back to Jeevanto after you connect your Google account. You can connect it in the app.</p>
+    <noscript><p style="font-size:15px; line-height:21px; color:var(--quiet);">Just come back from Google? <a href={callback} style="color:var(--brass); font-weight:600;">Continue</a></p></noscript>
+    <More href="/" style="align-self:flex-start;">Go to the front door</More>
+  </div>
+</Shell>
