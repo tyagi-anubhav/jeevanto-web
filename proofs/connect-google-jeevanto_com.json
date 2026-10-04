@@ -1,0 +1,32 @@
+{
+ "base": "https://jeevanto.com",
+ "when": "2026-10-04T08:40:26.676Z",
+ "results": [
+  "PASS chromium ?code=x&state=y → the callback, with the same two parameters and nothing added — https://tqaiyxijluboflyoykoi.supabase.co/functions/v1/connect-oauth/callback?code=x&state=y",
+  "PASS chromium   a navigation, with no referrer — nav=true referer=null",
+  "PASS chromium Google's encoding kept byte for byte; scope, authuser and anything else dropped — https://tqaiyxijluboflyoykoi.supabase.co/functions/v1/connect-oauth/callback?code=4%2F0Ab_c-D&state=st%3D1",
+  "PASS chromium ?error=…&error_description=…&state=… → handed on as it came — https://tqaiyxijluboflyoykoi.supabase.co/functions/v1/connect-oauth/callback?error=access_denied&error_description=The%20user%20said%20no&state=y",
+  "PASS chromium no parameters → \"Nothing to do here.\", a link home, no call to the callback — h1=\"Nothing to do here.\" visible=true hop=false",
+  "PASS chromium   noindex, no-referrer, no canonical — {\"robots\":\"noindex, nofollow\",\"referrer\":\"no-referrer\",\"canonical\":false}",
+  "PASS chromium   accessibility (axe), dark",
+  "PASS chromium   accessibility (axe), light",
+  "PASS chromium only parameters it does not forward → \"Nothing to do here.\", a link home, no call to the callback — h1=\"Nothing to do here.\" visible=true hop=false",
+  "PASS chromium without JavaScript → a plain \"Continue\" link to the callback — href=https://tqaiyxijluboflyoykoi.supabase.co/functions/v1/connect-oauth/callback",
+  "PASS webkit ?code=x&state=y → the callback, with the same two parameters and nothing added — https://tqaiyxijluboflyoykoi.supabase.co/functions/v1/connect-oauth/callback?code=x&state=y",
+  "PASS webkit   a navigation, with no referrer — nav=true referer=null",
+  "PASS webkit Google's encoding kept byte for byte; scope, authuser and anything else dropped — https://tqaiyxijluboflyoykoi.supabase.co/functions/v1/connect-oauth/callback?code=4%2F0Ab_c-D&state=st%3D1",
+  "PASS webkit ?error=…&error_description=…&state=… → handed on as it came — https://tqaiyxijluboflyoykoi.supabase.co/functions/v1/connect-oauth/callback?error=access_denied&error_description=The%20user%20said%20no&state=y",
+  "PASS webkit no parameters → \"Nothing to do here.\", a link home, no call to the callback — h1=\"Nothing to do here.\" visible=true hop=false",
+  "PASS webkit   noindex, no-referrer, no canonical — {\"robots\":\"noindex, nofollow\",\"referrer\":\"no-referrer\",\"canonical\":false}",
+  "PASS webkit only parameters it does not forward → \"Nothing to do here.\", a link home, no call to the callback — h1=\"Nothing to do here.\" visible=true hop=false",
+  "PASS webkit without JavaScript → a plain \"Continue\" link to the callback — href=https://tqaiyxijluboflyoykoi.supabase.co/functions/v1/connect-oauth/callback",
+  "PASS not in the sitemap or the front door's menu and footer"
+ ],
+ "offHost": [],
+ "appLinks": [
+  "jeevanto://connect/result?status=error&reason=unknown_state",
+  "jeevanto://connect/result?status=error&reason=unknown_state",
+  "jeevanto://connect/result?status=error&reason=access_denied"
+ ],
+ "cookies": []
+}

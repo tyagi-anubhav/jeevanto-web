@@ -1,6 +1,6 @@
 {
  "base": "https://jeevanto.com",
- "when": "2026-10-01T05:17:05.485Z",
+ "when": "2026-10-04T08:41:03.110Z",
  "pages": {
   "/": {
    "status": 200,
@@ -301,7 +301,8 @@
   "/account": "OK 404 (hidden)",
   "/account/modify": "OK 404 (hidden)",
   "/delete-account": "OK 404 (hidden)",
-  "/code": "OK 404 (hidden)"
+  "/code": "OK 404 (hidden)",
+  "/connect/google": "OK 200 (shows)"
  },
  "notFound": 404
 }
