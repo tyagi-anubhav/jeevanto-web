@@ -1,4 +1,39 @@
-cc-website-02 JOB 2 — the positive paths on https://jeevanto.com, 2026-10-04T08:54:50.689Z
+RUN 1 — cc-website-02 JOB 2 — the positive paths on https://jeevanto.com, 2026-10-04T08:54:50.689Z
+PASS A: the real ask mail arrives in ‹contact›, with a reference and the answer link — "Uma would like you as a recovery contact"
+PASS chromium /check: the ask's reference → THIS IS REAL — sent to j•••@m•••.com, about "Uma asked you to be a recovery contact"
+PASS chromium /invited?c=<Asha's code> → names "Asha" — Asha has invited you to Jeevanto.
+PASS webkit /check: the ask's reference → THIS IS REAL — sent to j•••@m•••.com, about "Uma asked you to be a recovery contact"
+PASS webkit /invited?c=<Asha's code> → names "Asha" — Asha has invited you to Jeevanto.
+PASS chromium the ask link (A) → "Uma" asks, pending — Uma would like you as a recovery contact.
+PASS chromium A: yes → "We’ll know you by" the masked email; the other channel offered — We’ll know you by j•••@m•••.com.
+PASS chromium A: the link again → still yes
+PASS session 1: the door code is asked for
+PASS session 1: the code arrives in ‹contact› and opens "your people"
+PASS session 1: people lists Uma, nothing happening — [{"name":"Uma","status":"Nothing happening"}]
+PASS session 1: a wrong name is refused
+PASS session 1: "uma" → the warning
+PASS session 1: Start → "started" — Thank you. We’ve started Uma’s way back in.
+PASS chromium C: yes
+PASS webkit B: the ask link → pending
+PASS webkit B: No, thank you → "no" — That’s fine.
+FAIL webkit B: the link again → still no
+PASS session 2: the door code is asked for
+PASS session 2: the code arrives in ‹contact› and opens "your people"
+PASS session 2: people lists A waiting and C idle, not B — [{"name":"Uma","status":"Started. About 1 day left."},{"name":"Uma","status":"Nothing happening"}]
+PASS session 2: step down from C → "stepped"
+PASS session 3: the door code is asked for
+PASS session 3: the code arrives in ‹contact› and opens "your people"
+PASS session 3: Uma alone, waiting ("Started. …") — [{"name":"Uma","status":"Started. About 1 day left."}]
+PASS session 3: Update my email or mobile
+PASS session 3: update → a code is sent to the new address
+PASS session 3: the code from ‹new› → saved
+PASS session 3: after the hold → "The wait is over." — [{"name":"Uma","status":"The wait is over."}]
+PASS session 3: Send the 6 digits → "digits", sent to the masked address — j•••@m•••.com
+PASS session 3: the digits arrive, at the updated address — in ‹new›
+requests by host: {"jeevanto.com":122,"tqaiyxijluboflyoykoi.supabase.co":27}
+requests to any other host: 0
+
+RUN 2 — cc-website-02 JOB 2 — the positive paths on https://jeevanto.com, 2026-10-04T09:57:33.957Z
 PASS A: the real ask mail arrives in ‹contact›, with a reference and the answer link — "Uma would like you as a recovery contact"
 PASS chromium /check: the ask's reference → THIS IS REAL — sent to j•••@m•••.com, about "Uma asked you to be a recovery contact"
 PASS chromium /invited?c=<Asha's code> → names "Asha" — Asha has invited you to Jeevanto.
