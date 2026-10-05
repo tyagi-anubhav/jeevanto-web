@@ -99,7 +99,7 @@ The full terms follow. If anything below seems to say something different from t
 
 6.2 **Jeevanto never pretends to be you, or anyone else.** It acts as your assistant, on your instruction. It never claims to be a person it isn't.
 
-6.3 When Jeevanto books, orders or pays on another company's website, **your contract is with that company**, not with us. Their prices, terms, cancellation rules and refunds apply. We aren't a party to that sale, and we don't hold your money.
+6.3 When you book, order or pay on another company's website through Jeevanto, **your contract is with that company**, not with us. Their prices, terms, cancellation rules and refunds apply. We aren't a party to that sale, and we don't hold your money.
 
 6.4 Jeevanto shows you what it's about to do before you say go. Check it. You're responsible for what you approve, including the details you give and the payment you make.
 

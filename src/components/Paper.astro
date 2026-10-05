@@ -1,9 +1,10 @@
 ---
 // 12 · The paperwork: one legal document, with the list of the three on a laptop.
 import Shell from '../layouts/Shell.astro';
-import { legalDoc, TITLES, PATHS } from '../lib/legal.mjs';
+import { legalDoc, TITLES, PATHS, CHANGES } from '../lib/legal.mjs';
 const { doc: key } = Astro.props;
 const doc = legalDoc(key);
+const changed = CHANGES[key];
 const title = TITLES[key];
 const descs = { policy: 'What Jeevanto collects, why, who else handles it, how long we keep it, and your rights, including how Jeevanto uses Google user data.', terms: 'The terms for using Jeevanto, the app and jeevanto.com.', refunds: 'How payments, cancelling and refunds work for Jeevanto’s plans.' };
 const dot = '<span aria-hidden="true" style="flex:0 0 5px; width:5px; height:5px; border-radius:50%; background:var(--quiet); margin-top:11px;"></span>';
@@ -21,6 +22,10 @@ const lab = 'font-size:11px; font-weight:600; letter-spacing:1.6px; color:var(--
         <h1 style="font-size:var(--h2); font-weight:700; line-height:1.3; color:var(--ink);">{title}</h1>
         <div style="font-size:13px; line-height:18px; color:var(--quiet);">{doc.meta}</div>
       </div>
+      {changed && <section aria-labelledby="what-changed" style="border:1px solid var(--line); border-radius:16px; padding:18px 22px; display:flex; flex-direction:column; gap:10px;">
+        <h2 id="what-changed" style={lab}>WHAT CHANGED · {changed.date.toUpperCase()}</h2>
+        {changed.points.map(t => <div style="display:flex; gap:12px; font-size:15px; line-height:23px; color:var(--ink); text-wrap:pretty;"><Fragment set:html={dot.replace('margin-top:11px', 'margin-top:9px')} /><span>{t}</span></div>)}
+      </section>}
       <section aria-label="In short" style="background:var(--card); border-radius:16px; padding:20px 22px; display:flex; flex-direction:column; gap:12px;">
         <h2 style={lab}>IN SHORT</h2>
         {doc.short.map(h => <div style={li}><Fragment set:html={dot} /><span set:html={h}></span></div>)}
