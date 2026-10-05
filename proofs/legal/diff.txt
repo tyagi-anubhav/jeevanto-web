@@ -1,0 +1,96 @@
+--- before (live, 5 Oct 10:35)
++++ after (live, 5 Oct 10:39)
+@@ -1,8 +1,15 @@
+ Privacy policy
+ Version 1.0 · In force from launch date (To be confirmed)
++WHAT CHANGED · 5 OCTOBER 2026
++A new section 5.2 says how Jeevanto uses a website for you: it signs in with the login you saved, can make you an account there if you say yes, reads a sign-in code that site emails you, and shows you what it filled. You pay, book or confirm yourself.
++Your Vault now holds logins for websites, not payment options. Jeevanto never pays for you (section 3).
++Jeevanto never sends a text, WhatsApp or email as you. It writes the message, and you send it from your own app (section 4).
++Browserbase, which runs the web browser Jeevanto uses on a site for you, is added to the companies that handle your data (section 9).
++Google (section 14): Jeevanto no longer asks to send email from your Gmail, reads only the events in your Google Calendar, and uses Gmail to read a sign-in code a site sends you, once.
+ IN SHORT
+ We never train AI on your data, and we never sell it.
+ Jeevanto reads only the accounts you choose to connect, what you tell it, and what people in your Circle choose to share with you.
++On websites, you stay in charge. Jeevanto signs in with the login you saved, or makes you an account if you say yes, and fills things in. You see it before it's sent, and you pay or confirm yourself.
+ It keeps what matters (a date, a promise, an offer), each pointing to where it came from. Never the mail itself.
+ It shows you how much it read from each source, each day. Pause any source whenever you like.
+ Anything it knows, you can take back. A pattern it notices waits for your yes before it's used.
+@@ -70,8 +77,8 @@
+ Notes, reminders, requests, documents you upload (for example a medical report or a prescription), photos you share with it
+ To do what you ask, and to keep it for you
+ Your Vault
+-Passwords and payment options you save for sites
+-So Jeevanto can sign in or pay on a site for you when you say go. They're locked with a key on your own phone
++Logins you save for websites, and logins for accounts Jeevanto creates for you on a site with your yes (section 5.2)
++So Jeevanto can sign you in to that site when you ask it to do something there (section 5.2). Jeevanto never pays for you: you pay on the site's own page. They're locked with a key on your own phone
+ Your Circle
+ Who is in your Family and who your kin are; what each person has chosen to share
+ To run Family and kin as each person has allowed
+@@ -106,9 +113,10 @@
+ We never use your data to train AI, and we send it only through AI services set up so it doesn't train anyone's models (section 7).
+ We never read your data ourselves, except as section 12 describes.
+ We never send, change or delete anything in an account you've connected, on our own.
+-We never act as you, or claim to be you.
++We never act for you without your say-so. Jeevanto signs in with your saved login only for a job you've asked for, and never presses pay, book, confirm or place order: you do.
++Jeevanto never sends a text, WhatsApp or email as you. It writes the message and opens it in your own app, and you send it. The only messages that go from inside Jeevanto are messages between two Jeevanto users (in-app), and Jeevanto's own messages: your sign-in codes and account notices, and, only when you ask, an invitation to someone you add to your Circle or as your recovery contact.
+ 5  Why we use it
+-We use your data only to:
++5.1  We use your data only to:
+ run Jeevanto for you: remember, remind, prepare, find, keep a lookout, and book, order, send or fill in when you say go;
+ show you how much Jeevanto read, and from where;
+ run your plan, bill you, and give refunds;
+@@ -116,6 +124,15 @@
+ tell you about your account, your plan, and changes to these policies;
+ meet our duties under the law.
+ We don't use it for anything else unless we ask you first.
++5.2  Using websites for you. When you ask Jeevanto to book, order or get something done on a website, it works on that site in a browser while you stay in charge:
++it signs in with the login you saved for that site;
++if you don't have an account on that site, and you say yes, Jeevanto creates one for you with the details the site needs, and saves its login in your Vault. You can see or change that login there at any time;
++with no saved login and no new account, you sign in yourself;
++a code sent to your phone by text, you enter yourself;
++a code sent to an email account you've connected is read and entered by Jeevanto, only if it comes from that site's own address, arrived within the last 10 minutes, and is used once. The code is never kept or logged;
++it fills in the form or the cart, and shows you what it filled before anything is sent;
++you pay, book or confirm yourself, on the site's own page;
++a bank account number is always yours to type.
+ 6  Your consent, and taking it back
+ 6.1  We ask for your consent in plain words, one purpose at a time, when it's needed: for example when you connect an account, switch on note-taking, or share something with your Circle. We never tick a box for you.
+ 6.2  You can take any consent back, as easily as you gave it. Disconnect or pause an account in Settings. Switch a feature off. Stop sharing. Taking consent back doesn't undo what was done before, but from then on we stop, and we delete what we no longer need.
+@@ -156,9 +173,12 @@
+ GitHub (part of Microsoft)
+ Serves our website's pages
+ Global
++Browserbase
++Runs the web browser Jeevanto uses on a site for you, when that job doesn't run on your phone. It sees only that job's pages
++Outside India
+ We keep this list up to date, and change it here before we add a new service.
+ We also share data:
+-when you ask us to: for example, when Jeevanto books on a site, it gives that site the details the booking needs, after you say go;
++when you ask us to: for example, when Jeevanto signs in or books on a site for you, it gives that site your saved login, or the details the booking needs, and only that site;
+ when the law requires it: to a court, a regulator or the police, when a valid legal order requires it. We tell you, unless the law forbids it;
+ if our company changes hands: the new owner must keep to this policy, and we'd tell you first.
+ 10  How long we keep it
+@@ -193,10 +213,8 @@
+ PERMISSION
+ WHAT JEEVANTO DOES WITH IT
+ Read your Gmail
+-Finds the facts that matter in mail you receive, such as a booking, a date, a bill, an offer or a code a site sends you, so it can remind you, prepare you and find things for you. It keeps the facts, each pointing to the email it came from. It doesn't keep the mail itself.
+-Send email from your Gmail
+-Sends a message you've written or approved, from your own address, only after you say go on that message.
+-Read your Google Calendar
++Finds the facts that matter in mail you receive, such as a booking, a date, a bill or an offer, so it can remind you, prepare you and find things for you. When you've asked Jeevanto to sign in to a site, it also reads the sign-in code that site emails you, and uses it once (section 5.2). It keeps the facts, each pointing to the email it came from. It doesn't keep the mail itself, and it never keeps a code.
++Read the events in your Google Calendar
+ Knows your appointments and plans, so it can remind you and prepare you. It never changes your calendar.
+ Read your Google Contacts
+ Knows the people you mention by name, so it can find their details when you ask. It never changes a contact.
+--- before (live, 5 Oct 10:35)
++++ after (live, 5 Oct 10:39)
+@@ -79,7 +79,7 @@
+ 6  When Jeevanto acts for you
+ 6.1  The go is always yours. Jeevanto prepares a booking, an order, a message or a form. It acts only after you say go, or where you have set a clear standing instruction yourself.
+ 6.2  Jeevanto never pretends to be you, or anyone else. It acts as your assistant, on your instruction. It never claims to be a person it isn't.
+-6.3  When Jeevanto books, orders or pays on another company's website, your contract is with that company, not with us. Their prices, terms, cancellation rules and refunds apply. We aren't a party to that sale, and we don't hold your money.
++6.3  When you book, order or pay on another company's website through Jeevanto, your contract is with that company, not with us. Their prices, terms, cancellation rules and refunds apply. We aren't a party to that sale, and we don't hold your money.
+ 6.4  Jeevanto shows you what it's about to do before you say go. Check it. You're responsible for what you approve, including the details you give and the payment you make.
+ 6.5  Some things Jeevanto will never do for you, whoever asks. These include moving money between bank accounts, and signing in to your bank or email for someone else. The app shows these limits where they apply.
+ 7  Accounts you connect
