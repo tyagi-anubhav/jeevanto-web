@@ -68,6 +68,15 @@ for (const [en, E] of [['chromium', chromium], ['webkit', webkit]]) {
     // Google moves the OAuth parameters into its own sign-in page's query; read them from the first hop to the company
     const first = new URL(hops.find(u => new URL(u).host === host || new URL(u).host.endsWith('.' + host)) || p.url());
     const cid = first.searchParams.get('client_id') || '', ru = first.searchParams.get('redirect_uri') || '';
+    if (en === 'webkit' && prov === 'apple' && !at.host.endsWith(host) && authorize) {
+      // WebKit hands appleid.apple.com's sign-in to the system's own "Sign in with Apple" sheet, which a headless
+      // browser can't show: the navigation simply stops. So read the same redirect the browser was given, from Node.
+      const r = await fetch(authorize, { redirect: 'manual' }); const loc = new URL(r.headers.get('location') || 'about:blank');
+      const c2 = loc.searchParams.get('client_id') || '', r2 = loc.searchParams.get('redirect_uri') || '';
+      ok(`${en} ${prov}: the button → Supabase authorize (redirect_to this page), whose redirect is ${host} with Jeevanto's client and Supabase's callback (the hand-off to Apple's sheet can't be seen headless; named unproven)`,
+        rt === BASE + '/create-account' && loc.host === host && client.test(c2) && r2 === 'https://tqaiyxijluboflyoykoi.supabase.co/auth/v1/callback',
+        `authorize ${r.status} → ${loc.host}; client_id ${client.test(c2) ? 'matches' : 'MISMATCH ' + c2.slice(-12)}; redirect_uri=${r2}`);
+    } else
     ok(`${en} ${prov}: the button → Supabase authorize (redirect_to this page) → ${host}, Jeevanto's client, Supabase's callback`,
       at.host.endsWith(host) && rt === BASE + '/create-account' && client.test(cid) && ru === 'https://tqaiyxijluboflyoykoi.supabase.co/auth/v1/callback',
       `at ${at.host}; redirect_to=${rt}; client_id ${client.test(cid) ? 'matches' : 'MISMATCH ' + cid.slice(-12)}; redirect_uri=${ru}`);
