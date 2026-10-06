@@ -1,0 +1,36 @@
+decision 229 — the sign-in pages on the preview https://jeevanto-site-preview.pages.dev, 2026-10-06T09:23:17.286Z
+PASS chromium phone dark /sign-in: "Welcome back.", Google and Apple only, no consent line, noindex — h1="Welcome back." buttons=["Continue with Google","Continue with Apple"] consent=0 robots=noindex, nofollow roboto=true
+PASS chromium phone dark /sign-in: axe
+PASS chromium phone dark /create-account: "Create your account", Google and Apple only, decision 204’s line with both links, noindex — h1="Create your account" buttons=["Continue with Google","Continue with Apple"] consent=1 robots=noindex, nofollow roboto=true
+PASS chromium phone dark /create-account: axe
+PASS chromium phone light /sign-in: "Welcome back.", Google and Apple only, no consent line, noindex — h1="Welcome back." buttons=["Continue with Google","Continue with Apple"] consent=0 robots=noindex, nofollow roboto=true
+PASS chromium phone light /sign-in: axe
+PASS chromium phone light /create-account: "Create your account", Google and Apple only, decision 204’s line with both links, noindex — h1="Create your account" buttons=["Continue with Google","Continue with Apple"] consent=1 robots=noindex, nofollow roboto=true
+PASS chromium phone light /create-account: axe
+PASS chromium laptop dark /sign-in: "Welcome back.", Google and Apple only, no consent line, noindex — h1="Welcome back." buttons=["Continue with Google","Continue with Apple"] consent=0 robots=noindex, nofollow roboto=true
+PASS chromium laptop dark /sign-in: axe
+PASS chromium laptop dark /create-account: "Create your account", Google and Apple only, decision 204’s line with both links, noindex — h1="Create your account" buttons=["Continue with Google","Continue with Apple"] consent=1 robots=noindex, nofollow roboto=true
+PASS chromium laptop dark /create-account: axe
+PASS chromium laptop light /sign-in: "Welcome back.", Google and Apple only, no consent line, noindex — h1="Welcome back." buttons=["Continue with Google","Continue with Apple"] consent=0 robots=noindex, nofollow roboto=true
+PASS chromium laptop light /sign-in: axe
+PASS chromium laptop light /create-account: "Create your account", Google and Apple only, decision 204’s line with both links, noindex — h1="Create your account" buttons=["Continue with Google","Continue with Apple"] consent=1 robots=noindex, nofollow roboto=true
+PASS chromium laptop light /create-account: axe
+PASS chromium google: the button → Supabase authorize (redirect_to this page) → accounts.google.com, Jeevanto's client, Supabase's callback — at accounts.google.com; redirect_to=https://jeevanto-site-preview.pages.dev/create-account; client_id matches; redirect_uri=https://tqaiyxijluboflyoykoi.supabase.co/auth/v1/callback
+FAIL chromium apple: the button → Supabase authorize (redirect_to this page) → appleid.apple.com, Jeevanto's client, Supabase's callback — at appleid.apple.com; redirect_to=https://jeevanto-site-preview.pages.dev/create-account; client_id MISMATCH jeevanto.app; redirect_uri=https://tqaiyxijluboflyoykoi.supabase.co/auth/v1/callback
+PASS chromium back from a refused sign-in: its line shown, the #fragment wiped — "Signing in didn’t finish. You can try again." at https://jeevanto-site-preview.pages.dev/sign-in
+PASS chromium nothing kept in the browser when nobody signed in — null
+PASS webkit phone dark /sign-in: "Welcome back.", Google and Apple only, no consent line, noindex — h1="Welcome back." buttons=["Continue with Google","Continue with Apple"] consent=0 robots=noindex, nofollow roboto=true
+PASS webkit phone dark /create-account: "Create your account", Google and Apple only, decision 204’s line with both links, noindex — h1="Create your account" buttons=["Continue with Google","Continue with Apple"] consent=1 robots=noindex, nofollow roboto=true
+PASS webkit phone light /sign-in: "Welcome back.", Google and Apple only, no consent line, noindex — h1="Welcome back." buttons=["Continue with Google","Continue with Apple"] consent=0 robots=noindex, nofollow roboto=true
+PASS webkit phone light /create-account: "Create your account", Google and Apple only, decision 204’s line with both links, noindex — h1="Create your account" buttons=["Continue with Google","Continue with Apple"] consent=1 robots=noindex, nofollow roboto=true
+PASS webkit laptop dark /sign-in: "Welcome back.", Google and Apple only, no consent line, noindex — h1="Welcome back." buttons=["Continue with Google","Continue with Apple"] consent=0 robots=noindex, nofollow roboto=true
+PASS webkit laptop dark /create-account: "Create your account", Google and Apple only, decision 204’s line with both links, noindex — h1="Create your account" buttons=["Continue with Google","Continue with Apple"] consent=1 robots=noindex, nofollow roboto=true
+PASS webkit laptop light /sign-in: "Welcome back.", Google and Apple only, no consent line, noindex — h1="Welcome back." buttons=["Continue with Google","Continue with Apple"] consent=0 robots=noindex, nofollow roboto=true
+PASS webkit laptop light /create-account: "Create your account", Google and Apple only, decision 204’s line with both links, noindex — h1="Create your account" buttons=["Continue with Google","Continue with Apple"] consent=1 robots=noindex, nofollow roboto=true
+PASS webkit google: the button → Supabase authorize (redirect_to this page) → accounts.google.com, Jeevanto's client, Supabase's callback — at accounts.google.com; redirect_to=https://jeevanto-site-preview.pages.dev/create-account; client_id matches; redirect_uri=https://tqaiyxijluboflyoykoi.supabase.co/auth/v1/callback
+FAIL webkit apple: the button → Supabase authorize (redirect_to this page) → appleid.apple.com, Jeevanto's client, Supabase's callback — at jeevanto-site-preview.pages.dev; redirect_to=https://jeevanto-site-preview.pages.dev/create-account; client_id MISMATCH ; redirect_uri=
+PASS webkit back from a refused sign-in: its line shown, the #fragment wiped — "Signing in didn’t finish. You can try again." at https://jeevanto-site-preview.pages.dev/sign-in
+PASS webkit nothing kept in the browser when nobody signed in — null
+PASS jeevanto.com/sign-in is still hidden — 404
+PASS jeevanto.com/create-account is still hidden — 404
+other hosts reached: accounts.google.com, accounts.youtube.com, appleid.apple.com, appleid.cdn-apple.com, fonts.gstatic.com, lh3.googleusercontent.com, ssl.gstatic.com, tqaiyxijluboflyoykoi.supabase.co, www.apple.com, www.gstatic.com
