@@ -46,7 +46,10 @@ ok('a new account → "This is who you are, as we have it." with the name, and t
 ok('the tokens are wiped from the address', !p.url().includes('#') && !p.url().includes('access_token'), p.url());
 ok('one sign-in record kept in the browser', !!(await kept()), (await kept()) ? 'jv-sign-in present' : 'none');
 const agreed = await lib.sql(`select document, version, way_in from sentinel_identity.legal_agreements where account_id = '${acct.accountId}'::uuid order by document`);
-ok('the agreement is recorded: Terms and Privacy at the versions the page showed (1.1), way in "website"', agreed.length === 2 && agreed.every(a => a.version === '1.1' && a.way_in === 'website'), JSON.stringify(agreed));
+// The account's creation records the agreement first, with way_in = the sign-in provider (email, google, apple, mobile;
+// ENGINES' _record_legal_agreement, decision 204); the site's door then adds nothing for the same version, so
+// 'website' appears only when no earlier record exists (ENGINES, 7 Oct 00:2x).
+ok('the agreement is recorded: Terms and Privacy at the versions the page showed (1.1), by the sign-in or the site', agreed.length === 2 && agreed.every(a => a.version === '1.1' && ['email', 'google', 'apple', 'mobile', 'website'].includes(a.way_in)), JSON.stringify(agreed));
 
 // 4 · that's right → account made → or continue here → signed in
 await p.click('[data-right]');
