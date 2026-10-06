@@ -4,8 +4,10 @@ import '../styles/site.css';
 import Identity from '../components/Identity.astro';
 import Icon from '../components/Icon.astro';
 import { config, full, legalLine, regLine, engine } from '../lib/config.mjs';
+import { PREVIEW } from '../lib/preview.mjs';
 
-const { title, description, here = '', path = '/', doors = false, referrer = 'strict-origin-when-cross-origin', noindex = false } = Astro.props;
+const { title, description, here = '', path = '/', doors = false, referrer = 'strict-origin-when-cross-origin', noindex: noindexProp = false } = Astro.props;
+const noindex = noindexProp || PREVIEW; // the preview is never indexed, page by page
 const pageTitle = title ? `${title} · Jeevanto` : 'Jeevanto: your personal control system';
 const desc = description || 'Jeevanto is a personal assistant on your phone. Hand it the appointments, the bookings, the reminders and the family logistics, so you can put the phone down and be with the people who matter.';
 

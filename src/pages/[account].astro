@@ -1,0 +1,78 @@
+---
+// /sign-in and /create-account (v10 screen 09, decisions 123, 204 and 229). Built ONLY for the non-public preview
+// (JV_PREVIEW=1): on jeevanto.com they stay hidden (404) until coming-soon mode ends (Cowork's ruling 1, 6 Oct).
+import Shell from '../layouts/Shell.astro';
+import { config } from '../lib/config.mjs';
+import { PREVIEW } from '../lib/preview.mjs';
+import { S } from '../components/ui.mjs';
+
+export function getStaticPaths() {
+  return PREVIEW ? [{ params: { account: 'sign-in' } }, { params: { account: 'create-account' } }] : [];
+}
+const create = Astro.params.account === 'create-account';
+const path = create ? '/create-account' : '/sign-in';
+const legalVersion = (config.legal && config.legal.version) || '';
+const months = String(config.freeMonths);
+const doors = [
+  { provider: 'google', label: 'Continue with Google', dark: '/sign-in-marks/google-g.svg', light: '/sign-in-marks/google-g.svg', font: "'Roboto', system-ui, sans-serif", size: '14px', weight: 500 },
+  { provider: 'apple', label: 'Continue with Apple', dark: '/sign-in-marks/apple-logo-white.svg', light: '/sign-in-marks/apple-logo-black.svg', font: 'inherit', size: '15px', weight: 600 },
+];
+const btn = 'height:52px; width:100%; box-sizing:border-box; background:var(--ssoBg); border:1px solid var(--ssoEdge); border-radius:16px; padding:0 16px; display:flex; align-items:center; justify-content:center; cursor:pointer;';
+const link = 'color:var(--brass); font-weight:600;';
+const badges = (
+  `<div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">` +
+  [[config.appStoreUrl, '/store-badges/download-on-the-app-store-black-en.svg', 'Download on the App Store'], [config.playStoreUrl, '/store-badges/get-it-on-google-play-en.svg', 'Get it on Google Play']]
+    .map(([href, src, alt]) => href ? `<a href="${href}" target="_blank" rel="noopener" style="display:flex; padding:10px 0;"><img src="${src}" alt="${alt}" style="height:40px; width:auto; display:block;"></a>` : `<span style="display:flex; padding:10px 0;"><img src="${src}" alt="${alt}" style="height:40px; width:auto; display:block;"></span>`).join('') +
+  `</div>`);
+---
+<Shell title={create ? 'Create your account' : 'Sign in'} path={path} doors description={create ? 'Create your Jeevanto account.' : 'Sign in to Jeevanto.'}>
+  <div data-screen-label="09 Sign in" data-sign={create ? 'create' : 'in'} data-legal-version={legalVersion} style={S.page.replace('max-width:600px', 'max-width:480px')}>
+    <div style={S.eyebrow}>YOUR ACCOUNT</div>
+
+    <div data-state="ask" style="display:flex; flex-direction:column; gap:20px;">
+      <h1 style={S.h1}>{create ? 'Create your account' : 'Welcome back.'}</h1>
+      <p style={S.quiet}>{create ? 'Your account starts with an email.' : 'It all starts with your email.'}</p>
+      {create && <p style="font-size:13px; line-height:18px; color:var(--quiet); text-wrap:pretty;">By continuing, you agree to our <a href="/terms" style={link}>Terms of use</a> and <a href="/privacy-policy" style={link}>Privacy policy</a>.</p>}
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        {doors.map(d => (
+          <button type="button" class="jv-sso" data-provider={d.provider} style={btn}>
+            <span style="width:220px; max-width:100%; display:flex; align-items:center; gap:12px;">
+              <img class="in-dark" src={d.dark} alt="" style="width:20px; height:20px; flex:none;"><img class="in-light" src={d.light} alt="" style="width:20px; height:20px; flex:none;">
+              <span style={`font-family:${d.font}; font-size:${d.size}; font-weight:${d.weight}; color:var(--ssoInk); white-space:nowrap;`}>{d.label}</span>
+            </span>
+          </button>
+        ))}
+      </div>
+      <p data-err role="alert" hidden style={S.err.replace('margin-top:-10px;', '')}></p>
+      {create
+        ? <p style="font-size:14px; line-height:20px; color:var(--quiet); text-align:center;">Already on Jeevanto? <a href="/sign-in" style={link}>Sign in</a></p>
+        : <p style="font-size:14px; line-height:20px; color:var(--quiet); text-align:center;">New to Jeevanto? <a href="/create-account" style={link}>Create your account</a></p>}
+    </div>
+
+    <div data-state="busy" hidden role="status" style={S.quiet}>One moment.</div>
+
+    <div data-state="review" hidden style="display:flex; flex-direction:column; gap:20px;">
+      <h1 tabindex="-1" style={S.h1}>This is who you are, as we have it.</h1>
+      <div data-rows style="background:var(--card); border-radius:16px; padding:4px 20px;"></div>
+      <p style={S.quiet}>That’s all we hold so far.</p>
+      <button type="button" data-right style={S.primary}>That’s right</button>
+    </div>
+
+    <div data-state="created" hidden style="display:flex; flex-direction:column; gap:20px;">
+      <h1 tabindex="-1" style={S.h1}>Now, get the app to make the most of Jeevanto.</h1>
+      <div style="background:var(--card); border-radius:16px; padding:18px 20px; display:flex; flex-direction:column; gap:4px;">
+        <span style={S.eyebrow}>A WELCOME GIFT</span>
+        <p style="font-size:16px; line-height:24px; color:var(--ink); text-wrap:pretty;">{months} months of Plus, free, waiting for you in the app. They start the day you first open it.</p>
+      </div>
+      <Fragment set:html={badges} />
+      <div style="display:flex; justify-content:center;"><button type="button" data-here style="min-height:44px; display:inline-flex; align-items:center; font-size:15px; font-weight:600; color:var(--brass);">Or continue here</button></div>
+    </div>
+
+    <div data-state="in" hidden style="display:flex; flex-direction:column; gap:20px;">
+      <h1 tabindex="-1" style={S.h1}><span data-signed-in></span></h1>
+      <Fragment set:html={badges} />
+      <button type="button" data-out style={S.quietBtn}>Sign out</button>
+    </div>
+  </div>
+  <script is:inline slot="scripts" src="/js/sign.js" defer></script>
+</Shell>

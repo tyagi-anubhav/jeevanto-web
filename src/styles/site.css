@@ -34,6 +34,7 @@
   --bg:#0A0A0F; --navBg:rgba(10,10,15,.88); --card:#12121A; --raised:#1A1A26; --line:#22223A; --ink:#F0F0F5; --quiet:#8888A0; --nav:#8888A0;
   --brass:#FFCC90; --brassEdge:rgba(255,170,90,.42); --brassHover:rgba(255,170,90,.06); --chipEdge:rgba(255,170,90,.30);
   --bone:#E8E6F0; --boneText:#141018; --sage:#7FA98C; --amber:#E8A257; --danger:#C98A7A;
+  --ssoBg:#131314; --ssoInk:#E3E3E3; --ssoEdge:#8E918F; /* Google's and Apple's dark button (v10, sign-in-marks/README) */
   --kinText:#C4BEE8; --kinLine:#8C84D6; --kinFrame:1px solid rgba(154,147,216,.42);
   --lift:0 8px 24px rgba(0,0,0,.45); --sheetShadow:0 24px 70px rgba(0,0,0,.6); --register:rgba(255,170,90,.30); --scrim:rgba(10,10,15,.72);
   --fsClose:rgba(10,10,15,.78);
@@ -44,6 +45,7 @@
     --bg:#F5F5F7; --navBg:rgba(245,245,247,.9); --card:#FFFFFF; --raised:#F0F0F5; --line:#DDDDE8; --ink:#0A0A0F; --quiet:#67677A; --nav:#6B6B7D;
     --brass:#8F6218; --brassEdge:#A17624; --brassHover:rgba(143,98,24,.06); --chipEdge:#D9C49A;
     --bone:#141018; --boneText:#F5F5F7; --sage:#3F7358; --amber:#8A5A12; --danger:#9A4B36;
+    --ssoBg:#FFFFFF; --ssoInk:#1F1F1F; --ssoEdge:#747775;
     --kinText:#4E4796; --kinLine:#7E76BC; --kinFrame:1.5px solid #7E76BC;
     --lift:0 6px 18px rgba(20,16,40,.08); --sheetShadow:0 24px 70px rgba(20,16,40,.18); --register:#D9C49A; --scrim:rgba(10,10,15,.35);
   }
@@ -53,6 +55,7 @@
   --bg:#F5F5F7; --navBg:rgba(245,245,247,.9); --card:#FFFFFF; --raised:#F0F0F5; --line:#DDDDE8; --ink:#0A0A0F; --quiet:#67677A; --nav:#6B6B7D;
   --brass:#8F6218; --brassEdge:#A17624; --brassHover:rgba(143,98,24,.06); --chipEdge:#D9C49A;
   --bone:#141018; --boneText:#F5F5F7; --sage:#3F7358; --amber:#8A5A12; --danger:#9A4B36;
+  --ssoBg:#FFFFFF; --ssoInk:#1F1F1F; --ssoEdge:#747775;
   --kinText:#4E4796; --kinLine:#7E76BC; --kinFrame:1.5px solid #7E76BC;
   --lift:0 6px 18px rgba(20,16,40,.08); --sheetShadow:0 24px 70px rgba(20,16,40,.18); --register:#D9C49A; --scrim:rgba(10,10,15,.35);
 }
@@ -152,3 +155,8 @@ button[disabled] { opacity:.6; cursor:progress; }
 
 /* /connect/google: while the page hands Google's answer on, "Nothing to do here" stays out of sight */
 html[data-forwarding] [data-nothing] { visibility:hidden; }
+
+/* Google's button words (brief B3): Roboto Medium, self-hosted (SIL OFL, licences/roboto-LICENSE.txt) */
+@font-face { font-family: 'Roboto'; font-style: normal; font-display: swap; font-weight: 500;
+  src: url(/fonts/roboto-latin-500-normal.woff2) format('woff2'); unicode-range: U+0000-00FF,U+2000-206F; }
+.jv-sso:focus-visible { outline:2px solid var(--brass); outline-offset:2px; }

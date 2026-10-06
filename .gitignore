@@ -5,3 +5,4 @@ dist/
 proofs/screens/
 .DS_Store
 proofs/films/*.png
+dist-preview/
