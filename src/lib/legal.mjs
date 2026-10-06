@@ -12,12 +12,14 @@ export const PATHS = { policy: '/privacy-policy', terms: '/terms', refunds: '/re
 // The dated "What changed" note at the top of a page, as the policy's section 18 promises (cc-website-03). WEBSITE's
 // words, listing the approved edits in plain words; the policy's own text is Cowork's, word for word.
 export const CHANGES = {
-  policy: { date: '5 October 2026', points: [
+  policy: { date: '6 October 2026', points: [
     'A new section 5.2 says how Jeevanto uses a website for you: it signs in with the login you saved, can make you an account there if you say yes, reads a sign-in code that site emails you, and shows you what it filled. You pay, book or confirm yourself.',
     'Your Vault now holds logins for websites, not payment options. Jeevanto never pays for you (section 3).',
     'Jeevanto never sends a text, WhatsApp or email as you. It writes the message, and you send it from your own app (section 4).',
     'Browserbase, which runs the web browser Jeevanto uses on a site for you, is added to the companies that handle your data (section 9).',
     'Google (section 14): Jeevanto no longer asks to send email from your Gmail, reads only the events in your Google Calendar, and uses Gmail to read a sign-in code a site sends you, once.',
+    'How the website remembers that you’re signed in: one sign-in record in your browser, only if you sign in (section 15).',
+    'How we count visits to this website: without cookies and without knowing who you are (sections 9 and 15).',
   ] },
 };
 

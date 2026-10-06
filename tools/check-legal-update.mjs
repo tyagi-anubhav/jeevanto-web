@@ -34,13 +34,21 @@ const NOW = {
     'Finds the facts that matter in mail you receive, such as a booking, a date, a bill or an offer, so it can remind you, prepare you and find things for you. When you\'ve asked Jeevanto to sign in to a site, it also reads the sign-in code that site emails you, and uses it once (section 5.2). It keeps the facts, each pointing to the email it came from. It doesn\'t keep the mail itself, and it never keeps a code.',
     'Read the events in your Google Calendar',
     'Knows your appointments and plans, so it can remind you and prepare you. It never changes your calendar.',
-    'WHAT CHANGED · 5 OCTOBER 2026',
+    'WHAT CHANGED · 6 OCTOBER 2026',
+    // policy 1.1: decisions 231 (the sign-in record) and 233 (visit counts), Cowork's words of 6 Oct 15:30
+    'This website counts visits without cookies and without knowing who you are. No ads, and no tracking. It keeps one sign-in record in your browser, only if you sign in.',
+    'The website: counting visits, and signing in',
+    'jeevanto.com counts visits without cookies and without knowing who you are: the pages read, where people leave, how they arrived, the kind of device and the country, through Cloudflare Web Analytics. No ads, and no tracking: nothing records what you do on a page. A visitor who just reads the site gets no cookie. This website keeps one sign-in record in your browser, only if you sign in. It goes when you sign out. Because it\'s needed for the sign-in you asked for, and nothing else, we don\'t show a cookie banner.',
+    'Counts visits to this website, without cookies (section 15)',
+    'How the website remembers that you’re signed in: one sign-in record in your browser, only if you sign in (section 15).',
+    'How we count visits to this website: without cookies and without knowing who you are (sections 9 and 15).',
+    'Version 1.1 · In force from 6 October 2026',
   ],
-  terms: ['When you book, order or pay on another company\'s website through Jeevanto, your contract is with that company, not with us. Their prices, terms, cancellation rules and refunds apply.'],
+  terms: ['When you book, order or pay on another company\'s website through Jeevanto, your contract is with that company, not with us. Their prices, terms, cancellation rules and refunds apply.', 'Version 1.1 · In force from 6 October 2026'],
 };
 const GONE = {
-  policy: ['Passwords and payment options you save for sites', 'We never act as you, or claim to be you.', 'Send email from your Gmail', 'when Jeevanto books on a site, it gives that site the details the booking needs, after you say go', 'an offer or a code a site sends you', 'Read your Google Calendar'],
-  terms: ['When Jeevanto books, orders or pays on another company\'s website'],
+  policy: ['It sets one cookie, only if you sign in', 'The website and cookies', 'no trackers and no ads', 'one cookie, just to keep you signed in', 'WHAT CHANGED · 5 OCTOBER 2026', 'Version 1.0', 'launch date', 'Passwords and payment options you save for sites', 'We never act as you, or claim to be you.', 'Send email from your Gmail', 'when Jeevanto books on a site, it gives that site the details the booking needs, after you say go', 'an offer or a code a site sends you', 'Read your Google Calendar'],
+  terms: ['When Jeevanto books, orders or pays on another company\'s website', 'Version 1.0'],
 };
 const PAGES = { policy: '/privacy-policy', terms: '/terms' };
 const norm = t => t.replace(/[‘’]/g, "'").replace(/[ \t]+/g, ' ').replace(/\n{2,}/g, '\n').trim();

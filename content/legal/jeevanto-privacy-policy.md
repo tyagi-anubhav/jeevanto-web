@@ -18,7 +18,7 @@
 - Anything it knows, you can take back. A pattern it notices waits for your yes before it's used.
 - **No one else sees your Jeevanto without your yes.** Not your family, not the person who looks after you.
 - Delete your account any time, in the app or on our website. Everything goes, and copies in our backups are gone within {{backup_days}} days. We keep only a scrambled fingerprint, so the free months are given once per person, and what the law makes us keep, such as invoices (section 10).
-- This website has no trackers and no ads. It sets one cookie, only if you sign in.
+- This website counts visits without cookies and without knowing who you are. No ads, and no tracking. It keeps one sign-in record in your browser, only if you sign in.
 
 The full policy follows. If anything below seems to say something different from this summary, the full policy applies.
 
@@ -40,7 +40,7 @@ The full policy follows. If anything below seems to say something different from
 12. How we protect it
 13. Your rights
 14. Google user data
-15. The website and cookies
+15. The website: counting visits, and signing in
 16. Children
 17. If something goes wrong
 18. Changes to this policy
@@ -156,6 +156,7 @@ We share your data only with companies that help us run Jeevanto, and only what 
 | Sentry | Records app errors so we can fix them, with personal details removed | Outside India |
 | GitHub (part of Microsoft) | Serves our website's pages | Global |
 | Browserbase | Runs the web browser Jeevanto uses on a site for you, when that job doesn't run on your phone. It sees only that job's pages | Outside India |
+| Cloudflare | Counts visits to this website, without cookies (section 15) | Global |
 
 We keep this list up to date, and change it here before we add a new service.
 
@@ -231,9 +232,9 @@ In particular:
 
 The same rules apply to data from Microsoft, Apple and any other account you connect.
 
-## 15. The website and cookies
+## 15. The website: counting visits, and signing in
 
-jeevanto.com has **no trackers and no ads**. A visitor who just reads the site gets no cookie. If you sign in on the site, it sets **one cookie, just to keep you signed in**. It goes when you sign out. Because this cookie is needed for the sign-in you asked for, and nothing else, we don't show a cookie banner.
+jeevanto.com counts visits without cookies and without knowing who you are: the pages read, where people leave, how they arrived, the kind of device and the country, through Cloudflare Web Analytics. **No ads, and no tracking:** nothing records what you do on a page. A visitor who just reads the site gets no cookie. **This website keeps one sign-in record in your browser, only if you sign in.** It goes when you sign out. Because it's needed for the sign-in you asked for, and nothing else, we don't show a cookie banner.
 
 The site picks up your country from your connection to show the right prices. It doesn't store it.
 

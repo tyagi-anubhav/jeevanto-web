@@ -16,7 +16,10 @@ function fromSettings(s) {
   if (L.security_log_period && v(L.security_log_period) != null) { const q = Number(v(L.security_log_period)), u = String(L.security_log_period.unit || '').replace(/s$/, ''); legal.security_log_period = (NUM_WORDS[q] || q) + ' ' + u + (q === 1 ? '' : 's'); }
   if (L.liability_floor && v(L.liability_floor) != null) legal.liability_floor = (L.liability_floor.currency === 'INR' ? '₹' : (L.liability_floor.currency || '') + ' ') + Number(v(L.liability_floor)).toLocaleString('en-IN');
   if (n.legal_version) legal.version = String(n.legal_version);
-  if (n.in_force_date) legal.in_force_date = String(n.in_force_date);
+  if (n.in_force_date) { // the console holds a date as YYYY-MM-DD; the pages say "6 October 2026"
+    const d = String(n.in_force_date), m = d.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    legal.in_force_date = m ? new Date(Date.UTC(+m[1], +m[2] - 1, +m[3])).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }) : d;
+  }
   return {
     siteMode: s.site_mode === 'coming_soon' ? 'coming soon' : s.site_mode === 'live' ? 'full' : undefined,
     legalName: c.legal_name, registeredAddress: c.registered_address, cin: c.cin, gstin: c.gstin,

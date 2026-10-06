@@ -1,4 +1,4 @@
-// jeevanto.com: the little the pages do. No cookies, no requests to other hosts, nothing sent anywhere.
+// jeevanto.com: the little the pages do. No cookies, no requests to other hosts, nothing sent anywhere (visit counts, when on, are Cloudflare's own beacon: decision 233).
 (function () {
   'use strict';
   var root = document.documentElement;
