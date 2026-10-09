@@ -1,4 +1,4 @@
-decision 229 — the sign-in pages on the preview https://jeevanto-site-preview.pages.dev, 2026-10-06T09:27:56.595Z
+decision 229 — the sign-in pages on the preview https://jeevanto-site-preview.pages.dev, 2026-10-09T11:47:41.445Z
 PASS chromium phone dark /sign-in: "Welcome back.", Google and Apple only, no consent line, noindex — h1="Welcome back." buttons=["Continue with Google","Continue with Apple"] consent=0 robots=noindex, nofollow roboto=true
 PASS chromium phone dark /sign-in: axe
 PASS chromium phone dark /create-account: "Create your account", Google and Apple only, decision 204’s line with both links, noindex — h1="Create your account" buttons=["Continue with Google","Continue with Apple"] consent=1 robots=noindex, nofollow roboto=true

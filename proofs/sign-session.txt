@@ -1,10 +1,10 @@
-decision 229 — after the sign-in, on the preview https://jeevanto-site-preview.pages.dev, 2026-10-06T18:49:56.038Z (a test identity; teardown follows)
+decision 229 — after the sign-in, on the preview https://jeevanto-site-preview.pages.dev, 2026-10-09T11:47:58.783Z (a test identity; teardown follows)
 PASS a test account (the test domain) and its session — account provisioned
 PASS the account door answers the preview's preflight — 204 https://jeevanto-site-preview.pages.dev
 PASS a new account → "This is who you are, as we have it." with the name, and the email marked verified — ["Name Uma Website","Email ‹test address› verified"]
 PASS the tokens are wiped from the address — https://jeevanto-site-preview.pages.dev/create-account
 PASS one sign-in record kept in the browser — jv-sign-in present
-FAIL the agreement is recorded: Terms and Privacy at the versions the page showed (1.1), way in "website" — [{"document":"privacy","version":"1.1","way_in":"email"},{"document":"terms","version":"1.1","way_in":"email"}]
+PASS the agreement is recorded: Terms and Privacy at the version the page showed (1.2), by the sign-in or the site — [{"document":"privacy","version":"1.2","way_in":"email"},{"document":"terms","version":"1.2","way_in":"email"}]
 PASS "That’s right" → "Now, get the app…" with the welcome gift and both store badges — Now, get the app to make the most of Jeevanto. A WELCOME GIFT 3 months of Plus, free, waiting for you in the app. They s
 PASS "Or continue here" → "You’re signed in as Uma."
 PASS a return visit is still signed in (the record checked against the engine)
@@ -14,8 +14,3 @@ PASS after signing out, a return visit is signed out
 PASS the signed-out session is refused by the engine afterwards — 403
 PASS no request failed (CORS or otherwise)
 the engine's answers seen: GET /auth/v1/user 200, POST /functions/v1/account 200, POST /functions/v1/account/agreement 200, GET /auth/v1/user 200, POST /functions/v1/account 200, POST /auth/v1/logout 204
-NOTE (7 Oct 00:2x), not a re-run: the one FAIL above was this tool's expectation, not the site or the engine. ENGINES:
-the account's creation records Terms and Privacy at the current version with way_in = the sign-in provider ('email'
-for this test account; 'google' or 'apple' for a real sign-up), and the site's door adds nothing for the same version.
-Read with the corrected expectation (1.1, by the sign-in or the site), the recorded rows pass: 14/14. The tool is
-corrected; the next run reads it that way.
