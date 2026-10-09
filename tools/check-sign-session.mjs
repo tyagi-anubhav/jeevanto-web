@@ -22,7 +22,8 @@ const results = [], ok = (n, c, x = '') => { results.push(`${c ? 'PASS' : 'FAIL'
 const mask = s => String(s).replace(/[^\s@"]+@jeevanto-test\.local/g, '‹test address›');
 
 // 1 · a test account, and its session (one sign-in by password, as a provider's return would carry)
-const acct = await lib.createTestAccount('w229web', 'Uma Website');
+// no name from the provider (as Apple's web flow gave the founder, 9 Oct): the page must ask, never show an address
+const acct = await lib.createTestAccount('w229web', '');
 const tok = await (await fetch(`${lib.BASE}/auth/v1/token?grant_type=password`, { method: 'POST', headers: { apikey: lib.ENV.SUPABASE_ANON_KEY, 'Content-Type': 'application/json' }, body: JSON.stringify({ email: acct.email, password: acct.password }) })).json();
 ok('a test account (the test domain) and its session', !!tok.access_token && !!acct.accountId, `account ${acct.accountId ? 'provisioned' : 'NOT provisioned'}`);
 
@@ -40,9 +41,16 @@ const kept = () => p.evaluate(() => { try { return localStorage.getItem('jv-sign
 
 // 3 · back from the provider: a new account → who you are
 await p.goto(`${BASE}/create-account#access_token=${tok.access_token}&refresh_token=${tok.refresh_token}&token_type=bearer&expires_in=${tok.expires_in}`);
+const askedName = await shown('name');
+const nameStepH1 = askedName ? await p.locator('[data-state="name"] h1').innerText() : '';
+const leaked = await p.evaluate(() => /@/.test(document.querySelector('main').innerText.split('YOUR ACCOUNT')[1] || '') && !document.querySelector('[data-state="review"]:not([hidden])'));
+ok('no name from the provider → "Good, that’s you. Now your name.", and no address shown as a name', askedName && nameStepH1 === 'Good, that’s you. Now your name.' && !leaked, `h1="${nameStepH1}"`);
+await p.fill('#sg-first', 'Uma'); await p.fill('#sg-last', 'Website'); await p.click('[data-name-go]');
 const rev = await shown('review');
 const rows = rev ? await p.$$eval('[data-rows] > div', ds => ds.map(d => d.innerText.replace(/\s+/g, ' ').trim())) : [];
-ok('a new account → "This is who you are, as we have it." with the name, and the email marked verified', rev && rows[0] === 'Name Uma Website' && /^Email .*@jeevanto-test\.local verified$/.test(rows[1] || ''), mask(JSON.stringify(rows)) + (rev ? '' : ' err=' + await p.locator('[data-err]').innerText().catch(() => '')));
+const stored = await lib.sql(`select display_name from sentinel_policy.actor_registry where user_id = (select user_id from sentinel_identity.users where account_id = '${acct.accountId}'::uuid limit 1) and actor_type = 'USER'`);
+ok('the typed name is stored on the account (never an address)', stored[0] && stored[0].display_name === 'Uma Website', JSON.stringify(stored));
+ok('then "This is who you are, as we have it." with the typed name, and the email marked verified', rev && rows[0] === 'Name Uma Website' && /^Email .*@jeevanto-test\.local verified$/.test(rows[1] || ''), mask(JSON.stringify(rows)) + (rev ? '' : ' err=' + await p.locator('[data-err]').innerText().catch(() => '')));
 ok('the tokens are wiped from the address', !p.url().includes('#') && !p.url().includes('access_token'), p.url());
 ok('one sign-in record kept in the browser', !!(await kept()), (await kept()) ? 'jv-sign-in present' : 'none');
 const agreed = await lib.sql(`select document, version, way_in from sentinel_identity.legal_agreements where account_id = '${acct.accountId}'::uuid order by document`);
@@ -68,7 +76,8 @@ ok('a return visit records no second agreement', again[0].n === 2, String(again[
 
 // 6 · sign out clears it
 await p.click('[data-out]');
-ok('Sign out → back to "Welcome back.", and the record is gone from the browser', await shown('ask') && (await kept()) === null);
+await p.waitForURL(u => u.pathname === '/sign-in', { timeout: 10000 }).catch(() => {});
+ok('Sign out → "Welcome back." (the Sign in page), and the record is gone from the browser', p.url().endsWith('/sign-in') && await shown('ask') && (await p.locator('[data-state="ask"] h1').innerText()) === 'Welcome back.' && (await kept()) === null, p.url());
 await p.goto(`${BASE}/sign-in`);
 ok('after signing out, a return visit is signed out', await shown('ask', 5000) && !(await p.locator('[data-state="in"]').isVisible()));
 const still = await fetch(`${lib.BASE}/auth/v1/user`, { headers: { apikey: lib.ENV.SUPABASE_ANON_KEY, Authorization: 'Bearer ' + tok.access_token } });
