@@ -1,0 +1,42 @@
+--- before (live 1.1, 9 Oct 16:16)
++++ after (live 1.2, 9 Oct 16:18)
+@@ -1,6 +1,6 @@
+ Privacy policy
+-Version 1.1 · In force from 6 October 2026
+-WHAT CHANGED · 6 OCTOBER 2026
++Version 1.2 · In force from 9 October 2026
++WHAT CHANGED · 9 OCTOBER 2026
+ A new section 5.2 says how Jeevanto uses a website for you: it signs in with the login you saved, can make you an account there if you say yes, reads a sign-in code that site emails you, and shows you what it filled. You pay, book or confirm yourself.
+ Your Vault now holds logins for websites, not payment options. Jeevanto never pays for you (section 3).
+ Jeevanto never sends a text, WhatsApp or email as you. It writes the message, and you send it from your own app (section 4).
+@@ -8,6 +8,8 @@
+ Google (section 14): Jeevanto no longer asks to send email from your Gmail, reads only the events in your Google Calendar, and uses Gmail to read a sign-in code a site sends you, once.
+ How the website remembers that you're signed in: one sign-in record in your browser, only if you sign in (section 15).
+ How we count visits to this website: without cookies and without knowing who you are (sections 9 and 15).
++How long our hosting provider keeps sign-in records (section 10.5).
++Your own name and email address stay readable; everything else is sealed (section 12.1).
+ IN SHORT
+ We never train AI on your data, and we never sell it.
+ Jeevanto reads only the accounts you choose to connect, what you tell it, and what people in your Circle choose to share with you.
+@@ -195,10 +197,11 @@
+ How long each of these is kept is set for the country you signed up in, and is shown here as it stands.
+ 10.3  A data source you disconnect: what Jeevanto read from it is deleted, unless you choose to keep facts it already found.
+ 10.4  If you ask us to keep something for a legal claim or a complaint, or the law requires us to, we keep it only for that, only for as long as needed.
++10.5  When you sign in, our hosting provider, Supabase, records your email address and the time in its sign-in records, as part of running the service, and keeps them for 7 days before deleting them.
+ 11  Where your data is kept
+ Your data is kept in India. Some trusted services we use (section 9) handle parts of it abroad, under contracts that protect it to the standard this policy promises. Indian law allows this, except to countries the Government of India restricts, and we'll follow any restriction it sets.
+ 12  How we protect it
+-12.1  Your data is encrypted in transit and at rest. What you keep in Jeevanto is sealed with keys made on your phone. Your Vault can be opened only with those keys.
++12.1  Your data is encrypted in transit and at rest. What you keep in Jeevanto is sealed with keys made on your phone. Your own name and email address are the exception: we keep them readable, because we need them to sign you in, write to you and run your plan. The names of the people you add or invite are sealed like everything else. Your Vault can be opened only with those keys.
+ 12.2  Access inside our company is limited to what's needed to run Jeevanto. No one at Jeevanto reads your content except:
+ to help with a problem you've raised: only if you say yes in the app, only what that problem needs, and the permission closes by itself after a set time;
+ for security or a legal order: approved by our founder, recorded, and you're told afterwards unless the law forbids it.
+--- before (live 1.1, 9 Oct 16:16)
++++ after (live 1.2, 9 Oct 16:18)
+@@ -1,5 +1,5 @@
+ Terms of use
+-Version 1.1 · In force from 6 October 2026
++Version 1.2 · In force from 9 October 2026
+ IN SHORT
+ Jeevanto is a personal assistant. It helps you keep track of what you've promised, what's coming up and what needs doing, and does things for you when you say go.
+ You must be 18 or over to use it.

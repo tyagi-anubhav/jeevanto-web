@@ -1,6 +1,6 @@
 Privacy policy
-Version 1.2 · In force from 9 October 2026
-WHAT CHANGED · 9 OCTOBER 2026
+Version 1.1 · In force from 6 October 2026
+WHAT CHANGED · 6 OCTOBER 2026
 A new section 5.2 says how Jeevanto uses a website for you: it signs in with the login you saved, can make you an account there if you say yes, reads a sign-in code that site emails you, and shows you what it filled. You pay, book or confirm yourself.
 Your Vault now holds logins for websites, not payment options. Jeevanto never pays for you (section 3).
 Jeevanto never sends a text, WhatsApp or email as you. It writes the message, and you send it from your own app (section 4).
@@ -8,8 +8,6 @@ Browserbase, which runs the web browser Jeevanto uses on a site for you, is adde
 Google (section 14): Jeevanto no longer asks to send email from your Gmail, reads only the events in your Google Calendar, and uses Gmail to read a sign-in code a site sends you, once.
 How the website remembers that you're signed in: one sign-in record in your browser, only if you sign in (section 15).
 How we count visits to this website: without cookies and without knowing who you are (sections 9 and 15).
-How long our hosting provider keeps sign-in records (section 10.5).
-Your own name and email address stay readable; everything else is sealed (section 12.1).
 IN SHORT
 We never train AI on your data, and we never sell it.
 Jeevanto reads only the accounts you choose to connect, what you tell it, and what people in your Circle choose to share with you.
@@ -68,70 +66,47 @@ Complaints
 This policy covers the Jeevanto app on iPhone and Android, the website jeevanto.com, and our emails to you. It explains what we collect, why, who else handles it, how long we keep it, and what you can do about it.
 3  What we collect
 We collect only what Jeevanto needs to do what you ask. Here is each kind, and why.
-Your account
+WHAT
 EXAMPLES
-Your name; your email; your mobile number, if you give it; the Google, Apple or Microsoft sign-in you use
 WHY
+Your account
+Your name; your email; your mobile number, if you give it; the Google, Apple or Microsoft sign-in you use
 To create your account, sign you in, and write to you about it
 What you connect
-EXAMPLES
 From the mail, calendar and contacts you choose to connect: the facts that matter, such as a date, a promise, an offer, a person's details. Not the mail itself
-WHY
 To remind you, prepare you, and act for you when you ask
 What you tell or give Jeevanto
-EXAMPLES
 Notes, reminders, requests, documents you upload (for example a medical report or a prescription), photos you share with it
-WHY
 To do what you ask, and to keep it for you
 Your Vault
-EXAMPLES
 Logins you save for websites, and logins for accounts Jeevanto creates for you on a site with your yes (section 5.2)
-WHY
 So Jeevanto can sign you in to that site when you ask it to do something there (section 5.2). Jeevanto never pays for you: you pay on the site's own page. They're locked with a key on your own phone
 Your Circle
-EXAMPLES
 Who is in your Family and who your kin are; what each person has chosen to share
-WHY
 To run Family and kin as each person has allowed
 Payments
-EXAMPLES
 Your plan, what you paid and when, your invoices
-WHY
 To bill you, give refunds, and keep records the law requires. Your card and UPI details stay with Razorpay; we never see them
 Your device
-EXAMPLES
 The phone model, the app version, a notification token, the keys that lock your data on your phone
-WHY
 To send you reminders and notifications, and keep your data locked to you
 How Jeevanto is used
-EXAMPLES
 How much it read from each source; which features you use; errors and crashes
-WHY
 To show you your counts, keep within your plan's allowance, and fix what breaks
 Messages to us
-EXAMPLES
 What you write to support or to the Grievance Officer
-WHY
 To answer you
 Our messages to you
-EXAMPLES
 For each email, text or WhatsApp we send: its reference (like JV-7Q2M-4KDX), the channel, the address with most of it hidden, when it went, and one line on what it was about. Kept for 24 months
-WHY
 So you can check at jeevanto.com/check that a message really came from us
 What you agreed to
-EXAMPLES
 Which version of these terms and this policy you agreed to, when, and how you signed up
-WHY
 To show you a change and ask you again when they change
 Telling you when we're live
-EXAMPLES
 Your name, and the email or mobile number you give on jeevanto.com
-WHY
 Only to tell you when Jeevanto is ready. Deleted once we've told you, or sooner if you ask
 Your recovery contact
-EXAMPLES
 The name you give them, and their email or mobile number (section 8.5)
-WHY
 So they can help you back in if you lose your phone and your email at once
 A fingerprint that can't be reversed. To give the free months once per person, we keep a scrambled, one-way fingerprint of your email, your mobile number and your sign-in account. It can't be turned back into the address or number, and it's used for nothing else. We keep it even after you delete your account (section 10).
 4  What we never collect or do
@@ -176,50 +151,35 @@ a bank account number is always yours to type.
 8.5  Your recovery contact. If you choose someone to help you back in when you've lost your phone and your email at once, we keep the name you give them and the email or mobile number you give us for them, and the fact that they agreed. We use it only to ask them, to remind them once, and, if you ever ask them for help, to let them start your way back in and send them the digits to read out to you. They never see anything in your Jeevanto, and they can never act as you or spend anything. If they don't answer, the ask closes after 30 days and their details go with it. If they say no, their details are deleted at once. They're deleted too when you remove them, when they step down, or when you delete your account. Our security log records each recovery step, such as "started" or "stopped", never what anything said (section 10.2).
 9  Who else handles your data
 We share your data only with companies that help us run Jeevanto, and only what each needs. Each works under a contract that limits what it can do with your data.
-Supabase
+WHO
 WHAT THEY DO
-Hosts our database and servers
 WHERE
+Supabase
+Hosts our database and servers
 India (Mumbai)
 OpenRouter and Together AI (section 7)
-WHAT THEY DO
 Pass one request at a time to an AI model that doesn't train on it
-WHERE
 Outside India
 Razorpay
-WHAT THEY DO
 Takes payments and refunds
-WHERE
 India
 Resend, and Zoho (ZeptoMail) as a fallback
-WHAT THEY DO
 Send our emails to you
-WHERE
 Outside India
 Apple and Google
-WHAT THEY DO
 Deliver notifications to your phone; sign-in, if you choose it
-WHERE
 Global
 Sentry
-WHAT THEY DO
 Records app errors so we can fix them, with personal details removed
-WHERE
 Outside India
 GitHub (part of Microsoft)
-WHAT THEY DO
 Serves our website's pages
-WHERE
 Global
 Browserbase
-WHAT THEY DO
 Runs the web browser Jeevanto uses on a site for you, when that job doesn't run on your phone. It sees only that job's pages
-WHERE
 Outside India
 Cloudflare
-WHAT THEY DO
 Counts visits to this website, without cookies (section 15)
-WHERE
 Global
 We keep this list up to date, and change it here before we add a new service.
 We also share data:
@@ -235,11 +195,10 @@ A security log: when you signed in, from which device, and which actions were ta
 How long each of these is kept is set for the country you signed up in, and is shown here as it stands.
 10.3  A data source you disconnect: what Jeevanto read from it is deleted, unless you choose to keep facts it already found.
 10.4  If you ask us to keep something for a legal claim or a complaint, or the law requires us to, we keep it only for that, only for as long as needed.
-10.5  When you sign in, our hosting provider, Supabase, records your email address and the time in its sign-in records, as part of running the service, and keeps them for 7 days before deleting them.
 11  Where your data is kept
 Your data is kept in India. Some trusted services we use (section 9) handle parts of it abroad, under contracts that protect it to the standard this policy promises. Indian law allows this, except to countries the Government of India restricts, and we'll follow any restriction it sets.
 12  How we protect it
-12.1  Your data is encrypted in transit and at rest. What you keep in Jeevanto is sealed with keys made on your phone. Your own name and email address are the exception: we keep them readable, because we need them to sign you in, write to you and run your plan. The names of the people you add or invite are sealed like everything else. Your Vault can be opened only with those keys.
+12.1  Your data is encrypted in transit and at rest. What you keep in Jeevanto is sealed with keys made on your phone. Your Vault can be opened only with those keys.
 12.2  Access inside our company is limited to what's needed to run Jeevanto. No one at Jeevanto reads your content except:
 to help with a problem you've raised: only if you say yes in the app, only what that problem needs, and the permission closes by itself after a set time;
 for security or a legal order: approved by our founder, recorded, and you're told afterwards unless the law forbids it.
@@ -256,14 +215,13 @@ complain to us (section 19), and then to the Data Protection Board of India.
 Most of these you can do yourself, in the app, at any time. For the rest, write to privacy@jeevanto.com. We'll answer you within the time section 19 sets.
 14  Google user data
 If you connect a Google account, Jeevanto asks Google for only these permissions, and uses each only for the features you see in the app:
-Read your Gmail
+PERMISSION
 WHAT JEEVANTO DOES WITH IT
+Read your Gmail
 Finds the facts that matter in mail you receive, such as a booking, a date, a bill or an offer, so it can remind you, prepare you and find things for you. When you've asked Jeevanto to sign in to a site, it also reads the sign-in code that site emails you, and uses it once (section 5.2). It keeps the facts, each pointing to the email it came from. It doesn't keep the mail itself, and it never keeps a code.
 Read the events in your Google Calendar
-WHAT JEEVANTO DOES WITH IT
 Knows your appointments and plans, so it can remind you and prepare you. It never changes your calendar.
 Read your Google Contacts
-WHAT JEEVANTO DOES WITH IT
 Knows the people you mention by name, so it can find their details when you ask. It never changes a contact.
 Jeevanto's use and transfer to any other app of information received from Google APIs will adhere to the Google API Services User Data Policy, including the Limited Use requirements.
 In particular:
