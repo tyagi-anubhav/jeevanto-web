@@ -9,3 +9,7 @@ Chromium and WebKit, each region: the legal pages' "In force from" date, the Wha
   172000 → "1,72,000" (en-IN), "172,000" (en-US, en-GB): both engines PASS.
 15/16 as run; the one miss is the test's own expectation (above). Site check: 25/25 fixed addresses, 203 links, axe 0,
 no other host, no cookie. With no script, every built page reads exactly as live (checked page by page).
+
+LIVE, https://jeevanto.com (main 719c2f3), 9 Oct 2026 13:21 IST, SCREENS' slot, read-only: 16/16 in Chromium and WebKit
+(US and Canada month first; India, UK and no region day first; UK 24-hour; WebKit's bare "en" reported as en-US and
+followed; 172000 → "1,72,000" in India, "172,000" elsewhere).
