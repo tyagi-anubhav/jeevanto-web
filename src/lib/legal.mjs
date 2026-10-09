@@ -12,7 +12,7 @@ export const PATHS = { policy: '/privacy-policy', terms: '/terms', refunds: '/re
 // The dated "What changed" note at the top of a page, as the policy's section 18 promises (cc-website-03). WEBSITE's
 // words, listing the approved edits in plain words; the policy's own text is Cowork's, word for word.
 export const CHANGES = {
-  policy: { date: '6 October 2026', points: [
+  policy: { date: '2026-10-06', points: [
     'A new section 5.2 says how Jeevanto uses a website for you: it signs in with the login you saved, can make you an account there if you say yes, reads a sign-in code that site emails you, and shows you what it filled. You pay, book or confirm yourself.',
     'Your Vault now holds logins for websites, not payment options. Jeevanto never pays for you (section 3).',
     'Jeevanto never sends a text, WhatsApp or email as you. It writes the message, and you send it from your own app (section 4).',
@@ -28,6 +28,14 @@ const ANCHORS = { policy: { '14': 'google-user-data' } };
 
 const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
+// Dates and numbers follow the visitor's region (decision 246). Values arrive as tokens, ⟦d:YYYY-MM-DD⟧ and ⟦n:1234⟧, and
+// are written here with the default (day first; Indian grouping), marked so /js/region.js can rewrite them for the visitor.
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+export const longDate = iso => { const [y, m, d] = iso.split('-').map(Number); return `${d} ${MONTHS[m - 1]} ${y}`; };
+export const tokens = (html, upper = false) => html
+  .replace(/⟦d:(\d{4}-\d{2}-\d{2})⟧/g, (x, iso) => `<span data-jv-date="${iso}"${upper ? ' data-jv-upper' : ''}>${upper ? longDate(iso).toUpperCase() : longDate(iso)}</span>`)
+  .replace(/⟦n:(\d+)⟧/g, (x, n) => `<span data-jv-num="${n}">${Number(n).toLocaleString('en-IN')}</span>`);
+
 function values() {
   const c = config, L = c.legal || {};
   return Object.assign({}, L, {
@@ -35,7 +43,7 @@ function values() {
     cin: c.cin || '(To be confirmed)', gstin: c.gstin || '(To be confirmed)',
     support_email: c.supportEmail, grievance_email: c.privacyEmail, security_email: c.securityEmail,
     support_reply_days: String(c.replyDays), free_months: String(c.freeMonths),
-    founding_places: Number(c.foundingPlaces).toLocaleString('en-IN'), founding_years: String(c.foundingYears),
+    founding_places: `⟦n:${Number(c.foundingPlaces)}⟧`, founding_years: String(c.foundingYears),
     grace_days: String(c.familyGraceDays), backup_days: String(c.backupDays),
   });
 }
@@ -63,7 +71,7 @@ function runs(str, forceBold) {
   let out = '', b = false, i = false, last = 0, m;
   const re = /\*\*|\[([^\]]+)\]\(([^)]+)\)|\*/g;
   const push = x => { if (!x) return; const w = (b || forceBold) ? 600 : 400; const st = (w === 600 ? 'font-weight:600;' : '') + (i ? 'font-style:italic;' : '');
-    out += st ? `<span style="${st}">${esc(x)}</span>` : esc(x); };
+    out += st ? `<span style="${st}">${tokens(esc(x))}</span>` : tokens(esc(x)); };
   while ((m = re.exec(str))) {
     push(str.slice(last, m.index));
     if (m[0] === '**') b = !b; else if (m[0] === '*') i = !i;

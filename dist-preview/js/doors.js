@@ -26,10 +26,8 @@
   window.jvName = function (root, name) { root.querySelectorAll('[data-name]').forEach(function (el) { el.textContent = name; }); };
   window.jvWhen = function (iso) {
     var d = new Date(iso); if (isNaN(d)) return '';
-    // the visitor's region (decision 246, /js/region.js): "6 Oct 2026, 9:14 am" or "Oct 6, 2026, 9:14 am", the clock as the region writes it
-    var R = window.jvRegion;
-    var day = R ? R.date(d, true) : d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-    var t = R ? R.time(d) : d.toLocaleTimeString('en-GB', { hour: 'numeric', minute: '2-digit', hour12: true }).replace(/\s?([ap])\.?m\.?$/i, ' $1m').toLowerCase();
+    var day = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    var t = d.toLocaleTimeString('en-GB', { hour: 'numeric', minute: '2-digit', hour12: true }).replace(/\s?([ap])\.?m\.?$/i, ' $1m').toLowerCase();
     return day + ', ' + t;
   };
 })();

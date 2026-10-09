@@ -1,0 +1,1 @@
+[data-sec-panel]:not([hidden]){display:flex}[data-circle-sec]:has([data-sec-panel]:not([hidden])) [data-intro]{display:inline!important}

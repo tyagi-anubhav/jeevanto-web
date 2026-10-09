@@ -14,11 +14,11 @@ function fromSettings(s) {
   const legal = {};
   for (const key of ['grievance_ack_hours', 'grievance_resolve_days', 'held_refund_months', 'tax_record_years', 'price_notice_days', 'terms_notice_days', 'shutdown_notice_days', 'refund_start_days', 'bank_refund_days', 'liability_months']) if (v(L[key]) != null) legal[key] = String(v(L[key]));
   if (L.security_log_period && v(L.security_log_period) != null) { const q = Number(v(L.security_log_period)), u = String(L.security_log_period.unit || '').replace(/s$/, ''); legal.security_log_period = (NUM_WORDS[q] || q) + ' ' + u + (q === 1 ? '' : 's'); }
-  if (L.liability_floor && v(L.liability_floor) != null) legal.liability_floor = (L.liability_floor.currency === 'INR' ? '₹' : (L.liability_floor.currency || '') + ' ') + Number(v(L.liability_floor)).toLocaleString('en-IN');
+  if (L.liability_floor && v(L.liability_floor) != null) legal.liability_floor = (L.liability_floor.currency === 'INR' ? '₹' : (L.liability_floor.currency || '') + ' ') + '⟦n:' + Number(v(L.liability_floor)) + '⟧'; // a number token (decision 246)
   if (n.legal_version) legal.version = String(n.legal_version);
   if (n.in_force_date) { // the console holds a date as YYYY-MM-DD; the pages say "6 October 2026"
     const d = String(n.in_force_date), m = d.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-    legal.in_force_date = m ? new Date(Date.UTC(+m[1], +m[2] - 1, +m[3])).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }) : d;
+    legal.in_force_date = m ? `⟦d:${d}⟧` : d; // a date token: legal.mjs writes it day first, region.js rewrites it for the visitor (decision 246)
   }
   return {
     siteMode: s.site_mode === 'coming_soon' ? 'coming soon' : s.site_mode === 'live' ? 'full' : undefined,
