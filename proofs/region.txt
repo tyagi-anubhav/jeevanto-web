@@ -1,0 +1,11 @@
+decision 246 — dates and numbers by the visitor's region, local build of region-246 (61ec373), 9 Oct 2026 13:16 IST, SCREENS' slot
+Chromium and WebKit, each region: the legal pages' "In force from" date, the What changed date, ₹5,000, and /check's sent time (09:14 UTC, shown in IST):
+  en-US, en-CA: "October 6, 2026" · "OCTOBER 6, 2026" · ₹5,000 · "Oct 1, 2026, 2:44 pm"   (both engines: PASS)
+  en-IN:        "6 October 2026" · "6 OCTOBER 2026" · ₹5,000 · "1 Oct 2026, 2:44 pm"     (both engines: PASS)
+  en-GB:        "6 October 2026" · "6 OCTOBER 2026" · ₹5,000 · "1 Oct 2026, 14:44"       (both engines: PASS)
+  en (no region): Chromium reports "en" → the built default, "6 October 2026" (PASS); WebKit reports "en-US" for a bare
+    "en" → US formats, as the browser asks. First run marked it FAIL (the test's expectation, not the page); the tool
+    now follows the reported region. Not re-run in this slot: proved on live in the next one.
+  172000 → "1,72,000" (en-IN), "172,000" (en-US, en-GB): both engines PASS.
+15/16 as run; the one miss is the test's own expectation (above). Site check: 25/25 fixed addresses, 203 links, axe 0,
+no other host, no cookie. With no script, every built page reads exactly as live (checked page by page).

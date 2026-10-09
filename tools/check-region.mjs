@@ -22,7 +22,11 @@ for (const [en, E] of [['chromium', chromium], ['webkit', webkit]]) {
     const n = await p.locator('[data-jv-num="5000"]').innerText(), words = (await p.locator('article').innerText()).includes('whichever is higher');
     await p.goto(BASE + '/check');
     const w = await p.evaluate(() => window.jvWhen('2026-10-01T09:14:03Z'));
-    ok(`${en} ${c.locale}: "${d}" · "${u}" · ₹${n} · /check "${w}"`, d === c.date && u === c.upper && n === c.num && c.when.test(w) && words);
+    // a bare "en" is whatever the browser reports: Chromium keeps "en" (no region, the built default stands); WebKit
+    // reports "en-US", and the page follows it, as it should. The expectation follows the reported region.
+    const reported = await p.evaluate(() => window.jvRegion.region);
+    const want = c.locale === 'en' && reported === 'US' ? CASES[0] : c;
+    ok(`${en} ${c.locale}${c.locale === 'en' ? ' (reported: ' + (reported || 'no region') + ')' : ''}: "${d}" · "${u}" · ₹${n} · /check "${w}"`, d === want.date && u === want.upper && n === want.num && want.when.test(w) && words);
     await ctx.close();
   }
   // a large number groups by region: lakh in India, thousands elsewhere
