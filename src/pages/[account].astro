@@ -51,6 +51,18 @@ const badges = (
 
     <div data-state="busy" hidden role="status" style={S.quiet}>One moment.</div>
 
+    <form data-state="name" hidden novalidate style="display:flex; flex-direction:column; gap:20px;">
+      <h1 tabindex="-1" style={S.h1}>Good, that’s you. Now your name.</h1>
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <label for="sg-first" class="visually-hidden">First name</label>
+        <input id="sg-first" class="jv-field" autocomplete="given-name" placeholder="First name" required style={S.field}>
+        <label for="sg-last" class="visually-hidden">Last name (optional)</label>
+        <input id="sg-last" class="jv-field" autocomplete="family-name" placeholder="Last name (optional)" style={S.field}>
+      </div>
+      <p data-name-err role="alert" hidden style={S.err.replace('margin-top:-10px;', '')}></p>
+      <button type="submit" data-name-go style={S.primary}>Create my account</button>
+    </form>
+
     <div data-state="review" hidden style="display:flex; flex-direction:column; gap:20px;">
       <h1 tabindex="-1" style={S.h1}>This is who you are, as we have it.</h1>
       <div data-rows style="background:var(--card); border-radius:16px; padding:4px 20px;"></div>

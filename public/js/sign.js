@@ -39,7 +39,7 @@
   $('[data-here]').addEventListener('click', function () { signedIn(root.__profile); });
   $('[data-out]').addEventListener('click', function () {
     var b = this; window.jvBusy(b, true);
-    call('/auth/v1/logout', {}).then(function () { window.jvBusy(b, false); keep(null); root.__profile = null; show('ask'); say(''); });
+    call('/auth/v1/logout', {}).then(function () { window.jvBusy(b, false); keep(null); root.__profile = null; if (CREATE) { location.assign('/sign-in'); return; } show('ask'); say(''); });
   });
 
   // 2 · back from Google or Apple: read the fragment once, then wipe it from the address and the history
@@ -57,7 +57,7 @@
         keep({ access: t.body.access_token, refresh: t.body.refresh_token });
         return call('/auth/v1/user', { method: 'GET' });
       });
-    }).then(function () { return profile(3); }).then(signedIn)
+    }).then(function () { return profile(3); }).then(function (q) { return usable(q.display_name) ? signedIn(q) : askName(q, signedIn); })
       .catch(function () { keep(null); show('ask'); });
     return;
   }
@@ -77,21 +77,41 @@
     var created = Date.parse(u.body.created_at), last = Date.parse(u.body.last_sign_in_at);
     var isNew = Math.abs(last - created) < 60000; // as the app tells them apart (CreateAccountScreen: created_at === last_sign_in_at)
     return profile(6).then(function (p) {
-      if (!isNew) return signedIn(p);
+      if (!isNew) return usable(p.display_name) ? signedIn(p) : askName(p, signedIn);
       // a first sign-in records which Terms and Privacy policy this page showed (decision 204; ENGINES' agreement door)
       return call('/functions/v1/account/agreement', { body: { terms_version: VERSION, privacy_version: VERSION } }).then(function (a) {
         if (a.status === 409) { keep(null); show('ask'); say('Our Terms of use or Privacy policy changed just now. Reload this page, read them, and try again.'); return; }
         if (a.status !== 200) throw a;
-        review(p);
+        usable(p.display_name) ? review(p) : askName(p, review);
       });
     });
   }).catch(function () { keep(null); show('ask'); say(TROUBLE); });
 
-  function firstName(p) { var n = String(p.display_name || '').trim(); return n && n.indexOf('@') < 0 ? n.split(/\s+/)[0] : ''; }
+  // a name the page may show: has letters and is never an address (an Apple relay email once showed as the name, 9 Oct)
+  function usable(n) { n = String(n || '').trim(); return /\p{L}/u.test(n) && n.indexOf('@') < 0 ? n : ''; }
+  // no usable name from the provider: ask (the sign-up's own step-3 words), save it with the person's own session to
+  // the sign-in record's display_name; the server's trigger copies it to the account (never a value with "@")
+  function askName(p, then) {
+    var f = root.querySelector('[data-state="name"]'), err = f.querySelector('[data-name-err]');
+    f.onsubmit = function (e) {
+      e.preventDefault();
+      var first = usable(document.getElementById('sg-first').value), last = usable(document.getElementById('sg-last').value);
+      if (!first) { err.textContent = 'Type your first name.'; err.hidden = false; return; }
+      err.hidden = true; var b = f.querySelector('[data-name-go]'); window.jvBusy(b, true);
+      var name = last ? first + ' ' + last : first;
+      call('/auth/v1/user', { method: 'PUT', body: { data: { display_name: name } } }).then(function (r) {
+        if (r.status !== 200) throw r;
+        return (function wait(n) { return profile(3).then(function (q) { return usable(q.display_name) || n <= 0 ? q : new Promise(function (ok) { setTimeout(ok, 1000); }).then(function () { return wait(n - 1); }); }); })(5);
+      }).then(function (q) { window.jvBusy(b, false); if (!usable(q.display_name)) q.display_name = name; then(q); })
+        .catch(function () { window.jvBusy(b, false); err.textContent = TROUBLE; err.hidden = false; });
+    };
+    show('name');
+  }
+  function firstName(p) { var n = usable(p.display_name); return n ? n.split(/\s+/)[0] : ''; }
   // 4 · who you are, as we have it (the 30 Sep words; with Google or Apple: the name, and the email, verified)
   function review(p) {
     var mail = (p.channels || []).filter(function (c) { return c.channel_type === 'email'; })[0];
-    var rows = [['Name', String(p.display_name || '').trim(), '']];
+    var rows = [['Name', usable(p.display_name), '']];
     if (mail) rows.push(['Email', mail.destination, mail.verified ? 'verified' : 'not verified']);
     var box = $('[data-rows]'); box.textContent = '';
     rows.forEach(function (r, i) {
