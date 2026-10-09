@@ -1,4 +1,4 @@
-decision 229 — the sign-in pages on the preview https://jeevanto-site-preview.pages.dev, 2026-10-09T11:47:41.445Z
+decision 229 — the sign-in pages on the preview https://jeevanto-site-preview.pages.dev, 2026-10-09T15:47:36.523Z
 PASS chromium phone dark /sign-in: "Welcome back.", Google and Apple only, no consent line, noindex — h1="Welcome back." buttons=["Continue with Google","Continue with Apple"] consent=0 robots=noindex, nofollow roboto=true
 PASS chromium phone dark /sign-in: axe
 PASS chromium phone dark /create-account: "Create your account", Google and Apple only, decision 204’s line with both links, noindex — h1="Create your account" buttons=["Continue with Google","Continue with Apple"] consent=1 robots=noindex, nofollow roboto=true
@@ -34,3 +34,5 @@ PASS webkit nothing kept in the browser when nobody signed in — null
 PASS jeevanto.com/sign-in is still hidden — 404
 PASS jeevanto.com/create-account is still hidden — 404
 other hosts reached: accounts.google.com, accounts.youtube.com, appleid.apple.com, appleid.cdn-apple.com, fonts.gstatic.com, lh3.googleusercontent.com, ssl.gstatic.com, tqaiyxijluboflyoykoi.supabase.co, www.apple.com, www.gstatic.com
+
+NOTE (9 Oct 21:16): after each preview deploy, the first run of this check timed out on its first page (the noindex tag never seen); an immediate re-run passed 34/34. Seen at 17:15 and 21:15. The page itself is right (read back by curl and a single browser load); a first visit through Access after a deploy seems to wait. Not a site fault.
