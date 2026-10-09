@@ -180,13 +180,15 @@ How long each of these is kept is set for the country you signed up in, and is s
 
 10.4 If you ask us to keep something for a legal claim or a complaint, or the law requires us to, we keep it only for that, only for as long as needed.
 
+10.5 When you sign in, our hosting provider, Supabase, records your email address and the time in its sign-in records, as part of running the service, and keeps them for 7 days before deleting them.
+
 ## 11. Where your data is kept
 
 **Your data is kept in India.** Some trusted services we use (section 9) handle parts of it abroad, under contracts that protect it to the standard this policy promises. Indian law allows this, except to countries the Government of India restricts, and we'll follow any restriction it sets.
 
 ## 12. How we protect it
 
-12.1 Your data is encrypted in transit and at rest. What you keep in Jeevanto is sealed with keys made on your phone. Your Vault can be opened only with those keys.
+12.1 Your data is encrypted in transit and at rest. What you keep in Jeevanto is sealed with keys made on your phone. **Your own name and email address are the exception:** we keep them readable, because we need them to sign you in, write to you and run your plan. The names of the people you add or invite are sealed like everything else. Your Vault can be opened only with those keys.
 
 12.2 Access inside our company is limited to what's needed to run Jeevanto. **No one at Jeevanto reads your content** except:
 - **to help with a problem you've raised**: only if you say yes in the app, only what that problem needs, and the permission closes by itself after a set time;

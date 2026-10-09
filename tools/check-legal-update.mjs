@@ -34,7 +34,7 @@ const NOW = {
     'Finds the facts that matter in mail you receive, such as a booking, a date, a bill or an offer, so it can remind you, prepare you and find things for you. When you\'ve asked Jeevanto to sign in to a site, it also reads the sign-in code that site emails you, and uses it once (section 5.2). It keeps the facts, each pointing to the email it came from. It doesn\'t keep the mail itself, and it never keeps a code.',
     'Read the events in your Google Calendar',
     'Knows your appointments and plans, so it can remind you and prepare you. It never changes your calendar.',
-    'WHAT CHANGED · 6 OCTOBER 2026',
+    'WHAT CHANGED · 9 OCTOBER 2026',
     // policy 1.1: decisions 231 (the sign-in record) and 233 (visit counts), Cowork's words of 6 Oct 15:30
     'This website counts visits without cookies and without knowing who you are. No ads, and no tracking. It keeps one sign-in record in your browser, only if you sign in.',
     'The website: counting visits, and signing in',
@@ -42,13 +42,18 @@ const NOW = {
     'Counts visits to this website, without cookies (section 15)',
     'How the website remembers that you’re signed in: one sign-in record in your browser, only if you sign in (section 15).',
     'How we count visits to this website: without cookies and without knowing who you are (sections 9 and 15).',
-    'Version 1.1 · In force from 6 October 2026',
+    'Version 1.2 · In force from 9 October 2026',
+    // policy 1.2: decisions 247 (10.5, N = 7 days from ENGINES) and 241/248 (12.1), Cowork's go 9 Oct 14:30
+    'When you sign in, our hosting provider, Supabase, records your email address and the time in its sign-in records, as part of running the service, and keeps them for 7 days before deleting them.',
+    'Your own name and email address are the exception: we keep them readable, because we need them to sign you in, write to you and run your plan. The names of the people you add or invite are sealed like everything else.',
+    'How long our hosting provider keeps sign-in records (section 10.5).',
+    'Your own name and email address stay readable; everything else is sealed (section 12.1).',
   ],
-  terms: ['When you book, order or pay on another company\'s website through Jeevanto, your contract is with that company, not with us. Their prices, terms, cancellation rules and refunds apply.', 'Version 1.1 · In force from 6 October 2026'],
+  terms: ['When you book, order or pay on another company\'s website through Jeevanto, your contract is with that company, not with us. Their prices, terms, cancellation rules and refunds apply.', 'Version 1.2 · In force from 9 October 2026'],
 };
 const GONE = {
-  policy: ['It sets one cookie, only if you sign in', 'The website and cookies', 'no trackers and no ads', 'one cookie, just to keep you signed in', 'WHAT CHANGED · 5 OCTOBER 2026', 'Version 1.0', 'launch date', 'Passwords and payment options you save for sites', 'We never act as you, or claim to be you.', 'Send email from your Gmail', 'when Jeevanto books on a site, it gives that site the details the booking needs, after you say go', 'an offer or a code a site sends you', 'Read your Google Calendar'],
-  terms: ['When Jeevanto books, orders or pays on another company\'s website', 'Version 1.0'],
+  policy: ['It sets one cookie, only if you sign in', 'The website and cookies', 'no trackers and no ads', 'one cookie, just to keep you signed in', 'WHAT CHANGED · 5 OCTOBER 2026', 'WHAT CHANGED · 6 OCTOBER 2026', 'Version 1.0', 'Version 1.1', 'launch date', 'Passwords and payment options you save for sites', 'We never act as you, or claim to be you.', 'Send email from your Gmail', 'when Jeevanto books on a site, it gives that site the details the booking needs, after you say go', 'an offer or a code a site sends you', 'Read your Google Calendar'],
+  terms: ['When Jeevanto books, orders or pays on another company\'s website', 'Version 1.0', 'Version 1.1'],
 };
 const PAGES = { policy: '/privacy-policy', terms: '/terms' };
 const norm = t => t.replace(/[‘’]/g, "'").replace(/[ \t]+/g, ' ').replace(/\n{2,}/g, '\n').trim();
@@ -58,7 +63,7 @@ if (mode === 'read') {
   for (const [en, E] of [['chromium', chromium], ['webkit', webkit]]) {
     const b = await E.launch();
     for (const [dev, vp] of [['phone', { width: 390, height: 844 }], ['laptop', { width: 1440, height: 900 }]]) {
-      const p = await (await b.newContext({ viewport: vp })).newPage();
+      const p = await (await b.newContext({ viewport: vp, locale: 'en-IN' })).newPage(); // the built default (decision 246)
       for (const [k, path] of Object.entries(PAGES)) {
         await p.goto(BASE + path, { waitUntil: 'load' });
         const text = norm(await p.locator('article').innerText());
