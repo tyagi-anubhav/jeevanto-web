@@ -49,7 +49,8 @@ const agreed = await lib.sql(`select document, version, way_in from sentinel_ide
 // The account's creation records the agreement first, with way_in = the sign-in provider (email, google, apple, mobile;
 // ENGINES' _record_legal_agreement, decision 204); the site's door then adds nothing for the same version, so
 // 'website' appears only when no earlier record exists (ENGINES, 7 Oct 00:2x).
-ok('the agreement is recorded: Terms and Privacy at the versions the page showed (1.1), by the sign-in or the site', agreed.length === 2 && agreed.every(a => a.version === '1.1' && ['email', 'google', 'apple', 'mobile', 'website'].includes(a.way_in)), JSON.stringify(agreed));
+const pageVersion = await p.evaluate(() => document.querySelector("[data-sign]").getAttribute("data-legal-version"));
+ok(`the agreement is recorded: Terms and Privacy at the version the page showed (${pageVersion}), by the sign-in or the site`, !!pageVersion && agreed.length === 2 && agreed.every(a => a.version === pageVersion && ['email', 'google', 'apple', 'mobile', 'website'].includes(a.way_in)), JSON.stringify(agreed));
 
 // 4 · that's right → account made → or continue here → signed in
 await p.click('[data-right]');
