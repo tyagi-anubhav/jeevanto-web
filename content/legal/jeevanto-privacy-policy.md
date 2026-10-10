@@ -152,13 +152,15 @@ We share your data only with companies that help us run Jeevanto, and only what 
 | OpenRouter and Together AI (section 7) | Pass one request at a time to an AI model that doesn't train on it | Outside India |
 | Razorpay | Takes payments and refunds | India |
 | Resend, and Zoho (ZeptoMail) as a fallback | Send our emails to you | Outside India |
-| Apple and Google | Deliver notifications to your phone; sign-in, if you choose it | Global |
+| Apple and Google | Deliver notifications to your phone; sign-in, if you choose it; turn what you say to Jeevanto into text | Global |
 | Sentry | Records app errors so we can fix them, with personal details removed | Outside India |
 | GitHub (part of Microsoft) | Serves our website's pages | Global |
 | Browserbase | Runs the web browser Jeevanto uses on a site for you, when that job doesn't run on your phone. It sees only that job's pages | Outside India |
 | Cloudflare | Counts visits to this website, without cookies (section 15) | Global |
 
 We keep this list up to date, and change it here before we add a new service.
+
+**Speaking to Jeevanto.** When you talk to Jeevanto, your phone's own speech service turns your words into text: Apple on iPhone, Google on Android. Depending on your phone, this happens on the phone itself or on Apple's or Google's servers. Jeevanto receives only the text, never the recording. When Jeevanto reads a reply aloud, it uses your phone's own voice.
 
 We also share data:
 - **when you ask us to**: for example, when Jeevanto signs in or books on a site for you, it gives that site your saved login, or the details the booking needs, and only that site;

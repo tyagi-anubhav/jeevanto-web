@@ -21,6 +21,7 @@ export const CHANGES = {
   policy: { date: FORCE_DATE, points: [
     'Deleting your account: you’re offered a copy first, then everything is deleted straight away, and no one restores from backups (In short, section 10.2).',
     'A problem report you send from the app is read by our team, and how long we keep it (sections 3 and 12.1).',
+    'Speaking to Jeevanto: your phone’s own speech service turns what you say into text, and reads replies aloud in your phone’s own voice (section 9).',
     'A new section 5.2 says how Jeevanto uses a website for you: it signs in with the login you saved, can make you an account there if you say yes, reads a sign-in code that site emails you, and shows you what it filled. You pay, book or confirm yourself.',
     'Your Vault now holds logins for websites, not payment options. Jeevanto never pays for you (section 3).',
     'Jeevanto never sends a text, WhatsApp or email as you. It writes the message, and you send it from your own app (section 4).',
