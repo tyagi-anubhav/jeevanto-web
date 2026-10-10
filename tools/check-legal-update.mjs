@@ -55,6 +55,10 @@ const NOW = {
     'A problem report you send us from the app is read by our team, to help you. We delete it 12 months after we close it, or when you delete your account, whichever comes first.',
     'Deleting your account: you\'re offered a copy first, then everything is deleted straight away, and no one restores from backups (In short, section 10.2).',
     'A problem report you send from the app is read by our team, and how long we keep it (sections 3 and 12.1).',
+    // decisions 210 and 213 (2 Oct), the founder's words
+    'Deliver notifications to your phone; sign-in, if you choose it; turn what you say to Jeevanto into text',
+    'Speaking to Jeevanto. When you talk to Jeevanto, your phone\'s own speech service turns your words into text: Apple on iPhone, Google on Android. Depending on your phone, this happens on the phone itself or on Apple\'s or Google\'s servers. Jeevanto receives only the text, never the recording. When Jeevanto reads a reply aloud, it uses your phone\'s own voice.',
+    'Speaking to Jeevanto: your phone\'s own speech service turns what you say into text, and reads replies aloud in your phone\'s own voice (section 9).',
     'Version 1.3 · In force from',
   ],
   terms: ['When you book, order or pay on another company\'s website through Jeevanto, your contract is with that company, not with us. Their prices, terms, cancellation rules and refunds apply.', 'or without the app by writing to us from the email address on your account. We send a link to that address to confirm it\'s you.', 'Version 1.3 · In force from'],
