@@ -1,14 +1,20 @@
-decision 229 — after the sign-in, on the preview https://jeevanto-site-preview.pages.dev, 2026-10-09T15:47:59.856Z (a test identity; teardown follows)
+decision 229 — after the sign-in, on the preview https://jeevanto-site-preview.pages.dev, 2026-10-10T09:01:43.524Z (a test identity; teardown follows)
 PASS a test account (the test domain) and its session — account provisioned
 PASS the account door answers the preview's preflight — 204 https://jeevanto-site-preview.pages.dev
 PASS no name from the provider → "Good, that’s you. Now your name.", and no address shown as a name — h1="Good, that’s you. Now your name."
-PASS the typed name is stored on the account (never an address) — [{"display_name":"Uma Website"}]
-PASS then "This is who you are, as we have it." with the typed name, and the email marked verified — ["Name Uma Website","Email ‹test address› verified"]
+PASS the name step says which account is signed in ("Signed in as …")
+PASS the typed name is stored on the account (never an address) — [{"display_name":"Sai Krishna Loooooooooooooooooooooooooooooooooongname"}]
+PASS then "This is who you are, as we have it." with the typed name, and the email marked verified — ["Name Sai Krishna Loooooooooooooooooooooooooooooooooongname","Email ‹test address› verified"]
 PASS the tokens are wiped from the address — https://jeevanto-site-preview.pages.dev/create-account
 PASS one sign-in record kept in the browser — jv-sign-in present
 PASS the agreement is recorded: Terms and Privacy at the version the page showed (1.2), by the sign-in or the site — [{"document":"privacy","version":"1.2","way_in":"email"},{"document":"terms","version":"1.2","way_in":"email"}]
 PASS "That’s right" → "Now, get the app…" with the welcome gift and both store badges — Now, get the app to make the most of Jeevanto. A WELCOME GIFT 3 months of Plus, free, waiting for you in the app. They s
-PASS "Or continue here" → "You’re signed in as Uma."
+PASS "Or continue here" is left-aligned with the heading (Cowork, 10 Oct) — 20 vs 20
+PASS "Or continue here" → "You’re signed in as Sai Krishna." (the whole first name, decision 254)
+PASS a long name never pushes the page sideways on a phone (390 wide)
+PASS signed in: one Sign out, in the nav’s top-right corner, and none on the page (founder, 10 Oct 12:50)
+PASS every page: the nav says Sign out while signed in
+PASS the first name is saved exactly as typed, beside the full name (decision 254) — {"first":"Sai Krishna"}
 PASS a return visit is still signed in (the record checked against the engine)
 PASS a return visit records no second agreement — 2
 PASS Sign out → "Welcome back." (the Sign in page), and the record is gone from the browser — https://jeevanto-site-preview.pages.dev/sign-in

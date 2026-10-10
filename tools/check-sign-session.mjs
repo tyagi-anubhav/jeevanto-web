@@ -43,7 +43,8 @@ const kept = () => p.evaluate(() => { try { return localStorage.getItem('jv-sign
 await p.goto(`${BASE}/create-account#access_token=${tok.access_token}&refresh_token=${tok.refresh_token}&token_type=bearer&expires_in=${tok.expires_in}`);
 const askedName = await shown('name');
 const nameStepH1 = askedName ? await p.locator('[data-state="name"] h1').innerText() : '';
-const leaked = await p.evaluate(() => /@/.test(document.querySelector('main').innerText.split('YOUR ACCOUNT')[1] || '') && !document.querySelector('[data-state="review"]:not([hidden])'));
+// where a name would show (the heading and the name fields), never an address; "Signed in as …" names the address on purpose
+const leaked = await p.evaluate(() => { const f = document.querySelector('[data-state="name"]'); return /@/.test(f.querySelector('h1').innerText) || [...f.querySelectorAll('input')].some(i => /@/.test(i.value)); });
 ok('no name from the provider → "Good, that’s you. Now your name.", and no address shown as a name', askedName && nameStepH1 === 'Good, that’s you. Now your name.' && !leaked, `h1="${nameStepH1}"`);
 ok('the name step says which account is signed in ("Signed in as …")', /^Signed in as \S+@\S+\.$/.test(await p.locator('[data-who]').innerText()));
 // decision 254 (TESTS' case): a two-word first name and a 40-character last name
@@ -89,7 +90,7 @@ ok('a return visit records no second agreement', again[0].n === 2, String(again[
 
 // 6 · sign out clears it
 await p.click('[data-nav-sign]');
-await p.waitForURL(u => u.pathname === '/sign-in', { timeout: 10000 }).catch(() => {});
+await p.waitForFunction(() => !localStorage.getItem('jv-sign-in') && location.hash === '', null, { timeout: 15000 }).catch(() => {});
 ok('Sign out → "Welcome back." (the Sign in page), and the record is gone from the browser', p.url().endsWith('/sign-in') && await shown('ask') && (await p.locator('[data-state="ask"] h1').innerText()) === 'Welcome back.' && (await kept()) === null && (await p.locator('[data-nav-sign]').innerText()) === 'Sign in', p.url());
 await p.goto(`${BASE}/sign-in`);
 ok('after signing out, a return visit is signed out', await shown('ask', 5000) && !(await p.locator('[data-state="in"]').isVisible()));
