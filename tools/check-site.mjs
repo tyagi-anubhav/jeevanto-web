@@ -9,7 +9,7 @@ import AxeBuilder from '@axe-core/playwright';
 import { writeFileSync, mkdirSync, readFileSync } from 'node:fs';
 const BASE = (process.argv[2] || 'http://127.0.0.1:4321').replace(/\/$/, '');
 const host = new URL(BASE).host;
-const FIXED = ['/', '/what-it-does', '/circle', '/kin-mode', '/our-promise', '/help', '/privacy-policy', '/terms', '/refunds', '/check', '/recover', '/recover/answer', '/invited'];
+const FIXED = ['/', '/what-it-does', '/circle', '/kin-mode', '/our-promise', '/delete-account', '/help', '/privacy-policy', '/terms', '/refunds', '/check', '/recover', '/recover/answer', '/invited'];
 // The one outside address the site may reach: Cloudflare Web Analytics' report (decision 233). Counted apart, and every
 // other host is still a fault. Off jeevanto.com the report is answered here, so a local check never counts a visit.
 const COUNTER = 'https://cloudflareinsights.com/cdn-cgi/rum', live = host === 'jeevanto.com';
