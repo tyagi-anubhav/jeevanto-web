@@ -1,0 +1,66 @@
+--- proofs/legal/after-policy-chromium-laptop.txt	2026-10-10 17:33:50
++++ ../l13/policy.txt	2026-10-10 17:33:50
+@@ -1,6 +1,8 @@
+ Privacy policy
+ Version 1.2 · In force from 9 October 2026
+ WHAT CHANGED · 9 OCTOBER 2026
++Deleting your account: you're offered a copy first, then everything is deleted straight away, and no one restores from backups (In short, section 10.2).
++A problem report you send from the app is read by our team, and how long we keep it (sections 3 and 12.1).
+ A new section 5.2 says how Jeevanto uses a website for you: it signs in with the login you saved, can make you an account there if you say yes, reads a sign-in code that site emails you, and shows you what it filled. You pay, book or confirm yourself.
+ Your Vault now holds logins for websites, not payment options. Jeevanto never pays for you (section 3).
+ Jeevanto never sends a text, WhatsApp or email as you. It writes the message, and you send it from your own app (section 4).
+@@ -18,7 +20,7 @@
+ It shows you how much it read from each source, each day. Pause any source whenever you like.
+ Anything it knows, you can take back. A pattern it notices waits for your yes before it's used.
+ No one else sees your Jeevanto without your yes. Not your family, not the person who looks after you.
+-Delete your account any time, in the app or on our website. Everything goes, and copies in our backups are gone within 7 days. We keep only a scrambled fingerprint, so the free months are given once per person, and what the law makes us keep, such as invoices (section 10).
++Delete your account any time, in the app or by writing to us. You're offered a copy of everything first; then everything is deleted straight away. Backup copies age out within 7 days, and no one restores from them. We keep only a scrambled fingerprint, so the free months are given once per person, and what the law makes us keep, such as invoices (section 10).
+ This website counts visits without cookies and without knowing who you are. No ads, and no tracking. It keeps one sign-in record in your browser, only if you sign in.
+ The full policy follows. If anything below seems to say something different from this summary, the full policy applies.
+ CONTENTS
+@@ -96,7 +98,7 @@
+ How much it read from each source; which features you use; errors and crashes
+ To show you your counts, keep within your plan's allowance, and fix what breaks
+ Messages to us
+-What you write to support or to the Grievance Officer
++What you write to support, in a problem report from the app, or to the Grievance Officer
+ To answer you
+ Our messages to you
+ For each email, text or WhatsApp we send: its reference (like JV-7Q2M-4KDX), the channel, the address with most of it hidden, when it went, and one line on what it was about. Kept for 24 months
+@@ -190,7 +192,7 @@
+ if our company changes hands: the new owner must keep to this policy, and we'd tell you first.
+ 10  How long we keep it
+ 10.1  While your account is open, we keep what Jeevanto needs to help you, until you delete it or take it back.
+-10.2  When you delete your account, everything goes, straight away, and copies in our backups are gone within 7 days. Only these are kept:
++10.2  When you delete your account, you're first offered a copy of everything to keep. Then everything is deleted, straight away. Backup copies age out within 7 days, and no one restores from them. Only these are kept:
+ The fingerprint from section 3, so the free months are given once per person.
+ Invoices and payment records, kept apart from the rest and no longer linked to your account, for as long as tax law asks: 8 years from the end of the financial year they belong to, under the Companies Act, 2013 (section 128). Then they're erased.
+ A security log: when you signed in, from which device, and which actions were taken (for example "a note was changed"), never what anything said. It's kept for one year, as the Digital Personal Data Protection Rules, 2025 require, so misuse can be traced. It's no longer linked to your name or email.
+@@ -201,7 +203,7 @@
+ 11  Where your data is kept
+ Your data is kept in India. Some trusted services we use (section 9) handle parts of it abroad, under contracts that protect it to the standard this policy promises. Indian law allows this, except to countries the Government of India restricts, and we'll follow any restriction it sets.
+ 12  How we protect it
+-12.1  Your data is encrypted in transit and at rest. What you keep in Jeevanto is sealed with keys made on your phone. Your own name and email address are the exception: we keep them readable, because we need them to sign you in, write to you and run your plan. The names of the people you add or invite are sealed like everything else. Your Vault can be opened only with those keys.
++12.1  Your data is encrypted in transit and at rest. What you keep in Jeevanto is sealed with keys made on your phone. Your own name and email address are the exception: we keep them readable, because we need them to sign you in, write to you and run your plan. The names of the people you add or invite are sealed like everything else. Your Vault can be opened only with those keys. A problem report you send us from the app is read by our team, to help you. We delete it 12 months after we close it, or when you delete your account, whichever comes first.
+ 12.2  Access inside our company is limited to what's needed to run Jeevanto. No one at Jeevanto reads your content except:
+ to help with a problem you've raised: only if you say yes in the app, only what that problem needs, and the permission closes by itself after a set time;
+ for security or a legal order: approved by our founder, recorded, and you're told afterwards unless the law forbids it.
+--- proofs/legal/after-terms-chromium-laptop.txt	2026-10-10 17:33:50
++++ ../l13/terms.txt	2026-10-10 17:33:50
+@@ -1,5 +1,7 @@
+ Terms of use
+ Version 1.2 · In force from 9 October 2026
++WHAT CHANGED · 9 OCTOBER 2026
++How to delete your account without the app: write to us from the email address on your account, and we send a link to confirm it's you (section 15.1).
+ IN SHORT
+ Jeevanto is a personal assistant. It helps you keep track of what you've promised, what's coming up and what needs doing, and does things for you when you say go.
+ You must be 18 or over to use it.
+@@ -133,7 +135,7 @@
+ 14.1  We work to keep Jeevanto running. But it may sometimes be unavailable, slow, or missing a feature, for example during maintenance, or when a service it depends on is down. We'll tell you in the app when something planned will affect you.
+ 14.2  We may change, improve or retire features. If we remove something that's part of a paid plan you're on, we'll tell you in advance, and you can cancel, as our Refunds and cancellation policy sets out.
+ 15  Suspending or closing an account
+-15.1  You can delete your account at any time, in the app (Settings), or on jeevanto.com without the app, with your email or mobile number and a code we send you. What happens next is set out in our Privacy policy.
++15.1  You can delete your account at any time, in the app (Settings › Privacy & Security › Delete account), or without the app by writing to us from the email address on your account. We send a link to that address to confirm it's you. What happens next is set out in our Privacy policy.
+ 15.2  We may suspend or close an account if it breaks these terms in a serious way, if the law requires it, or to protect other people or Jeevanto. Unless the law or someone's safety stops us, we'll tell you why first, and give you a chance to put it right. If we close a paid account for a reason that isn't your fault, we'll refund the unused part of what you've paid.
+ 16  Our responsibility to you
+ 16.1  Nothing in these terms takes away your rights under the Consumer Protection Act, 2019, or any other law that protects you and can't be excluded.
