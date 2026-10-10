@@ -23,7 +23,7 @@
     { "page": "Get the app", "path": "/get-the-app", "soon": "hidden" },
     { "page": "Your account", "path": "/account", "soon": "hidden" },
     { "page": "Modify plan", "path": "/account/modify", "soon": "hidden" },
-    { "page": "Delete your account", "path": "/delete-account", "soon": "hidden" },
+    { "page": "Delete your account", "path": "/delete-account", "soon": "shows" },
     { "page": "Code page", "path": "/code", "soon": "hidden" },
     { "page": "Google's return page (connecting Gmail, Calendar or Contacts)", "path": "/connect/google", "soon": "shows" }
   ]
