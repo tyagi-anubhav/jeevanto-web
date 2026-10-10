@@ -9,7 +9,7 @@ import AxeBuilder from '@axe-core/playwright';
 import { writeFileSync, mkdirSync, readFileSync } from 'node:fs';
 const BASE = (process.argv[2] || 'http://127.0.0.1:4321').replace(/\/$/, '');
 const host = new URL(BASE).host;
-const FIXED = ['/', '/what-it-does', '/circle', '/kin-mode', '/our-promise', '/help', '/privacy-policy', '/terms', '/refunds', '/check', '/recover', '/recover/answer', '/invited'];
+const FIXED = ['/', '/what-it-does', '/circle', '/kin-mode', '/our-promise', '/open-your-copy', '/help', '/privacy-policy', '/terms', '/refunds', '/check', '/recover', '/recover/answer', '/invited'];
 const out = { base: BASE, when: new Date().toISOString(), pages: {}, links: {}, offHost: [], cookies: [], axe: [], consoleErrors: [] };
 const b = await chromium.launch();
 const seen = new Set(FIXED), queue = [...FIXED], anchors = {}, linkTargets = new Map();

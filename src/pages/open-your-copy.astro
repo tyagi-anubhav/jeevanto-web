@@ -1,0 +1,46 @@
+---
+// 19 · Open your copy (decision 258): a copy taken in the app is locked with a 16-character code we email to the person.
+// This page opens it in the browser, on the person's own device: the file and the code never leave it (no request is
+// made at all; the page's policy allows none). The format is ENGINES' (supabase/functions/_shared/locked-copy.ts):
+// "JVCOPY1\n", a JSON header line, AES-256-GCM with the tag appended, the key from scrypt over the normalised code.
+// Words: WEBSITE's draft, for the founder's batch.
+import Shell from '../layouts/Shell.astro';
+import Eyebrow from '../components/Eyebrow.astro';
+import { S } from '../components/ui.mjs';
+---
+<Shell title="Open your copy" path="/open-your-copy" description="Open the copy of your Jeevanto you saved, with the code we emailed you. It opens on your own device; nothing is sent to us.">
+  <div data-screen-label="19 Open your copy" data-open-copy style={S.page}>
+    <noscript><p style={S.lede}>This page needs JavaScript to open your copy. Nothing is sent anywhere; the copy opens on your own device.</p></noscript>
+
+    <form data-state="ask" novalidate style={S.stack}>
+      <Eyebrow>OPEN YOUR COPY</Eyebrow>
+      <h1 style={S.h1}>Open your Jeevanto copy.</h1>
+      <p style={S.lede}>Choose the copy you saved, and type the code we emailed you. It opens here, on this device. Nothing is sent to us.</p>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <label for="oc-file" style={S.body}>Your copy, the file ending in .jvcopy</label>
+        <input id="oc-file" type="file" accept=".jvcopy" style={S.body}>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <label for="oc-code" style={S.body}>The code from our email</label>
+        <input id="oc-code" class="jv-field" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="XXXX-XXXX-XXXX-XXXX" aria-describedby="oc-err" style={S.field}>
+      </div>
+      <p id="oc-err" data-err role="alert" hidden style={S.err.replace('margin-top:-10px;', '')}></p>
+      <button type="submit" data-go style={S.primary}>Open my copy</button>
+    </form>
+
+    <div data-state="busy" hidden role="status" style={S.stack}>
+      <Eyebrow>OPEN YOUR COPY</Eyebrow>
+      <h1 tabindex="-1" style={S.h1}>Opening your copy.</h1>
+      <p style={S.lede}>This takes a few seconds, on purpose: it’s what keeps the code hard to guess.</p>
+    </div>
+
+    <div data-state="open" hidden style={S.stack}>
+      <Eyebrow>OPEN YOUR COPY</Eyebrow>
+      <h1 tabindex="-1" style={S.h1}>Your copy is open.</h1>
+      <a data-save href="#" download style={S.primary + ' text-decoration:none;'}>Save the opened copy</a>
+      <p style={S.body}>It’s a zip file. Inside, what-jeevanto-knows.html is everything in plain words: open it in any browser.</p>
+      <div style={S.card}><p style={S.body}>The opened copy isn’t locked. If you took it in the app, it holds your saved passwords, so keep it somewhere safe, and delete it when you’re done.</p></div>
+    </div>
+  </div>
+  <script is:inline slot="scripts" type="module" src="/js/open-copy.js"></script>
+</Shell>
