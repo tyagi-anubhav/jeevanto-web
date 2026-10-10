@@ -17,7 +17,7 @@
 - It shows you how much it read from each source, each day. Pause any source whenever you like.
 - Anything it knows, you can take back. A pattern it notices waits for your yes before it's used.
 - **No one else sees your Jeevanto without your yes.** Not your family, not the person who looks after you.
-- Delete your account any time, in the app or on our website. Everything goes, and copies in our backups are gone within {{backup_days}} days. We keep only a scrambled fingerprint, so the free months are given once per person, and what the law makes us keep, such as invoices (section 10).
+- Delete your account any time, in the app or by writing to us. You're offered a copy of everything first; then everything is deleted straight away. Backup copies age out within {{backup_days}} days, and no one restores from them. We keep only a scrambled fingerprint, so the free months are given once per person, and what the law makes us keep, such as invoices (section 10).
 - This website counts visits without cookies and without knowing who you are. No ads, and no tracking. It keeps one sign-in record in your browser, only if you sign in.
 
 The full policy follows. If anything below seems to say something different from this summary, the full policy applies.
@@ -74,7 +74,7 @@ We collect only what Jeevanto needs to do what you ask. Here is each kind, and w
 | **Payments** | Your plan, what you paid and when, your invoices | To bill you, give refunds, and keep records the law requires. **Your card and UPI details stay with Razorpay; we never see them** |
 | **Your device** | The phone model, the app version, a notification token, the keys that lock your data on your phone | To send you reminders and notifications, and keep your data locked to you |
 | **How Jeevanto is used** | How much it read from each source; which features you use; errors and crashes | To show you your counts, keep within your plan's allowance, and fix what breaks |
-| **Messages to us** | What you write to support or to the Grievance Officer | To answer you |
+| **Messages to us** | What you write to support, in a problem report from the app, or to the Grievance Officer | To answer you |
 | **Our messages to you** | For each email, text or WhatsApp we send: its reference (like JV-7Q2M-4KDX), the channel, the address with most of it hidden, when it went, and one line on what it was about. Kept for 24 months | So you can check at jeevanto.com/check that a message really came from us |
 | **What you agreed to** | Which version of these terms and this policy you agreed to, when, and how you signed up | To show you a change and ask you again when they change |
 | **Telling you when we're live** | Your name, and the email or mobile number you give on jeevanto.com | Only to tell you when Jeevanto is ready. Deleted once we've told you, or sooner if you ask |
@@ -169,7 +169,7 @@ We also share data:
 
 10.1 **While your account is open**, we keep what Jeevanto needs to help you, until you delete it or take it back.
 
-10.2 **When you delete your account**, everything goes, straight away, and copies in our backups are gone within {{backup_days}} days. Only these are kept:
+10.2 **When you delete your account**, you're first offered a copy of everything to keep. Then everything is deleted, straight away. Backup copies age out within {{backup_days}} days, and no one restores from them. Only these are kept:
 - **The fingerprint** from section 3, so the free months are given once per person.
 - **Invoices and payment records**, kept apart from the rest and no longer linked to your account, for as long as tax law asks: {{tax_record_years}} years from the end of the financial year they belong to, under the Companies Act, 2013 (section 128). Then they're erased.
 - **A security log**: when you signed in, from which device, and which actions were taken (for example "a note was changed"), **never what anything said**. It's kept for {{security_log_period}}, as the Digital Personal Data Protection Rules, 2025 require, so misuse can be traced. It's no longer linked to your name or email.
@@ -188,7 +188,7 @@ How long each of these is kept is set for the country you signed up in, and is s
 
 ## 12. How we protect it
 
-12.1 Your data is encrypted in transit and at rest. What you keep in Jeevanto is sealed with keys made on your phone. **Your own name and email address are the exception:** we keep them readable, because we need them to sign you in, write to you and run your plan. The names of the people you add or invite are sealed like everything else. Your Vault can be opened only with those keys.
+12.1 Your data is encrypted in transit and at rest. What you keep in Jeevanto is sealed with keys made on your phone. **Your own name and email address are the exception:** we keep them readable, because we need them to sign you in, write to you and run your plan. The names of the people you add or invite are sealed like everything else. Your Vault can be opened only with those keys. A problem report you send us from the app is read by our team, to help you. We delete it 12 months after we close it, or when you delete your account, whichever comes first.
 
 12.2 Access inside our company is limited to what's needed to run Jeevanto. **No one at Jeevanto reads your content** except:
 - **to help with a problem you've raised**: only if you say yes in the app, only what that problem needs, and the permission closes by itself after a set time;

@@ -4,7 +4,9 @@ import Shell from '../layouts/Shell.astro';
 import Eyebrow from '../components/Eyebrow.astro';
 import More from '../components/More.astro';
 
-const backupDays = 7;
+import { config } from '../lib/config.mjs';
+const backupDays = config.backupDays; // from the settings door, as everywhere (Cowork, 10 Oct)
+if (!backupDays) throw new Error('our-promise: backup_days is missing from the settings');
 const beliefs = [
   ['What Jeevanto reads', 'Only the accounts you choose to connect, what you tell it, and what people in your Circle choose to share with you. That’s how it knows what needs doing.'],
   ['What it keeps', 'What matters from it, like a date, a promise or an offer, each pointing to where it came from. Never the mail itself.'],
@@ -13,7 +15,7 @@ const beliefs = [
   ['What it learns about you', 'It connects the dots. That’s how it helps. What it learns stays in your Jeevanto, shows how it got there, and can be taken back. A pattern it notices in your habits waits for your yes before it’s used.'],
   ['What you can take back', 'Anything it knows or has learnt about you. Tell it to forget, and it’s gone.'],
   ['Who else sees it', 'No one, unless you say yes. Not your family, not the one who looks after you.'],
-  ['If you leave', `Delete your account any time. Everything goes, and copies in our backups are gone within ${backupDays} days. We keep only what the law or fairness needs: a scrambled fingerprint of your email or mobile number, so the free months are given once per person; invoices, for as long as tax law asks; and a record of sign-ins for a year, never what anything said.`],
+  ['If you leave', `Delete your account any time. You’re offered a copy first; then everything is deleted straight away. Backup copies age out within ${backupDays} days, and no one restores from them. We keep only what the law or fairness needs: a scrambled fingerprint of your email or mobile number, so the free months are given once per person; invoices, for as long as tax law asks; and a record of sign-ins for a year, never what anything said.`],
   ['This website', 'It counts visits without cookies and without knowing who you are. No ads, and no tracking. It keeps one sign-in record in your browser, only if you sign in.'],
 ].map(([q, a], i) => ({ n: String(i + 1), q, a }));
 const answer = "font-family:'Newsreader',serif; font-size:var(--lede); line-height:var(--ledelh); color:var(--ink); text-wrap:pretty;";

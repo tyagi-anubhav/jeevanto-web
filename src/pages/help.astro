@@ -16,7 +16,7 @@ const faqData = [
   ['Can others on my Family plan see my Jeevanto?', 'No. Each person’s Jeevanto is private to them. Being on one plan opens nobody’s account, not even to the person who pays. They see only what you choose to share.', ['See how Circle works', '/circle']],
   ['Can I use Jeevanto to look after my parent?', 'Yes, that’s kin mode. Your parent can invite you, or you can invite them. You help only with what they allow, and they see everything you do.', ['See kin mode', '/kin-mode']],
   ['What does Jeevanto read, and what does it keep?', 'It reads only the accounts you choose to connect, what you tell it, and what people in your Circle choose to share with you. It keeps what matters from them, each with its source, never the mail itself. It shows you how much it read. We never train AI on your data.', ['Read our promise', '/our-promise']],
-  ...(full ? [['Can I delete my account without the app?', 'Yes. The Delete your account page asks for the email or mobile number on your account, and a code we send to it.', ['Delete your account', '/delete-account']]] : []),
+  ...(full ? [['Can I delete my account without the app?', 'Yes. Write to us from the email address on your account. We’ll send a link to that address to confirm it’s you, and delete the account once you’ve confirmed.', ['Delete your account', '/delete-account']]] : []),
 ];
 const faqs = faqData.map(([q, a, link], i) => ({ q, a, link, open: i === 0, last: i === faqData.length - 1, id: 'faq-' + i }));
 const card = 'background:var(--card); border-radius:16px; padding:18px 20px; display:flex; flex-direction:column;';

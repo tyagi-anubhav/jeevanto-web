@@ -11,8 +11,16 @@ export const TITLES = { policy: 'Privacy policy', terms: 'Terms of use', refunds
 export const PATHS = { policy: '/privacy-policy', terms: '/terms', refunds: '/refunds' };
 // The dated "What changed" note at the top of a page, as the policy's section 18 promises (cc-website-03). WEBSITE's
 // words, listing the approved edits in plain words; the policy's own text is Cowork's, word for word.
+// The note is dated the day the version comes into force: the console's in_force_date (set the day it goes live).
+const IN_FORCE = String((config.legal && config.legal.in_force_date) || '').match(/\d{4}-\d{2}-\d{2}/);
+const FORCE_DATE = IN_FORCE ? IN_FORCE[0] : '2026-10-09';
 export const CHANGES = {
-  policy: { date: '2026-10-09', points: [
+  terms: { date: FORCE_DATE, points: [
+    'How to delete your account without the app: write to us from the email address on your account, and we send a link to confirm it’s you (section 15.1).',
+  ] },
+  policy: { date: FORCE_DATE, points: [
+    'Deleting your account: you’re offered a copy first, then everything is deleted straight away, and no one restores from backups (In short, section 10.2).',
+    'A problem report you send from the app is read by our team, and how long we keep it (sections 3 and 12.1).',
     'A new section 5.2 says how Jeevanto uses a website for you: it signs in with the login you saved, can make you an account there if you say yes, reads a sign-in code that site emails you, and shows you what it filled. You pay, book or confirm yourself.',
     'Your Vault now holds logins for websites, not payment options. Jeevanto never pays for you (section 3).',
     'Jeevanto never sends a text, WhatsApp or email as you. It writes the message, and you send it from your own app (section 4).',

@@ -196,7 +196,7 @@ If you find a security weakness, please tell us at {{security_email}}, and give 
 
 ## 15. Suspending or closing an account
 
-15.1 **You can delete your account at any time**, in the app (Settings), or on jeevanto.com without the app, with your email or mobile number and a code we send you. What happens next is set out in our Privacy policy.
+15.1 **You can delete your account at any time**, in the app (Settings › Privacy & Security › Delete account), or without the app by writing to us from the email address on your account. We send a link to that address to confirm it's you. What happens next is set out in our Privacy policy.
 
 15.2 **We may suspend or close an account** if it breaks these terms in a serious way, if the law requires it, or to protect other people or Jeevanto. Unless the law or someone's safety stops us, we'll tell you why first, and give you a chance to put it right. If we close a paid account for a reason that isn't your fault, we'll refund the unused part of what you've paid.
 
