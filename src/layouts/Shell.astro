@@ -25,7 +25,7 @@ const footer = [
   { title: 'Jeevanto', links: [['What it does', '/what-it-does'], ['Circle', '/circle'], ['Kin mode', '/kin-mode'], ['Our promise', '/our-promise']] },
   full ? { title: 'Plans and account', links: [['Plans', '/plans'], ['Sign in', '/sign-in'], ['Your account', '/account']], apart: true } : null,
   { title: 'The paperwork', links: [['Privacy policy', '/privacy-policy'], ['Terms of use', '/terms'], ['Refunds and cancellation', '/refunds']] },
-  { title: 'Help', links: [['Common questions', '/help'], ['Write to us', '/help#write-to-us'], ['Delete your account', '/delete-account']] },
+  { title: 'Help', links: [['Common questions', '/help'], ['Write to us', '/help#write-to-us']].concat(full ? [] : [['Delete your account', '/delete-account']]) } // in full mode it stands apart under Plans and account,
 ].filter(Boolean);
 ---
 <!doctype html>
