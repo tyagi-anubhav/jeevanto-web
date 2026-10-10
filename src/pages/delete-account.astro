@@ -1,0 +1,42 @@
+---
+// 18 · Delete your account: the public page Google Play's Data safety form asks for (decisions 109.3, 125; audit 252 #75,
+// Cowork's yes 10 Oct 11:50). Words only, no sign-in. The steps and numbers are the app's own: Settings › Privacy &
+// Security › Delete account (SettingsPrivacyScreen), the hold before anything is deleted (account_close_request,
+// 7 days), the backups (backup_days) and the invoices (tax_record_years). Words: WEBSITE's draft, for the founder's batch.
+import Shell from '../layouts/Shell.astro';
+import Eyebrow from '../components/Eyebrow.astro';
+import { config } from '../lib/config.mjs';
+
+const holdDays = 7;
+const backupDays = config.backupDays, taxYears = config.legal && config.legal.tax_record_years, mail = config.supportEmail, replyDays = config.replyDays;
+// no guessed numbers on a page about deletion: a missing value stops the build (as an unfilled legal placeholder does)
+if (!backupDays || !taxYears || !mail || !replyDays) throw new Error('delete-account: a value is missing from the settings');
+const answer = "font-family:'Newsreader',serif; font-size:var(--lede); line-height:var(--ledelh); color:var(--ink); text-wrap:pretty;";
+const link = 'color:var(--brass); font-weight:600; text-decoration:underline; text-underline-offset:3px;';
+const rows = [
+  ['In the app', `Open Jeevanto, then Settings › Privacy & Security › Delete account. Write your own name to confirm, so it can't happen by accident.`],
+  ['Without the app', `Write to ${mail} from the email address on your account, and say you want it deleted. A person reads it and replies within ${replyDays} working days.`],
+  ['What happens next', `Your account closes straight away: you're signed out everywhere, and Jeevanto stops reminding, watching and acting for you. Nothing is deleted for ${holdDays} days: something this final shouldn't happen in one bad evening. Sign in during those ${holdDays} days and everything is still there.`],
+  ['What is deleted', `After ${holdDays} days, everything: what you told Jeevanto, what it found, your Vault, your connected sources and the account itself. Copies in our backups are gone within ${backupDays} days after that.`],
+  ['What we keep', `Only what the law or fairness needs: invoices and payment records, apart and no longer linked to you, for ${taxYears} years as tax law asks; a scrambled fingerprint of your email or mobile number, so the free months are given once per person; and a security log of sign-ins and actions, never what anything said.`],
+].map(([q, a], i) => ({ n: String(i + 1), q, a }));
+---
+<Shell title="Delete your account" path="/delete-account" description="How to delete your Jeevanto account and your data, in the app or by writing to us, and what we keep.">
+  <div data-screen-label="18 Delete your account" style="box-sizing:border-box; max-width:960px; margin:0 auto; padding:var(--top) var(--gut) var(--sec); display:flex; flex-direction:column; gap:40px;">
+    <div style="display:flex; flex-direction:column; gap:20px;">
+      <Eyebrow>DELETE YOUR ACCOUNT</Eyebrow>
+      <h1 style="font-family:'Newsreader',serif; font-weight:400; font-size:var(--h1); line-height:var(--h1lh); letter-spacing:-0.3px; color:var(--ink); text-wrap:balance;">You can delete your account, and everything in it, at any time.</h1>
+    </div>
+    <dl style="display:flex; flex-direction:column; margin:0;">
+      {rows.map(b => (
+        <div style="display:flex; flex-wrap:wrap; gap:8px 40px; padding:22px 0; border-top:1px solid var(--line);">
+          <dt style="flex:0 0 240px; display:flex; gap:12px; font-size:11px; font-weight:600; letter-spacing:1.6px; color:var(--quiet); text-transform:uppercase; padding-top:7px;"><span style="width:14px;">{b.n}</span><span>{b.q}</span></dt>
+          <dd style="flex:1 1 300px; margin:0;"><p style={answer}>{b.n === '2' ? <>Write to <a href={`mailto:${mail}`} style={link}>{mail}</a> from the email address on your account, and say you want it deleted. A person reads it and replies within {replyDays} working days.</> : b.a}</p></dd>
+        </div>
+      ))}
+    </dl>
+    <div style="background:var(--card); border-radius:16px; padding:18px 20px;">
+      <p style="font-size:14px; line-height:20px; color:var(--quiet);">The full detail is in our <a href="/privacy-policy#section-10" style={link}>privacy policy, section 10</a>.</p>
+    </div>
+  </div>
+</Shell>
