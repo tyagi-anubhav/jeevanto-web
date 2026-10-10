@@ -25,6 +25,7 @@
     { "page": "Modify plan", "path": "/account/modify", "soon": "hidden" },
     { "page": "Delete your account", "path": "/delete-account", "soon": "hidden" },
     { "page": "Code page", "path": "/code", "soon": "hidden" },
+    { "page": "Open your copy", "path": "/open-your-copy", "soon": "shows" },
     { "page": "Google's return page (connecting Gmail, Calendar or Contacts)", "path": "/connect/google", "soon": "shows" }
   ]
 }

@@ -1,0 +1,8 @@
+{
+  "code": "3UC4-M9ZJ-V8W5-BE6Y",
+  "unlocked_sha256": "3789569c58ca6b906d490b1d6b88e0365f92bcd69fd4da59261baf7b56365a4e",
+  "unlocked_bytes": 66,
+  "roundtrip_ok": true,
+  "file_bytes": 230,
+  "note": "Made with no account by supabase/functions/_shared/locked-copy.ts (engines-take-a-copy). Not a secret."
+}
