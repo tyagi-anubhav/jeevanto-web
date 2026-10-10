@@ -39,6 +39,7 @@
   $('[data-here]').addEventListener('click', function () { signedIn(root.__profile); });
   // Sign out lives in one place, the nav's top-right corner (founder, 10 Oct 12:50): it opens /sign-in#sign-out, and this
   // page (the only kind that may reach the engine) signs out there, then shows "Welcome back."
+  var meta = {}; // the sign-in record's own fields (first_name, as typed: decision 254)
   var who = ''; // the signed-in address, for the name step's "Signed in as …" (a relay address is masked)
   function signOut() {
     history.replaceState(null, '', location.pathname);
@@ -58,11 +59,11 @@
     var was = kept(); if (!was) return;
     session = was; show('busy');
     call('/auth/v1/user', { method: 'GET' }).then(function (u) {
-      if (u.status === 200) { who = u.body.email || ''; return u; }
+      if (u.status === 200) { who = u.body.email || ''; meta = u.body.user_metadata || {}; return u; }
       return call('/auth/v1/token?grant_type=refresh_token', { body: { refresh_token: was.refresh } }).then(function (t) {
         if (t.status !== 200 || !t.body.access_token) throw t;
         keep({ access: t.body.access_token, refresh: t.body.refresh_token });
-        return call('/auth/v1/user', { method: 'GET' }).then(function (v) { who = (v.body && v.body.email) || ''; return v; });
+        return call('/auth/v1/user', { method: 'GET' }).then(function (v) { who = (v.body && v.body.email) || ''; meta = (v.body && v.body.user_metadata) || {}; return v; });
       });
     }).then(function () { return profile(3); }).then(function (q) { return usable(q.display_name) ? signedIn(q) : askName(q, signedIn); })
       .catch(function () { keep(null); show('ask'); });
@@ -81,7 +82,7 @@
   }
   call('/auth/v1/user', { method: 'GET' }).then(function (u) {
     if (u.status !== 200) throw u;
-    who = u.body.email || '';
+    who = u.body.email || ''; meta = u.body.user_metadata || {};
     var created = Date.parse(u.body.created_at), last = Date.parse(u.body.last_sign_in_at);
     var isNew = Math.abs(last - created) < 60000; // as the app tells them apart (CreateAccountScreen: created_at === last_sign_in_at)
     return profile(6).then(function (p) {
@@ -107,7 +108,8 @@
       if (!first) { err.textContent = 'Type your first name.'; err.hidden = false; return; }
       err.hidden = true; var b = f.querySelector('[data-name-go]'); window.jvBusy(b, true);
       var name = last ? first + ' ' + last : first;
-      call('/auth/v1/user', { method: 'PUT', body: { data: { display_name: name } } }).then(function (r) {
+      call('/auth/v1/user', { method: 'PUT', body: { data: { display_name: name, first_name: first } } }).then(function (r) {
+        meta.first_name = first;
         if (r.status !== 200) throw r;
         return (function wait(n) { return profile(3).then(function (q) { return usable(q.display_name) || n <= 0 ? q : new Promise(function (ok) { setTimeout(ok, 1000); }).then(function () { return wait(n - 1); }); }); })(5);
       }).then(function (q) { window.jvBusy(b, false); if (!usable(q.display_name)) q.display_name = name; then(q); })
@@ -117,7 +119,8 @@
     w.textContent = who ? 'Signed in as ' + (m ? m[1] + '•••' + m[2] : who) + '.' : ''; w.hidden = !who;
     show('name');
   }
-  function firstName(p) { var n = usable(p.display_name); return n ? n.split(/\s+/)[0] : ''; }
+  // decision 254: exactly what was typed in the first-name box, every word; with none saved, the whole stored name
+  function firstName(p) { return usable(meta.first_name) || usable(p.first_name) || usable(p.display_name); }
   // 4 · who you are, as we have it (the 30 Sep words; with Google or Apple: the name, and the email, verified)
   function review(p) {
     var mail = (p.channels || []).filter(function (c) { return c.channel_type === 'email'; })[0];

@@ -1,7 +1,7 @@
 // Shared inline styles from Site v9 (TEMPLATES.md 15, 16): one field style, the buttons, the type.
 export const S = {
   eyebrow: 'font-size:11px; font-weight:600; letter-spacing:1.6px; color:var(--quiet);',
-  h1: "font-family:'Newsreader',serif; font-weight:400; font-size:var(--h2); line-height:var(--h2lh); color:var(--ink); text-wrap:balance;",
+  h1: "font-family:'Newsreader',serif; font-weight:400; font-size:var(--h2); line-height:var(--h2lh); color:var(--ink); text-wrap:balance; overflow-wrap:anywhere;",
   lede: "font-family:'Newsreader',serif; font-size:var(--lede); line-height:var(--ledelh); color:var(--ink); text-wrap:pretty;",
   body: 'font-size:15px; line-height:21px; color:var(--ink); text-wrap:pretty;',
   quiet: 'font-size:15px; line-height:21px; color:var(--quiet); text-wrap:pretty;',

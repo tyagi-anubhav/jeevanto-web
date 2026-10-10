@@ -46,12 +46,14 @@ const nameStepH1 = askedName ? await p.locator('[data-state="name"] h1').innerTe
 const leaked = await p.evaluate(() => /@/.test(document.querySelector('main').innerText.split('YOUR ACCOUNT')[1] || '') && !document.querySelector('[data-state="review"]:not([hidden])'));
 ok('no name from the provider → "Good, that’s you. Now your name.", and no address shown as a name', askedName && nameStepH1 === 'Good, that’s you. Now your name.' && !leaked, `h1="${nameStepH1}"`);
 ok('the name step says which account is signed in ("Signed in as …")', /^Signed in as \S+@\S+\.$/.test(await p.locator('[data-who]').innerText()));
-await p.fill('#sg-first', 'Uma'); await p.fill('#sg-last', 'Website'); await p.click('[data-name-go]');
+// decision 254 (TESTS' case): a two-word first name and a 40-character last name
+const LAST = 'Loooooooooooooooooooooooooooooooooongname';
+await p.fill('#sg-first', 'Sai Krishna'); await p.fill('#sg-last', LAST); await p.click('[data-name-go]');
 const rev = await shown('review');
 const rows = rev ? await p.$$eval('[data-rows] > div', ds => ds.map(d => d.innerText.replace(/\s+/g, ' ').trim())) : [];
 const stored = await lib.sql(`select display_name from sentinel_policy.actor_registry where user_id = (select user_id from sentinel_identity.users where account_id = '${acct.accountId}'::uuid limit 1) and actor_type = 'USER'`);
-ok('the typed name is stored on the account (never an address)', stored[0] && stored[0].display_name === 'Uma Website', JSON.stringify(stored));
-ok('then "This is who you are, as we have it." with the typed name, and the email marked verified', rev && rows[0] === 'Name Uma Website' && /^Email .*@jeevanto-test\.local verified$/.test(rows[1] || ''), mask(JSON.stringify(rows)) + (rev ? '' : ' err=' + await p.locator('[data-err]').innerText().catch(() => '')));
+ok('the typed name is stored on the account (never an address)', stored[0] && stored[0].display_name === 'Sai Krishna ' + LAST, JSON.stringify(stored));
+ok('then "This is who you are, as we have it." with the typed name, and the email marked verified', rev && rows[0] === 'Name Sai Krishna ' + LAST && /^Email .*@jeevanto-test\.local verified$/.test(rows[1] || ''), mask(JSON.stringify(rows)) + (rev ? '' : ' err=' + await p.locator('[data-err]').innerText().catch(() => '')));
 ok('the tokens are wiped from the address', !p.url().includes('#') && !p.url().includes('access_token'), p.url());
 ok('one sign-in record kept in the browser', !!(await kept()), (await kept()) ? 'jv-sign-in present' : 'none');
 const agreed = await lib.sql(`select document, version, way_in from sentinel_identity.legal_agreements where account_id = '${acct.accountId}'::uuid order by document`);
@@ -69,14 +71,19 @@ ok('"That’s right" → "Now, get the app…" with the welcome gift and both st
 const lefts = await p.evaluate(() => { const s = document.querySelector('[data-state="created"]'), x = e => Math.round(e.getBoundingClientRect().left); return [x(s.querySelector('h1')), x(s.querySelector('[data-here]'))]; });
 ok('"Or continue here" is left-aligned with the heading (Cowork, 10 Oct)', lefts[0] === lefts[1], lefts.join(' vs '));
 await p.click('[data-here]');
-ok('"Or continue here" → "You’re signed in as Uma."', await shown('in') && (await p.locator('[data-signed-in]').innerText()) === 'You’re signed in as Uma.');
+ok('"Or continue here" → "You’re signed in as Sai Krishna." (the whole first name, decision 254)', await shown('in') && (await p.locator('[data-signed-in]').innerText()) === 'You’re signed in as Sai Krishna.');
+await p.setViewportSize({ width: 390, height: 844 });
+ok('a long name never pushes the page sideways on a phone (390 wide)', await p.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth));
+await p.screenshot({ path: 'proofs/screens/sign/signed-in-phone.png', fullPage: true }).catch(() => {});
 ok('signed in: one Sign out, in the nav’s top-right corner, and none on the page (founder, 10 Oct 12:50)', (await p.locator('[data-nav-sign]').innerText()) === 'Sign out' && (await p.locator('main button:has-text("Sign out")').count()) === 0);
 await p.goto(`${BASE}/our-promise`);
 ok('every page: the nav says Sign out while signed in', (await p.locator('[data-nav-sign]').innerText()) === 'Sign out');
+const meta = await fetch(`${lib.BASE}/auth/v1/user`, { headers: { apikey: lib.ENV.SUPABASE_ANON_KEY, Authorization: 'Bearer ' + JSON.parse(await kept()).access } }).then(r => r.json());
+ok('the first name is saved exactly as typed, beside the full name (decision 254)', meta.user_metadata && meta.user_metadata.first_name === 'Sai Krishna' && meta.user_metadata.display_name === 'Sai Krishna ' + LAST, JSON.stringify({ first: meta.user_metadata && meta.user_metadata.first_name }));
 
 // 5 · come back later: the one record is still good
 await p.goto(`${BASE}/sign-in`);
-ok('a return visit is still signed in (the record checked against the engine)', await shown('in') && (await p.locator('[data-signed-in]').innerText()) === 'You’re signed in as Uma.');
+ok('a return visit is still signed in (the record checked against the engine)', await shown('in') && (await p.locator('[data-signed-in]').innerText()) === 'You’re signed in as Sai Krishna.');
 const again = await lib.sql(`select count(*)::int n from sentinel_identity.legal_agreements where account_id = '${acct.accountId}'::uuid`);
 ok('a return visit records no second agreement', again[0].n === 2, String(again[0].n));
 
