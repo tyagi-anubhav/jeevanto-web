@@ -53,6 +53,7 @@ const badges = (
 
     <form data-state="name" hidden novalidate style="display:flex; flex-direction:column; gap:20px;">
       <h1 tabindex="-1" style={S.h1}>Good, that’s you. Now your name.</h1>
+      <p data-who hidden style={S.small}></p>
       <div style="display:flex; flex-direction:column; gap:12px;">
         <label for="sg-first" class="visually-hidden">First name</label>
         <input id="sg-first" class="jv-field" autocomplete="given-name" placeholder="First name" required style={S.field}>
@@ -77,13 +78,12 @@ const badges = (
         <p style="font-size:16px; line-height:24px; color:var(--ink); text-wrap:pretty;">{months} months of Plus, free, waiting for you in the app. They start the day you first open it.</p>
       </div>
       <Fragment set:html={badges} />
-      <div style="display:flex; justify-content:center;"><button type="button" data-here style="min-height:44px; display:inline-flex; align-items:center; font-size:15px; font-weight:600; color:var(--brass);">Or continue here</button></div>
+      <div style="display:flex;"><button type="button" data-here style="min-height:44px; display:inline-flex; align-items:center; font-size:15px; font-weight:600; color:var(--brass);">Or continue here</button></div>
     </div>
 
     <div data-state="in" hidden style="display:flex; flex-direction:column; gap:20px;">
       <h1 tabindex="-1" style={S.h1}><span data-signed-in></span></h1>
       <Fragment set:html={badges} />
-      <button type="button" data-out style={S.quietBtn}>Sign out</button>
     </div>
   </div>
   <script is:inline slot="scripts" src="/js/sign.js" defer></script>

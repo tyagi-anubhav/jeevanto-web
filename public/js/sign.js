@@ -10,7 +10,7 @@
   var BASE = meta.getAttribute('content'), KEY = meta.getAttribute('data-key'), CREATE = root.getAttribute('data-sign') === 'create';
   var VERSION = root.getAttribute('data-legal-version');
   var STORE = 'jv-sign-in', session = null; // { access, refresh }: the one sign-in record
-  function keep(s) { session = s; try { if (s) localStorage.setItem(STORE, JSON.stringify(s)); else localStorage.removeItem(STORE); } catch (e) {} }
+  function keep(s) { session = s; try { if (s) localStorage.setItem(STORE, JSON.stringify(s)); else localStorage.removeItem(STORE); } catch (e) {} if (window.jvNavSign) window.jvNavSign(); }
   function kept() { try { var v = JSON.parse(localStorage.getItem(STORE) || 'null'); return v && v.access && v.refresh ? v : null; } catch (e) { return null; } }
   var $ = function (s) { return root.querySelector(s); }, err = $('[data-err]');
   function show(state) { window.jvShow(root, state); var h = root.querySelector('[data-state="' + state + '"] h1[tabindex]'); if (h) h.focus(); }
@@ -37,10 +37,17 @@
   // the buttons after signing in (attached before any early return below)
   $('[data-right]').addEventListener('click', function () { show('created'); });
   $('[data-here]').addEventListener('click', function () { signedIn(root.__profile); });
-  $('[data-out]').addEventListener('click', function () {
-    var b = this; window.jvBusy(b, true);
-    call('/auth/v1/logout', {}).then(function () { window.jvBusy(b, false); keep(null); root.__profile = null; if (CREATE) { location.assign('/sign-in'); return; } show('ask'); say(''); });
-  });
+  // Sign out lives in one place, the nav's top-right corner (founder, 10 Oct 12:50): it opens /sign-in#sign-out, and this
+  // page (the only kind that may reach the engine) signs out there, then shows "Welcome back."
+  var who = ''; // the signed-in address, for the name step's "Signed in as …" (a relay address is masked)
+  function signOut() {
+    history.replaceState(null, '', location.pathname);
+    var w = kept(); if (!w) { show('ask'); return; }
+    session = w; show('busy');
+    call('/auth/v1/logout', {}).then(function () { keep(null); root.__profile = null; show('ask'); say(''); });
+  }
+  window.addEventListener('hashchange', function () { if (location.hash === '#sign-out') signOut(); });
+  if (location.hash === '#sign-out') { signOut(); return; }
 
   // 2 · back from Google or Apple: read the fragment once, then wipe it from the address and the history
   var h = new URLSearchParams(location.hash.replace(/^#/, ''));
@@ -51,11 +58,11 @@
     var was = kept(); if (!was) return;
     session = was; show('busy');
     call('/auth/v1/user', { method: 'GET' }).then(function (u) {
-      if (u.status === 200) return u;
+      if (u.status === 200) { who = u.body.email || ''; return u; }
       return call('/auth/v1/token?grant_type=refresh_token', { body: { refresh_token: was.refresh } }).then(function (t) {
         if (t.status !== 200 || !t.body.access_token) throw t;
         keep({ access: t.body.access_token, refresh: t.body.refresh_token });
-        return call('/auth/v1/user', { method: 'GET' });
+        return call('/auth/v1/user', { method: 'GET' }).then(function (v) { who = (v.body && v.body.email) || ''; return v; });
       });
     }).then(function () { return profile(3); }).then(function (q) { return usable(q.display_name) ? signedIn(q) : askName(q, signedIn); })
       .catch(function () { keep(null); show('ask'); });
@@ -74,6 +81,7 @@
   }
   call('/auth/v1/user', { method: 'GET' }).then(function (u) {
     if (u.status !== 200) throw u;
+    who = u.body.email || '';
     var created = Date.parse(u.body.created_at), last = Date.parse(u.body.last_sign_in_at);
     var isNew = Math.abs(last - created) < 60000; // as the app tells them apart (CreateAccountScreen: created_at === last_sign_in_at)
     return profile(6).then(function (p) {
@@ -105,6 +113,8 @@
       }).then(function (q) { window.jvBusy(b, false); if (!usable(q.display_name)) q.display_name = name; then(q); })
         .catch(function () { window.jvBusy(b, false); err.textContent = TROUBLE; err.hidden = false; });
     };
+    var w = root.querySelector('[data-who]'), m = String(who).match(/^([^@]{0,2})[^@]*(@privaterelay\.appleid\.com)$/i);
+    w.textContent = who ? 'Signed in as ' + (m ? m[1] + '•••' + m[2] : who) + '.' : ''; w.hidden = !who;
     show('name');
   }
   function firstName(p) { var n = usable(p.display_name); return n ? n.split(/\s+/)[0] : ''; }

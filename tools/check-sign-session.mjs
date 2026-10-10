@@ -45,6 +45,7 @@ const askedName = await shown('name');
 const nameStepH1 = askedName ? await p.locator('[data-state="name"] h1').innerText() : '';
 const leaked = await p.evaluate(() => /@/.test(document.querySelector('main').innerText.split('YOUR ACCOUNT')[1] || '') && !document.querySelector('[data-state="review"]:not([hidden])'));
 ok('no name from the provider → "Good, that’s you. Now your name.", and no address shown as a name', askedName && nameStepH1 === 'Good, that’s you. Now your name.' && !leaked, `h1="${nameStepH1}"`);
+ok('the name step says which account is signed in ("Signed in as …")', /^Signed in as \S+@\S+\.$/.test(await p.locator('[data-who]').innerText()));
 await p.fill('#sg-first', 'Uma'); await p.fill('#sg-last', 'Website'); await p.click('[data-name-go]');
 const rev = await shown('review');
 const rows = rev ? await p.$$eval('[data-rows] > div', ds => ds.map(d => d.innerText.replace(/\s+/g, ' ').trim())) : [];
@@ -65,8 +66,13 @@ await p.click('[data-right]');
 const made = await shown('created');
 const gift = made ? await p.locator('[data-state="created"]').innerText() : '';
 ok('"That’s right" → "Now, get the app…" with the welcome gift and both store badges', made && /3 months of Plus, free, waiting for you in the app\. They start the day you first open it\./.test(gift) && (await p.locator('[data-state="created"] img[alt^="Download on the App Store"], [data-state="created"] img[alt^="Get it on Google Play"]').count()) === 2, gift.replace(/\s+/g, ' ').slice(0, 120));
+const lefts = await p.evaluate(() => { const s = document.querySelector('[data-state="created"]'), x = e => Math.round(e.getBoundingClientRect().left); return [x(s.querySelector('h1')), x(s.querySelector('[data-here]'))]; });
+ok('"Or continue here" is left-aligned with the heading (Cowork, 10 Oct)', lefts[0] === lefts[1], lefts.join(' vs '));
 await p.click('[data-here]');
 ok('"Or continue here" → "You’re signed in as Uma."', await shown('in') && (await p.locator('[data-signed-in]').innerText()) === 'You’re signed in as Uma.');
+ok('signed in: one Sign out, in the nav’s top-right corner, and none on the page (founder, 10 Oct 12:50)', (await p.locator('[data-nav-sign]').innerText()) === 'Sign out' && (await p.locator('main button:has-text("Sign out")').count()) === 0);
+await p.goto(`${BASE}/our-promise`);
+ok('every page: the nav says Sign out while signed in', (await p.locator('[data-nav-sign]').innerText()) === 'Sign out');
 
 // 5 · come back later: the one record is still good
 await p.goto(`${BASE}/sign-in`);
@@ -75,9 +81,9 @@ const again = await lib.sql(`select count(*)::int n from sentinel_identity.legal
 ok('a return visit records no second agreement', again[0].n === 2, String(again[0].n));
 
 // 6 · sign out clears it
-await p.click('[data-out]');
+await p.click('[data-nav-sign]');
 await p.waitForURL(u => u.pathname === '/sign-in', { timeout: 10000 }).catch(() => {});
-ok('Sign out → "Welcome back." (the Sign in page), and the record is gone from the browser', p.url().endsWith('/sign-in') && await shown('ask') && (await p.locator('[data-state="ask"] h1').innerText()) === 'Welcome back.' && (await kept()) === null, p.url());
+ok('Sign out → "Welcome back." (the Sign in page), and the record is gone from the browser', p.url().endsWith('/sign-in') && await shown('ask') && (await p.locator('[data-state="ask"] h1').innerText()) === 'Welcome back.' && (await kept()) === null && (await p.locator('[data-nav-sign]').innerText()) === 'Sign in', p.url());
 await p.goto(`${BASE}/sign-in`);
 ok('after signing out, a return visit is signed out', await shown('ask', 5000) && !(await p.locator('[data-state="in"]').isVisible()));
 const still = await fetch(`${lib.BASE}/auth/v1/user`, { headers: { apikey: lib.ENV.SUPABASE_ANON_KEY, Authorization: 'Bearer ' + tok.access_token } });

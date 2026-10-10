@@ -46,6 +46,8 @@ for (const [en, E] of [['chromium', chromium], ['webkit', webkit]]) {
       ok(`${en} ${dev} ${theme} ${path}: "${h1}", Google and Apple only, ${create ? 'decision 204’s line with both links' : 'no consent line'}, noindex`,
         t === h1 && btns.length === 2 && /Google/.test(btns[0]) && /Apple/.test(btns[1]) && !btns.join().includes('Microsoft') && (create ? consent === 1 && links >= 2 : consent === 0) && /noindex/.test(robots || '') && font,
         `h1="${t}" buttons=${JSON.stringify(btns)} consent=${consent} robots=${robots} roboto=${font}`);
+      const nav = p.locator('[data-nav-sign]');
+      ok(`${en} ${dev} ${theme} ${path}: signed out, the nav's top-right corner says Sign in (founder, 10 Oct 12:50)`, (await nav.isVisible()) && (await nav.innerText()) === 'Sign in' && (await nav.getAttribute('href')) === '/sign-in');
       mkdirSync('proofs/screens/sign', { recursive: true });
       await p.screenshot({ path: `proofs/screens/sign/${path.slice(1)}-${en}-${dev}-${theme}.png`, fullPage: true });
       if (en === 'chromium') {
