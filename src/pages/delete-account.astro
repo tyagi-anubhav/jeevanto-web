@@ -1,24 +1,22 @@
 ---
 // 18 · Delete your account: the public page Google Play's Data safety form asks for (decisions 109.3, 125; audit 252 #75,
-// Cowork's yes 10 Oct 11:50). Words only, no sign-in. The steps and numbers are the app's own: Settings › Privacy &
-// Security › Delete account (SettingsPrivacyScreen), the hold before anything is deleted (account_close_request,
-// 7 days), the backups (backup_days) and the invoices (tax_record_years). Words: WEBSITE's draft, for the founder's batch.
+// Cowork's yes 10 Oct 11:50). Words only, no sign-in. The founder's words (decisions 255–257): deleted straight away,
+// after a copy is offered. Live only once ENGINES' immediate deletion and Take a copy are live (decision 255's order).
 import Shell from '../layouts/Shell.astro';
 import Eyebrow from '../components/Eyebrow.astro';
 import { config } from '../lib/config.mjs';
 
-const holdDays = 7;
-const backupDays = config.backupDays, taxYears = config.legal && config.legal.tax_record_years, mail = config.supportEmail, replyDays = config.replyDays;
+const backupDays = config.backupDays, mail = config.supportEmail;
 // no guessed numbers on a page about deletion: a missing value stops the build (as an unfilled legal placeholder does)
-if (!backupDays || !taxYears || !mail || !replyDays) throw new Error('delete-account: a value is missing from the settings');
+if (!backupDays || !mail) throw new Error('delete-account: a value is missing from the settings');
 const answer = "font-family:'Newsreader',serif; font-size:var(--lede); line-height:var(--ledelh); color:var(--ink); text-wrap:pretty;";
 const link = 'color:var(--brass); font-weight:600; text-decoration:underline; text-underline-offset:3px;';
+// the founder's words (decisions 255–257, Cowork 10 Oct 13:45), word for word
 const rows = [
-  ['In the app', `Open Jeevanto, then Settings › Privacy & Security › Delete account. Write your own name to confirm, so it can’t happen by accident.`],
-  ['Without the app', `Write to ${mail} from the email address on your account, and say you want it deleted. A person reads it and replies within ${replyDays} working days.`],
-  ['What happens next', `Your account closes straight away: you’re signed out everywhere, and Jeevanto stops reminding, watching and acting for you. Nothing is deleted for ${holdDays} days: something this final shouldn’t happen in one bad evening. Sign in during those ${holdDays} days and everything is still there.`],
-  ['What is deleted', `After ${holdDays} days, everything: what you told Jeevanto, what it found, your Vault, your connected sources and the account itself. Copies in our backups are gone within ${backupDays} days after that.`],
-  ['What we keep', `Only what the law or fairness needs: invoices and payment records, apart and no longer linked to you, for ${taxYears} years as tax law asks; a scrambled fingerprint of your email or mobile number, so the free months are given once per person; and a security log of sign-ins and actions, never what anything said.`],
+  ['In the app', 'Open Jeevanto, then Settings › Privacy & Security › Delete account. First you’re offered a copy of everything to keep. Then you write your own name to confirm, so it can’t happen by accident.'],
+  ['Without the app', ''],
+  ['What happens', `Everything is deleted straight away: what you told Jeevanto, what it found, your Vault, your connected accounts and the account itself. Backup copies age out within ${backupDays} days, and no one restores from them.`],
+  ['What we keep', 'Only what the law or fairness requires. Invoices, unlinked from you, for as long as tax law asks. A scrambled fingerprint of your email or number, so the free months are given only once per person. And a security log of sign-ins, never what anything said.'],
 ].map(([q, a], i) => ({ n: String(i + 1), q, a }));
 ---
 <Shell title="Delete your account" path="/delete-account" description="How to delete your Jeevanto account and your data, in the app or by writing to us, and what we keep.">
@@ -31,7 +29,7 @@ const rows = [
       {rows.map(b => (
         <div style="display:flex; flex-wrap:wrap; gap:8px 40px; padding:22px 0; border-top:1px solid var(--line);">
           <dt style="flex:0 0 240px; display:flex; gap:12px; font-size:11px; font-weight:600; letter-spacing:1.6px; color:var(--quiet); text-transform:uppercase; padding-top:7px;"><span style="width:14px;">{b.n}</span><span>{b.q}</span></dt>
-          <dd style="flex:1 1 300px; margin:0;"><p style={answer}>{b.n === '2' ? <>Write to <a href={`mailto:${mail}`} style={link}>{mail}</a> from the email address on your account, and say you want it deleted. A person reads it and replies within {replyDays} working days.</> : b.a}</p></dd>
+          <dd style="flex:1 1 300px; margin:0;"><p style={answer}>{b.n === '2' ? <>Write to <a href={`mailto:${mail}`} style={link}>{mail}</a> from the email address on your account. We’ll send a link to that address to confirm it’s you, and delete the account once you’ve confirmed.</> : b.a}</p></dd>
         </div>
       ))}
     </dl>
