@@ -24,7 +24,9 @@
     }).then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { status: r.status, body: j || {} }; }); },
       function () { return { status: 0, body: {} }; });
   }
-  var TROUBLE = 'We couldn’t reach Jeevanto just now. Try again in a little while.';
+  // the product's name from the page's own og:site_name, which the shell fills from the one source (decision 245)
+  var NAME = (document.querySelector('meta[property="og:site_name"]') || {}).content;
+  var TROUBLE = 'We couldn’t reach ' + NAME + ' just now. Try again in a little while.';
 
   // 1 · the two doors: off to the company's own sign-in, back to this page
   root.querySelectorAll('[data-provider]').forEach(function (b) {

@@ -2,7 +2,7 @@
 // /sign-in and /create-account (v10 screen 09, decisions 123, 204 and 229). Built ONLY for the non-public preview
 // (JV_PREVIEW=1): on jeevanto.com they stay hidden (404) until coming-soon mode ends (Cowork's ruling 1, 6 Oct).
 import Shell from '../layouts/Shell.astro';
-import { config } from '../lib/config.mjs';
+import { config, productName } from '../lib/config.mjs';
 import { PREVIEW } from '../lib/preview.mjs';
 import { S } from '../components/ui.mjs';
 
@@ -25,7 +25,7 @@ const badges = (
     .map(([href, src, alt]) => href ? `<a href="${href}" target="_blank" rel="noopener" style="display:flex; padding:10px 0;"><img src="${src}" alt="${alt}" style="height:40px; width:auto; display:block;"></a>` : `<span style="display:flex; padding:10px 0;"><img src="${src}" alt="${alt}" style="height:40px; width:auto; display:block;"></span>`).join('') +
   `</div>`);
 ---
-<Shell title={create ? 'Create your account' : 'Sign in'} path={path} doors description={create ? 'Create your Jeevanto account.' : 'Sign in to Jeevanto.'}>
+<Shell title={create ? 'Create your account' : 'Sign in'} path={path} doors description={create ? `Create your ${productName} account.` : `Sign in to ${productName}.`}>
   <div data-screen-label="09 Sign in" data-sign={create ? 'create' : 'in'} data-legal-version={legalVersion} style={S.page.replace('max-width:600px', 'max-width:480px')}>
     <div style={S.eyebrow}>YOUR ACCOUNT</div>
 
@@ -45,8 +45,8 @@ const badges = (
       </div>
       <p data-err role="alert" hidden style={S.err.replace('margin-top:-10px;', '')}></p>
       {create
-        ? <p style="font-size:14px; line-height:20px; color:var(--quiet); text-align:center;">Already on Jeevanto? <a href="/sign-in" style={link}>Sign in</a></p>
-        : <p style="font-size:14px; line-height:20px; color:var(--quiet); text-align:center;">New to Jeevanto? <a href="/create-account" style={link}>Create your account</a></p>}
+        ? <p style="font-size:14px; line-height:20px; color:var(--quiet); text-align:center;">Already on {productName}? <a href="/sign-in" style={link}>Sign in</a></p>
+        : <p style="font-size:14px; line-height:20px; color:var(--quiet); text-align:center;">New to {productName}? <a href="/create-account" style={link}>Create your account</a></p>}
     </div>
 
     <div data-state="busy" hidden role="status" style={S.quiet}>One moment.</div>
@@ -72,7 +72,7 @@ const badges = (
     </div>
 
     <div data-state="created" hidden style="display:flex; flex-direction:column; gap:20px;">
-      <h1 tabindex="-1" style={S.h1}>Now, get the app to make the most of Jeevanto.</h1>
+      <h1 tabindex="-1" style={S.h1}>Now, get the app to make the most of {productName}.</h1>
       <div style="background:var(--card); border-radius:16px; padding:18px 20px; display:flex; flex-direction:column; gap:4px;">
         <span style={S.eyebrow}>A WELCOME GIFT</span>
         <p style="font-size:16px; line-height:24px; color:var(--ink); text-wrap:pretty;">{months} months of Plus, free, waiting for you in the app. They start the day you first open it.</p>
