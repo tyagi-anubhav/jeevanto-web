@@ -1,4 +1,4 @@
-// /open-your-copy (decision 258): opens a locked Jeevanto copy in the browser. Nothing is uploaded; no request is made.
+// /open-your-copy (decision 258): opens a person's locked copy in the browser. Nothing is uploaded; no request is made.
 // The format is ENGINES' (supabase/functions/_shared/locked-copy.ts): "JVCOPY1\n", one JSON header line ending "\n"
 // (v 1, scrypt N r p dklen, base64 salt and nonce), then AES-256-GCM with the 16-byte tag appended; the additional data
 // is the magic plus the header line. The key is scrypt over the code, upper-cased, with everything outside A–Z and 2–9
@@ -29,12 +29,14 @@ export async function openCopy(bytes, code) {
 }
 window.jvOpenCopy = openCopy; // for the page's own check (tools/check-open-copy.mjs)
 
+// the product's name from the page's own og:site_name, which the shell fills from the one source (decision 245)
+const NAME = (document.querySelector('meta[property="og:site_name"]') || {}).content;
 const WORDS = {
   file: 'Choose the copy you saved: the file ending in .jvcopy.',
   code: 'The code has 16 letters and numbers, like XXXX-XXXX-XXXX-XXXX.',
   wrong: 'That code doesn’t open this copy.',
-  'not-ours': 'This isn’t a Jeevanto copy.',
-  newer: 'This copy comes from a newer Jeevanto. Open it in the app.',
+  'not-ours': `This isn’t a ${NAME} copy.`,
+  newer: `This copy comes from a newer ${NAME}. Open it in the app.`,
 };
 $('[data-state="ask"]').addEventListener('submit', async e => {
   e.preventDefault(); say('');
