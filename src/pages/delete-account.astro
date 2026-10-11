@@ -4,7 +4,7 @@
 // after a copy is offered. Live only once ENGINES' immediate deletion and Take a copy are live (decision 255's order).
 import Shell from '../layouts/Shell.astro';
 import Eyebrow from '../components/Eyebrow.astro';
-import { config } from '../lib/config.mjs';
+import { config, productName } from '../lib/config.mjs';
 
 const backupDays = config.backupDays, mail = config.supportEmail;
 // no guessed numbers on a page about deletion: a missing value stops the build (as an unfilled legal placeholder does)
@@ -13,13 +13,13 @@ const answer = "font-family:'Newsreader',serif; font-size:var(--lede); line-heig
 const link = 'color:var(--brass); font-weight:600; text-decoration:underline; text-underline-offset:3px;';
 // the founder's words (decisions 255–257, Cowork 10 Oct 13:45), word for word
 const rows = [
-  ['In the app', 'Open Jeevanto, then Settings › Privacy & Security › Delete account. First you’re offered a copy of everything to keep. Then you write your own name to confirm, so it can’t happen by accident.'],
+  ['In the app', `Open ${productName}, then Settings › Privacy & Security › Delete account. First you’re offered a copy of everything to keep. Then you write your own name to confirm, so it can’t happen by accident.`],
   ['Without the app', ''],
-  ['What happens', `Everything is deleted straight away: what you told Jeevanto, what it found, your Vault, your connected accounts and the account itself. Backup copies age out within ${backupDays} days, and no one restores from them.`],
+  ['What happens', `Everything is deleted straight away: what you told ${productName}, what it found, your Vault, your connected accounts and the account itself. Backup copies age out within ${backupDays} days, and no one restores from them.`],
   ['What we keep', 'Only what the law or fairness requires. Invoices, unlinked from you, for as long as tax law asks. A scrambled fingerprint of your email or number, so the free months are given only once per person. And a security log of sign-ins, never what anything said.'],
 ].map(([q, a], i) => ({ n: String(i + 1), q, a }));
 ---
-<Shell title="Delete your account" path="/delete-account" description="How to delete your Jeevanto account and your data, in the app or by writing to us, and what we keep.">
+<Shell title="Delete your account" path="/delete-account" description={`How to delete your ${productName} account and your data, in the app or by writing to us, and what we keep.`}>
   <div data-screen-label="18 Delete your account" style="box-sizing:border-box; max-width:960px; margin:0 auto; padding:var(--top) var(--gut) var(--sec); display:flex; flex-direction:column; gap:40px;">
     <div style="display:flex; flex-direction:column; gap:20px;">
       <Eyebrow>DELETE YOUR ACCOUNT</Eyebrow>
