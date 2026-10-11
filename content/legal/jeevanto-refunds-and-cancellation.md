@@ -43,9 +43,9 @@ The full policy follows. If anything below seems to say something different from
 
 ## 1. What this policy covers
 
-This policy covers payments for Jeevanto's plans made on jeevanto.com through Razorpay. It forms part of our [Terms of use](/terms).
+This policy covers payments for {{product_name}}'s plans made on jeevanto.com through Razorpay. It forms part of our [Terms of use](/terms).
 
-It doesn't cover things you book, order or pay for on another company's website through Jeevanto. That company's own cancellation and refund rules apply to those (Terms of use, section 6).
+It doesn't cover things you book, order or pay for on another company's website through {{product_name}}. That company's own cancellation and refund rules apply to those (Terms of use, section 6).
 
 ## 2. The plans
 
@@ -156,7 +156,7 @@ It doesn't cover things you book, order or pay for on another company's website 
 
 10.2 **If we remove a feature that's part of your paid plan**, we tell you in advance. If you cancel because of it, we refund the unused part of the period you've paid for.
 
-10.3 **If we stop Jeevanto altogether**, we give you at least {{shutdown_notice_days}} days' notice, time to take a copy of your data, and a refund of any unused paid period.
+10.3 **If we stop {{product_name}} altogether**, we give you at least {{shutdown_notice_days}} days' notice, time to take a copy of your data, and a refund of any unused paid period.
 
 ## 11. How and when refunds reach you
 

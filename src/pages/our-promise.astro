@@ -1,16 +1,17 @@
 ---
 // 5 · Our promise. Brief A2 (headline), A3 (row 8, If you leave), B1 (row 1: the line to Privacy 14).
+import { productName } from '../lib/config.mjs';
 import Shell from '../layouts/Shell.astro';
 import Eyebrow from '../components/Eyebrow.astro';
 import More from '../components/More.astro';
 
 const backupDays = 7;
 const beliefs = [
-  ['What Jeevanto reads', 'Only the accounts you choose to connect, what you tell it, and what people in your Circle choose to share with you. That’s how it knows what needs doing.'],
+  [`What ${productName} reads`, 'Only the accounts you choose to connect, what you tell it, and what people in your Circle choose to share with you. That’s how it knows what needs doing.'],
   ['What it keeps', 'What matters from it, like a date, a promise or an offer, each pointing to where it came from. Never the mail itself.'],
   ['What it shows you', 'How much it read from each source, each day. Pause any source whenever you like.'],
   ['What trains on it', 'Nothing. We only use AI services set up so your data never trains their models.'],
-  ['What it learns about you', 'It connects the dots. That’s how it helps. What it learns stays in your Jeevanto, shows how it got there, and can be taken back. A pattern it notices in your habits waits for your yes before it’s used.'],
+  ['What it learns about you', `It connects the dots. That’s how it helps. What it learns stays in your ${productName}, shows how it got there, and can be taken back. A pattern it notices in your habits waits for your yes before it’s used.`],
   ['What you can take back', 'Anything it knows or has learnt about you. Tell it to forget, and it’s gone.'],
   ['Who else sees it', 'No one, unless you say yes. Not your family, not the one who looks after you.'],
   ['If you leave', `Delete your account any time. Everything goes, and copies in our backups are gone within ${backupDays} days. We keep only what the law or fairness needs: a scrambled fingerprint of your email or mobile number, so the free months are given once per person; invoices, for as long as tax law asks; and a record of sign-ins for a year, never what anything said.`],
@@ -30,7 +31,7 @@ const answer = "font-family:'Newsreader',serif; font-size:var(--lede); line-heig
           <dt style="flex:0 0 240px; display:flex; gap:12px; font-size:11px; font-weight:600; letter-spacing:1.6px; color:var(--quiet); text-transform:uppercase; padding-top:7px;"><span style="width:14px;">{b.n}</span><span>{b.q}</span></dt>
           <dd style="flex:1 1 300px; margin:0; display:flex; flex-direction:column; gap:12px;">
             <p style={answer}>{b.a}</p>
-            {b.n === '1' && <p style={answer}>If you connect Google, exactly what Jeevanto does with your Gmail, Google Calendar and Google Contacts is in our <a href="/privacy-policy#google-user-data" style="color:var(--brass); text-decoration:underline; text-underline-offset:3px;">privacy policy, section 14</a>.</p>}
+            {b.n === '1' && <p style={answer}>If you connect Google, exactly what {productName} does with your Gmail, Google Calendar and Google Contacts is in our <a href="/privacy-policy#google-user-data" style="color:var(--brass); text-decoration:underline; text-underline-offset:3px;">privacy policy, section 14</a>.</p>}
           </dd>
         </div>
       ))}

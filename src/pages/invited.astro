@@ -3,13 +3,13 @@
 // (cc-wave-11b A3), so the page has a field for it; a ?c=<CODE> link is read the same way if one ever arrives.
 // The heading names the inviter by first name for a live code, and "Someone" for anything else.
 import Shell from '../layouts/Shell.astro';
-import { config } from '../lib/config.mjs';
+import { config, productName } from '../lib/config.mjs';
 import { S } from '../components/ui.mjs';
 ---
-<Shell title="Invited to Jeevanto" path="/invited" doors description="Someone has invited you to Jeevanto. Get the app, open it, and enter the code from their message.">
-  <div data-screen-label="14 Invited to Jeevanto" data-invite style={S.page}>
+<Shell title={`Invited to ${productName}`} path="/invited" doors description={`Someone has invited you to ${productName}. Get the app, open it, and enter the code from their message.`}>
+  <div data-screen-label={`14 Invited to ${productName}`} data-invite style={S.page}>
     <div style={S.eyebrow}>INVITED TO JEEVANTO</div>
-    <h1 style={S.h1} aria-live="polite"><span data-inviter>Someone</span> has invited you to Jeevanto.</h1>
+    <h1 style={S.h1} aria-live="polite"><span data-inviter>Someone</span> has invited you to {productName}.</h1>
     <p style={S.lede}>Get the app, open it, and enter the code from their message. The code works once, for {Number(config.inviteDays) || 14} days.</p>
     <form novalidate style="display:flex; flex-direction:column; gap:12px; border-top:1px solid var(--line); padding-top:18px; margin-top:8px;">
       <label for="inv-code" style={S.small}>Not sure who it’s from? Type the code, and we’ll show their first name.</label>

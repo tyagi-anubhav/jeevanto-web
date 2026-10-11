@@ -5,17 +5,17 @@ import Shell from '../layouts/Shell.astro';
 import Eyebrow from '../components/Eyebrow.astro';
 import More from '../components/More.astro';
 import Icon from '../components/Icon.astro';
-import { config, full, legalLine, regLine } from '../lib/config.mjs';
+import { config, full, legalLine, regLine, productName } from '../lib/config.mjs';
 
 const m = config.freeMonths;
 const faqData = [
   ...(full ? [['What happens when my free months end?', `Your ${m} free months of Plus start the day you first open the app. We tell you before they end, and nothing is charged by itself. Choose a paid plan to keep going, or carry on free on Express, with nothing lost.`, ['See Plans', '/plans']]] : []),
-  ...(full ? [['Which plan is right for me?', 'Express is free for as long as you like, and does the everyday things: notes, reminders, getting ready and finding what you’ve kept. Plus is everything Jeevanto can do, for you. Family is everything, for everyone at home, each with their own Jeevanto, at the family price.', ['Compare the plans', '/plans']]] : []),
+  ...(full ? [['Which plan is right for me?', `Express is free for as long as you like, and does the everyday things: notes, reminders, getting ready and finding what you’ve kept. Plus is everything ${productName} can do, for you. Family is everything, for everyone at home, each with their own ${productName}, at the family price.`, ['Compare the plans', '/plans']]] : []),
   ...(full ? [['How do I cancel?', 'Sign in to Your account on this site, choose Cancel plan, then confirm. Your plan stays until the end of the month you’ve paid for, then you carry on free on Express with everything you’ve made. On yearly Plus, the months you’ve used are charged at the monthly price, and the rest is refunded.', ['Sign in', '/sign-in']]] : []),
   ...(full ? [['What does Family cost?', 'Every seat on Family pays the same price, below the Plus price from the first seat, and lower as you add seats. Pick how many seats you need on Plans to see the price.', ['See Family on Plans', '/plans']]] : []),
-  ['Can others on my Family plan see my Jeevanto?', 'No. Each person’s Jeevanto is private to them. Being on one plan opens nobody’s account, not even to the person who pays. They see only what you choose to share.', ['See how Circle works', '/circle']],
-  ['Can I use Jeevanto to look after my parent?', 'Yes, that’s kin mode. Your parent can invite you, or you can invite them. You help only with what they allow, and they see everything you do.', ['See kin mode', '/kin-mode']],
-  ['What does Jeevanto read, and what does it keep?', 'It reads only the accounts you choose to connect, what you tell it, and what people in your Circle choose to share with you. It keeps what matters from them, each with its source, never the mail itself. It shows you how much it read. We never train AI on your data.', ['Read our promise', '/our-promise']],
+  [`Can others on my Family plan see my ${productName}?`, `No. Each person’s ${productName} is private to them. Being on one plan opens nobody’s account, not even to the person who pays. They see only what you choose to share.`, ['See how Circle works', '/circle']],
+  [`Can I use ${productName} to look after my parent?`, 'Yes, that’s kin mode. Your parent can invite you, or you can invite them. You help only with what they allow, and they see everything you do.', ['See kin mode', '/kin-mode']],
+  [`What does ${productName} read, and what does it keep?`, 'It reads only the accounts you choose to connect, what you tell it, and what people in your Circle choose to share with you. It keeps what matters from them, each with its source, never the mail itself. It shows you how much it read. We never train AI on your data.', ['Read our promise', '/our-promise']],
   ...(full ? [['Can I delete my account without the app?', 'Yes. The Delete your account page asks for the email or mobile number on your account, and a code we send to it.', ['Delete your account', '/delete-account']]] : []),
 ];
 const faqs = faqData.map(([q, a, link], i) => ({ q, a, link, open: i === 0, last: i === faqData.length - 1, id: 'faq-' + i }));

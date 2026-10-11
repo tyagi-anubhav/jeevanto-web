@@ -1,5 +1,6 @@
 ---
 // 2 · What it does: three rows of capability films, then the four rules.
+import { productName } from '../lib/config.mjs';
 import Shell from '../layouts/Shell.astro';
 import Eyebrow from '../components/Eyebrow.astro';
 import More from '../components/More.astro';
@@ -31,11 +32,11 @@ const cardHead = "font-family:'Newsreader',serif; font-weight:400; font-size:22p
 const cardLine = 'font-size:15px; line-height:21px; color:var(--quiet);';
 const arrowBtn = 'width:44px; height:44px; box-sizing:border-box; border-radius:50%; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; color:var(--nav);';
 ---
-<Shell title="What it does" here="What it does" path="/what-it-does" description="What Jeevanto can do: notes, reminders, getting you ready, finding what you’ve kept, booking, ordering, filling in forms, sending, keeping a lookout and running errands, each with your yes.">
+<Shell title="What it does" here="What it does" path="/what-it-does" description={`What ${productName} can do: notes, reminders, getting you ready, finding what you’ve kept, booking, ordering, filling in forms, sending, keeping a lookout and running errands, each with your yes.`}>
   <div data-screen-label="02 What it does" style="box-sizing:border-box; max-width:1152px; margin:0 auto; padding:var(--top) var(--gut) 0; display:flex; flex-direction:column; gap:var(--par);">
     <Eyebrow>WHAT JEEVANTO CAN DO</Eyebrow>
-    <h1 style="font-family:'Newsreader',serif; font-weight:400; font-size:var(--h1); line-height:var(--h1lh); letter-spacing:-0.3px; color:var(--ink); max-width:860px; text-wrap:balance;">Jeevanto is the control system for your commitments, relationships, goals, and decisions.</h1>
-    <p style="font-family:'Newsreader',serif; font-size:var(--lede); line-height:var(--ledelh); color:var(--quiet); max-width:720px; text-wrap:pretty;">Each part of Jeevanto is built for one kind of job. Tell it what you need in your own words; it knows which one to reach for.</p>
+    <h1 style="font-family:'Newsreader',serif; font-weight:400; font-size:var(--h1); line-height:var(--h1lh); letter-spacing:-0.3px; color:var(--ink); max-width:860px; text-wrap:balance;">{productName} is the control system for your commitments, relationships, goals, and decisions.</h1>
+    <p style="font-family:'Newsreader',serif; font-size:var(--lede); line-height:var(--ledelh); color:var(--quiet); max-width:720px; text-wrap:pretty;">Each part of {productName} is built for one kind of job. Tell it what you need in your own words; it knows which one to reach for.</p>
   </div>
   {carousels.map(c => (
     <section aria-labelledby={`h-${c.k}`} style="box-sizing:border-box; max-width:1152px; margin:0 auto; padding:var(--sec2) var(--gut) 0; display:flex; flex-direction:column; gap:var(--grp);">
@@ -71,31 +72,31 @@ const arrowBtn = 'width:44px; height:44px; box-sizing:border-box; border-radius:
   <section style="box-sizing:border-box; max-width:1152px; margin:0 auto; padding:var(--sec) var(--gut) var(--sec); display:flex; flex-direction:column; gap:var(--grp);">
     <div style="display:flex; flex-direction:column; gap:var(--par);">
       <Eyebrow>HOW IT WORKS</Eyebrow>
-      <h2 style="font-family:'Newsreader',serif; font-weight:400; font-size:var(--h2); line-height:var(--h2lh); color:var(--ink); max-width:820px; text-wrap:balance;">Four rules under everything Jeevanto does.</h2>
+      <h2 style="font-family:'Newsreader',serif; font-weight:400; font-size:var(--h2); line-height:var(--h2lh); color:var(--ink); max-width:820px; text-wrap:balance;">Four rules under everything {productName} does.</h2>
     </div>
     <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap:12px;">
       <div style={card}>
         <h3 style={cardHead}>Everything it knows comes from you, or your Circle.</h3>
-        <p style={cardLine}>Connect your accounts, or just tell it. Jeevanto works only from what you, and the people in your Circle, choose to share.</p>
+        <p style={cardLine}>Connect your accounts, or just tell it. {productName} works only from what you, and the people in your Circle, choose to share.</p>
         <div style="background:var(--bg); border-radius:12px; padding:16px; margin-top:auto; display:flex; flex-wrap:wrap; gap:8px;"><span style={chip}>Email</span><span style={chip}>Calendar</span><span style={chip}>Contacts</span><span style={chip}>What you tell it</span></div>
       </div>
       <div style={card}>
         <h3 style={cardHead}>Every fact has a source.</h3>
-        <p style={cardLine}>Everything Jeevanto tells you comes with where it came from, so you can act on it with confidence.</p>
+        <p style={cardLine}>Everything {productName} tells you comes with where it came from, so you can act on it with confidence.</p>
         <div style="background:var(--bg); border-radius:12px; padding:16px; margin-top:auto;"><div style="padding-left:12px; border-left:2px solid var(--register);"><div style="font-family:'Newsreader',serif; font-style:italic; font-size:15px; line-height:21px; color:var(--quiet);">From the clinic’s email of 12 September, and your calendar.</div></div></div>
       </div>
       <div style={card}>
         <h3 style={cardHead}>Every action has your hand on it.</h3>
-        <p style={cardLine}>You make the call. Jeevanto does the running around, then waits for your yes.</p>
+        <p style={cardLine}>You make the call. {productName} does the running around, then waits for your yes.</p>
         <div style="background:var(--bg); border-radius:12px; padding:16px; margin-top:auto; display:flex; flex-direction:column; gap:12px;"><div style="font-family:'Newsreader',serif; font-size:var(--lede); line-height:var(--ledelh); color:var(--ink);">I’ve filled in the school trip form — look it over before it goes.</div><div aria-hidden="true" style="height:52px; border-radius:15px; background:var(--bone); display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:600; color:var(--boneText);">Send it to the school</div></div>
       </div>
       <div style={card}>
         <h3 style={cardHead}>Anything it knows, you can take back.</h3>
-        <p style={cardLine}>Changed your mind? Take back anything Jeevanto holds, a fact, a watch, a booking before it’s final. Nothing stays that you didn’t want.</p>
+        <p style={cardLine}>Changed your mind? Take back anything {productName} holds, a fact, a watch, a booking before it’s final. Nothing stays that you didn’t want.</p>
         <div style="background:var(--bg); border-radius:12px; padding:16px; margin-top:auto;"><div style="background:var(--raised); border:1px solid var(--line); border-radius:12px; padding:12px 14px; box-shadow:var(--lift); display:flex; align-items:center; gap:8px;"><span style="display:inline-flex; color:var(--sage);"><Icon name="check" size={14} /></span><span style="font-size:14px; line-height:20px; color:var(--ink);">Done — I’ve forgotten it.</span></div></div>
       </div>
     </div>
-    <More href="/circle" style="align-self:flex-start;">See how Jeevanto helps you care for your family</More>
+    <More href="/circle" style="align-self:flex-start;">See how {productName} helps you care for your family</More>
   </section>
   <FilmFullScreen />
 </Shell>

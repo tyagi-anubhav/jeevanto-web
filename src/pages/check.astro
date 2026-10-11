@@ -1,14 +1,14 @@
 ---
 // 13 · Check a message (recovery and check brief, page 11), on ENGINES' `check` door.
 import Shell from '../layouts/Shell.astro';
-import { config } from '../lib/config.mjs';
+import { config, productName } from '../lib/config.mjs';
 import { S } from '../components/ui.mjs';
 const row = 'display:grid; grid-template-columns:var(--sumCols); align-items:baseline; gap:4px 20px; padding:13px 0;';
 const rk = 'font-size:14px; line-height:20px; color:var(--quiet);';
 const rv = 'font-size:14px; font-weight:600; color:var(--ink); justify-self:end; text-align:right; text-wrap:balance;';
 const step = 'display:flex; gap:14px; align-items:flex-start; padding:12px 0; border-top:1px solid var(--line);';
 ---
-<Shell title="Check a message" path="/check" doors description="Check that a message really came from Jeevanto: type the reference it ends with.">
+<Shell title="Check a message" path="/check" doors description={`Check that a message really came from ${productName}: type the reference it ends with.`}>
   <div data-screen-label="13 Check a message" data-check style={S.page}>
     <form data-state="ask none" novalidate style={S.stack}>
       <div style={S.eyebrow}>IS THIS FROM JEEVANTO?</div>
@@ -23,7 +23,7 @@ const step = 'display:flex; gap:14px; align-items:flex-start; padding:12px 0; bo
     </form>
     <div data-state="real" hidden role="status" style="display:flex; flex-direction:column; gap:18px; margin-top:12px;">
       <span style="display:inline-flex; align-items:center; gap:8px; font-size:13px; font-weight:500; letter-spacing:.4px; color:var(--sage);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>THIS IS REAL</span>
-      <h1 style="font-family:'Newsreader',serif; font-weight:400; font-size:24px; line-height:32px; color:var(--ink);">Yes, this is from Jeevanto.</h1>
+      <h1 style="font-family:'Newsreader',serif; font-weight:400; font-size:24px; line-height:32px; color:var(--ink);">Yes, this is from {productName}.</h1>
       <dl style="margin:0; background:var(--card); border-radius:16px; padding:4px 20px;">
         <div style={`${row} border-bottom:1px solid var(--line);`}><dt style={rk}>Sent to</dt><dd style={`margin:0; ${rv}`} data-f="sent_to"></dd></div>
         <div style={`${row} border-bottom:1px solid var(--line);`}><dt style={rk}>Sent on</dt><dd style={`margin:0; ${rv}`} data-f="sent_on"></dd></div>

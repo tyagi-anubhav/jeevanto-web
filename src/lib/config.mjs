@@ -55,6 +55,10 @@ export const configSource = door.source;
 export { engine };
 console.log('[site-config] ' + configSource + ' · siteMode=' + config.siteMode + ' · legalName=' + config.legalName);
 
+// The product's visible name, in one place (decision 245). Every word a visitor sees reads it from here. JV_PRODUCT_NAME
+// overrides it for tools/check-name.mjs only, which builds with a stand-in name to find any "Jeevanto" still typed by hand.
+export const productName = process.env.JV_PRODUCT_NAME || config.productName;
+if (!productName) throw new Error('site-config: productName is missing');
 export const soon = config.siteMode === 'coming soon';
 export const full = !soon;
 export const legalLine = [config.legalName, config.registeredAddress].filter(Boolean).join(' · ');

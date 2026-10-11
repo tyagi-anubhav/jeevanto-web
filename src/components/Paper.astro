@@ -1,12 +1,13 @@
 ---
 // 12 · The paperwork: one legal document, with the list of the three on a laptop.
+import { productName } from '../lib/config.mjs';
 import Shell from '../layouts/Shell.astro';
 import { legalDoc, TITLES, PATHS, CHANGES, tokens } from '../lib/legal.mjs';
 const { doc: key } = Astro.props;
 const doc = legalDoc(key);
 const changed = CHANGES[key];
 const title = TITLES[key];
-const descs = { policy: 'What Jeevanto collects, why, who else handles it, how long we keep it, and your rights, including how Jeevanto uses Google user data.', terms: 'The terms for using Jeevanto, the app and jeevanto.com.', refunds: 'How payments, cancelling and refunds work for Jeevanto’s plans.' };
+const descs = { policy: `What ${productName} collects, why, who else handles it, how long we keep it, and your rights, including how ${productName} uses Google user data.`, terms: `The terms for using ${productName}, the app and jeevanto.com.`, refunds: `How payments, cancelling and refunds work for ${productName}’s plans.` };
 const dot = '<span aria-hidden="true" style="flex:0 0 5px; width:5px; height:5px; border-radius:50%; background:var(--quiet); margin-top:11px;"></span>';
 const li = 'display:flex; gap:12px; font-size:16px; line-height:26px; color:var(--ink); text-wrap:pretty;';
 const lab = 'font-size:11px; font-weight:600; letter-spacing:1.6px; color:var(--quiet);';

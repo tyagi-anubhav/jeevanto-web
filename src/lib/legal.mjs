@@ -4,7 +4,7 @@
 // The only changes to the words are the ones the brief asks for (A1): the provider's name and address come from
 // the site's config (decision 207), and the refund example says its prices are samples.
 import { readFileSync } from 'node:fs';
-import { config } from './config.mjs';
+import { config, productName } from './config.mjs';
 
 const FILES = { policy: 'jeevanto-privacy-policy.md', terms: 'jeevanto-terms-of-use.md', refunds: 'jeevanto-refunds-and-cancellation.md' };
 export const TITLES = { policy: 'Privacy policy', terms: 'Terms of use', refunds: 'Refunds and cancellation' };
@@ -13,11 +13,11 @@ export const PATHS = { policy: '/privacy-policy', terms: '/terms', refunds: '/re
 // words, listing the approved edits in plain words; the policy's own text is Cowork's, word for word.
 export const CHANGES = {
   policy: { date: '2026-10-09', points: [
-    'A new section 5.2 says how Jeevanto uses a website for you: it signs in with the login you saved, can make you an account there if you say yes, reads a sign-in code that site emails you, and shows you what it filled. You pay, book or confirm yourself.',
-    'Your Vault now holds logins for websites, not payment options. Jeevanto never pays for you (section 3).',
-    'Jeevanto never sends a text, WhatsApp or email as you. It writes the message, and you send it from your own app (section 4).',
-    'Browserbase, which runs the web browser Jeevanto uses on a site for you, is added to the companies that handle your data (section 9).',
-    'Google (section 14): Jeevanto no longer asks to send email from your Gmail, reads only the events in your Google Calendar, and uses Gmail to read a sign-in code a site sends you, once.',
+    `A new section 5.2 says how ${productName} uses a website for you: it signs in with the login you saved, can make you an account there if you say yes, reads a sign-in code that site emails you, and shows you what it filled. You pay, book or confirm yourself.`,
+    `Your Vault now holds logins for websites, not payment options. ${productName} never pays for you (section 3).`,
+    `${productName} never sends a text, WhatsApp or email as you. It writes the message, and you send it from your own app (section 4).`,
+    `Browserbase, which runs the web browser ${productName} uses on a site for you, is added to the companies that handle your data (section 9).`,
+    `Google (section 14): ${productName} no longer asks to send email from your Gmail, reads only the events in your Google Calendar, and uses Gmail to read a sign-in code a site sends you, once.`,
     'How the website remembers that you’re signed in: one sign-in record in your browser, only if you sign in (section 15).',
     'How we count visits to this website: without cookies and without knowing who you are (sections 9 and 15).',
     'How long our hosting provider keeps sign-in records (section 10.5).',
@@ -41,7 +41,7 @@ export const tokens = (html, upper = false) => html
 function values() {
   const c = config, L = c.legal || {};
   return Object.assign({}, L, {
-    legal_name: c.legalName, registered_address: c.registeredAddress,
+    product_name: productName, legal_name: c.legalName, registered_address: c.registeredAddress,
     cin: c.cin || '(To be confirmed)', gstin: c.gstin || '(To be confirmed)',
     support_email: c.supportEmail, grievance_email: c.privacyEmail, security_email: c.securityEmail,
     support_reply_days: String(c.replyDays), free_months: String(c.freeMonths),

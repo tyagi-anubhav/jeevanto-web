@@ -3,11 +3,11 @@
 import '../styles/site.css';
 import Identity from '../components/Identity.astro';
 import Icon from '../components/Icon.astro';
-import { config, full, legalLine, regLine, engine } from '../lib/config.mjs';
+import { config, full, legalLine, regLine, engine, productName } from '../lib/config.mjs';
 
 const { title, description, here = '', path = '/', doors = false, referrer = 'strict-origin-when-cross-origin', noindex = false } = Astro.props;
-const pageTitle = title ? `${title} · Jeevanto` : 'Jeevanto: your personal control system';
-const desc = description || 'Jeevanto is a personal assistant on your phone. Hand it the appointments, the bookings, the reminders and the family logistics, so you can put the phone down and be with the people who matter.';
+const pageTitle = title ? `${title} · ${productName}` : `${productName}: your personal control system`;
+const desc = description || `${productName} is a personal assistant on your phone. Hand it the appointments, the bookings, the reminders and the family logistics, so you can put the phone down and be with the people who matter.`;
 
 // No request may leave jeevanto.com: everything is self-hosted, and the policy below says so to the browser.
 // The one exception is a page that calls ENGINES' doors (/check, /recover, /invited): it may reach the engine's own
@@ -22,7 +22,7 @@ const navItems = [['What it does', '/what-it-does'], ['Circle', '/circle'], ['Ki
 const nav = navItems.map(([label, href]) => ({ label, href, on: here === label }));
 
 const footer = [
-  { title: 'Jeevanto', links: [['What it does', '/what-it-does'], ['Circle', '/circle'], ['Kin mode', '/kin-mode'], ['Our promise', '/our-promise']] },
+  { title: `${productName}`, links: [['What it does', '/what-it-does'], ['Circle', '/circle'], ['Kin mode', '/kin-mode'], ['Our promise', '/our-promise']] },
   full ? { title: 'Plans and account', links: [['Plans', '/plans'], ['Sign in', '/sign-in'], ['Your account', '/account']], apart: true } : null,
   { title: 'The paperwork', links: [['Privacy policy', '/privacy-policy'], ['Terms of use', '/terms'], ['Refunds and cancellation', '/refunds']] },
   { title: 'Help', links: [['Common questions', '/help'], ['Write to us', '/help#write-to-us']] },
@@ -40,7 +40,7 @@ const footer = [
 <meta name="description" content={desc}>
 {path !== '/404' && !noindex && <link rel="canonical" href={new URL(path, 'https://jeevanto.com').href}>}
 <meta name="theme-color" content="#0A0A0F">
-<meta property="og:site_name" content="Jeevanto">
+<meta property="og:site_name" content={`${productName}`}>
 <meta property="og:title" content={pageTitle}>
 <meta property="og:description" content={desc}>
 <slot name="head" />
@@ -54,7 +54,7 @@ const footer = [
 <a class="skip" href="#main">Skip to the page</a>
 <header style="position:sticky; top:0; z-index:20; background:var(--navBg); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border-bottom:1px solid var(--line);">
   <div style="box-sizing:border-box; max-width:1280px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:12px 24px; flex-wrap:wrap; padding:10px var(--gut);">
-    <a href="/" aria-label="Jeevanto, the front door" style="height:40px; display:flex; align-items:center;"><Identity kind="wordmark" size={24} /></a>
+    <a href="/" aria-label={`${productName}, the front door`} style="height:40px; display:flex; align-items:center;"><Identity kind="wordmark" size={24} /></a>
     <nav class="lap-only" aria-label="Main" style="display:flex; align-items:center; gap:8px 28px; flex-wrap:wrap;">
       {nav.map(n => <a href={n.href} class="hover-ink" aria-current={n.on ? 'page' : undefined} style={`font-size:14px; line-height:20px; color:${n.on ? 'var(--ink)' : 'var(--nav)'}; font-weight:${n.on ? 600 : 400};`}>{n.label}</a>)}
     </nav>

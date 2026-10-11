@@ -8,13 +8,13 @@ import More from '../components/More.astro';
 import Film from '../components/Film.astro';
 import Replay from '../components/Replay.astro';
 import FilmFullScreen from '../components/FilmFullScreen.astro';
-import { config, soon } from '../lib/config.mjs';
+import { config, soon, productName } from '../lib/config.mjs';
 
-const lede = 'Hand Jeevanto the appointments, the bookings, the reminders and the family logistics — so you can put the phone down and be with the people who matter.';
+const lede = `Hand ${productName} the appointments, the bookings, the reminders and the family logistics — so you can put the phone down and be with the people who matter.`;
 const doorCards = [
-  { label: 'WHO IT’S FOR', line: 'Jeevanto works for you, and for those in your Circle.', circle: true },
+  { label: 'WHO IT’S FOR', line: `${productName} works for you, and for those in your Circle.`, circle: true },
   { label: 'HOW IT WORKS', line: 'Everything it knows comes from you. Every fact has a source. Every action has your hand on it. Anything it knows, you can take back.' },
-  { label: 'WHAT IT GIVES YOU', line: 'Time back, and a clear head. Say it once, and Jeevanto carries it all the way through.' },
+  { label: 'WHAT IT GIVES YOU', line: `Time back, and a clear head. Say it once, and ${productName} carries it all the way through.` },
 ];
 const ledeStyle = "font-family:'Newsreader',serif; font-size:var(--lede); line-height:var(--ledelh); color:var(--quiet); max-width:680px; text-wrap:pretty;";
 const statement = "font-family:'Newsreader',serif; font-size:var(--statement); line-height:var(--statementlh); color:var(--ink);";
@@ -30,7 +30,7 @@ const statement = "font-family:'Newsreader',serif; font-size:var(--statement); l
     </div>
     {soon && (
       <div style="box-sizing:border-box; width:100%; max-width:440px; background:var(--card); border-radius:16px; padding:22px 24px; display:flex; flex-direction:column; gap:12px; text-align:left;">
-        <h2 style="font-family:'Newsreader',serif; font-weight:400; font-size:22px; line-height:30.8px; color:var(--ink);">Tell me when Jeevanto is live</h2>
+        <h2 style="font-family:'Newsreader',serif; font-weight:400; font-size:22px; line-height:30.8px; color:var(--ink);">Tell me when {productName} is live</h2>
         <p style="font-size:15px; line-height:21px; color:var(--quiet); text-wrap:pretty;">Want to hear when we’re live? Write to <a href={`mailto:${config.supportEmail}`} style="color:var(--brass); font-weight:600;">{config.supportEmail}</a>.</p>
       </div>
     )}
@@ -45,7 +45,7 @@ const statement = "font-family:'Newsreader',serif; font-size:var(--statement); l
       <span style="color:var(--quiet);">Power grids have grid control.</span>
       <span style="color:var(--quiet);">Trading desks have risk control.</span>
       <span>When complexity rises, control becomes non-negotiable.</span>
-      <span>Jeevanto is the control system for your commitments, relationships, goals, and decisions.</span>
+      <span>{productName} is the control system for your commitments, relationships, goals, and decisions.</span>
     </p>
   </section>
 
@@ -54,13 +54,13 @@ const statement = "font-family:'Newsreader',serif; font-size:var(--statement); l
       <Film film="opening" id="film-opening" title="The opening film" w="--openW" />
       <Replay target="film-opening" />
     </div></div>
-    <div style="display:flex; justify-content:center; margin-top:var(--grp);"><More href="/what-it-does">See what Jeevanto can do</More></div>
+    <div style="display:flex; justify-content:center; margin-top:var(--grp);"><More href="/what-it-does">See what {productName} can do</More></div>
   </section>
 
   <section style="box-sizing:border-box; max-width:960px; margin:0 auto; padding:var(--sec) var(--gut) 0;">
     <div style="display:flex; flex-direction:column; gap:var(--par);">
       <p style={`${statement} text-wrap:pretty;`}>You’re raising your children, caring for your parents and building your career, and holding every detail together yourself.</p>
-      <p style={`${statement} text-wrap:pretty;`}>Let Jeevanto hold the details, so you can be there for them.</p>
+      <p style={`${statement} text-wrap:pretty;`}>Let {productName} hold the details, so you can be there for them.</p>
     </div>
   </section>
 

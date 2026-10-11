@@ -3,11 +3,11 @@
 // jeevanto.com/recover/answer?r=<request_id>&t=<token>. The link is the only key; r and t go back unchanged.
 import Shell from '../../layouts/Shell.astro';
 import MobileField from '../../components/MobileField.astro';
-import { config } from '../../lib/config.mjs';
+import { config, productName } from '../../lib/config.mjs';
 import { S } from '../../components/ui.mjs';
 const promise = 'font-size:15px; line-height:21px; color:var(--ink); padding:12px 0; text-wrap:pretty;';
 ---
-<Shell title="A question for you" path="/recover/answer" doors description="Someone would like you as their recovery contact on Jeevanto.">
+<Shell title="A question for you" path="/recover/answer" doors description={`Someone would like you as their recovery contact on ${productName}.`}>
   <div data-screen-label="15 Recovery contact · the ask" data-answer style={S.page}>
     <div data-state="loading" style={S.stack}><p style={S.lede} role="status">Opening the question…</p></div>
 
@@ -15,7 +15,7 @@ const promise = 'font-size:15px; line-height:21px; color:var(--ink); padding:12p
     <div data-state="agree" hidden style={S.stack}>
       <div style={S.eyebrow}><span data-name-upper></span> HAS A QUESTION FOR YOU</div>
       <h1 style={S.h1} tabindex="-1"><span data-name></span> would like you as a recovery contact.</h1>
-      <p style={S.lede}>If <span data-name></span> is ever locked out of Jeevanto, having lost <span data-name></span>’s phone and email at once, you’d help <span data-name></span> back in.</p>
+      <p style={S.lede}>If <span data-name></span> is ever locked out of {productName}, having lost <span data-name></span>’s phone and email at once, you’d help <span data-name></span> back in.</p>
       <ul style="list-style:none; margin:0; background:var(--card); border-radius:16px; padding:6px 20px;">
         <li style={promise}>You can start <span data-name></span>’s way back in, only when <span data-name></span> asks you.</li>
         <li style={`${promise} border-top:1px solid var(--line);`}>You’ll never see anything of <span data-name></span>’s.</li>

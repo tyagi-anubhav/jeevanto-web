@@ -4,7 +4,7 @@
 import Shell from '../layouts/Shell.astro';
 import MobileField from '../components/MobileField.astro';
 import Eyebrow from '../components/Eyebrow.astro';
-import { config } from '../lib/config.mjs';
+import { config, productName } from '../lib/config.mjs';
 import { S } from '../components/ui.mjs';
 const W = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
 const d = Number(config.recoveryWaitDays) || 3, waitTxt = (W[d] || d) + (d === 1 ? ' day' : ' days');
@@ -12,9 +12,9 @@ const digits = Number(config.recoveryDigits) || 6, minutes = Number(config.codeM
 const pop = 'box-sizing:border-box; width:440px; max-width:calc(100% - 32px); background:var(--card); border:1px solid var(--line); border-radius:20px; padding:22px 22px 24px; box-shadow:var(--sheetShadow); display:flex; flex-direction:column; gap:18px;';
 const scrim = 'position:fixed; inset:0; z-index:30; background:var(--scrim); display:flex; align-items:center; justify-content:center;';
 ---
-<Shell title="Help someone back in" path="/recover" doors description="Are you someone’s recovery contact? Help them back into their Jeevanto.">
+<Shell title="Help someone back in" path="/recover" doors description={`Are you someone’s recovery contact? Help them back into their ${productName}.`}>
   <div data-screen-label="15 Recovery contact" data-recover data-digits={digits} style={S.page}>
-    <noscript><p style={S.lede}>This page needs JavaScript to reach Jeevanto. If you can’t switch it on, write to <a href={`mailto:${config.supportEmail}`} style="color:var(--brass); font-weight:600;">{config.supportEmail}</a>.</p></noscript>
+    <noscript><p style={S.lede}>This page needs JavaScript to reach {productName}. If you can’t switch it on, write to <a href={`mailto:${config.supportEmail}`} style="color:var(--brass); font-weight:600;">{config.supportEmail}</a>.</p></noscript>
 
     <!-- 4 · the front door -->
     <form data-state="front" data-front novalidate style={S.stack}>
@@ -75,7 +75,7 @@ const scrim = 'position:fixed; inset:0; z-index:30; background:var(--scrim); dis
       <Eyebrow>HELP SOMEONE BACK IN</Eyebrow>
       <h1 style={S.h1} tabindex="-1">We’ve sent {digits} digits to <span data-sent-to></span>.</h1>
       <p style={S.lede}>Read them out to <span data-name></span> now. They work for {minutes} minutes.</p>
-      <p style={S.small}>Read them only to <span data-name></span>, on a call you made yourself. Jeevanto will never ask you for them.</p>
+      <p style={S.small}>Read them only to <span data-name></span>, on a call you made yourself. {productName} will never ask you for them.</p>
     </div>
 
     <!-- 8b · stepped down -->

@@ -2,6 +2,8 @@
 // (cc-wave-23-to-website-the-doors-2026-10-01.md). Nothing is called until the visitor presses a button, or the
 // page was opened from a link that carries what it needs. No cookie; nothing is stored in the browser.
 (function () {
+  // the product's name from the page's own og:site_name, which the shell fills from the one source (decision 245)
+  var NAME = (document.querySelector('meta[property="og:site_name"]') || {}).content;
   'use strict';
   var meta = document.querySelector('meta[name="jv-engine"]');
   if (!meta) return;
@@ -19,7 +21,7 @@
   window.jvTrouble = function (res) {
     var e = res.body && res.body.error;
     if (res.status === 429 || e === 'RATE_LIMITED') return 'Too many tries from here. Try again in an hour.';
-    return 'We couldn’t reach Jeevanto just now. Try again in a little while.';
+    return 'We couldn’t reach ' + NAME + ' just now. Try again in a little while.';
   };
   window.jvShow = function (root, name) { root.querySelectorAll('[data-state]').forEach(function (el) { el.hidden = el.getAttribute('data-state').split(' ').indexOf(name) < 0; }); };
   window.jvBusy = function (btn, on) { if (btn) { btn.disabled = !!on; btn.setAttribute('aria-busy', on ? 'true' : 'false'); } };
