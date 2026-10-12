@@ -33,6 +33,9 @@ const S = existsSync(sfile) ? JSON.parse(readFileSync(sfile, 'utf8')) : {};
 const save = () => writeFileSync(sfile, JSON.stringify(S, null, 1));
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const NO_CODES = process.env.NO_CODES === '1';
+// ONLY_A=1: owner A's path only (the ask, session 1's start, the hold, session 3's update and digits): no B or C, no
+// session 2, so one test owner and a ~20 min teardown. For re-driving one step; the skipped legs are SKIPPED, never PASS.
+const ONLY_A = process.env.ONLY_A === '1';
 const results = [], requests = {}, offHost = [], doorLog = [];
 const mask = s => String(s).replace(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}/g, m => Object.entries(S.inbox || {}).find(([, v]) => v.address === m)?.[0] ? `‹${Object.entries(S.inbox).find(([, v]) => v.address === m)[0]}›` : '‹address›')
   .replace(/JV-[A-Z0-9]{4}-[A-Z0-9]{4}/g, 'JV-‹ref›').replace(/[?&]t=[^&\s]+/g, '&t=‹token›');
@@ -143,6 +146,8 @@ if (process.argv[2] === 'run') {
     ok('session 1: Start → "started"', st, st ? await text(p, '[data-state="started"] h1') : await text(p, '[data-warn-err]'));
   });
 
+  if (ONLY_A) results.push('SKIPPED B and C (yes/no) and session 2 (step down): ONLY_A run');
+  else {
   // C: yes; B: no (WebKit)
   make('C'); const C = await askMail('C');
   await browse(chromium, async p => { await p.goto(C.link); await shown(p, '[data-state="agree"]'); await p.click('[data-yes]'); ok('chromium C: yes', await shown(p, '[data-state="yes"]')); });
@@ -163,6 +168,8 @@ if (process.argv[2] === 'run') {
     await p.locator('[data-list] > *').nth(idle).locator('[data-p="stop"]').click(); await p.click('[data-stop-go]');
     ok('session 2: step down from C → "stepped"', await shown(p, '[data-state="stepped"]'), await text(p, '[data-stop-err]'));
   });
+
+  }
 
   // door session 3: the wait, update, the digits
   await browse(chromium, async p => {
@@ -189,7 +196,7 @@ if (process.argv[2] === 'run') {
 
   writeFileSync('proofs/positive-live.txt', [`cc-website-02 JOB 2 — the positive paths on ${BASE}, ${new Date().toISOString()}`, ...results,
     `requests by host: ${JSON.stringify(requests)}`, `requests to any other host: ${offHost.length}`, 'the doors answered:', ...doorLog].join('\n') + '\n');
-  const waits = results.filter(r => r.startsWith('WAITS')).length;
+  const waits = results.filter(r => r.startsWith('WAITS') || r.startsWith('SKIPPED')).length;
   console.log(`\n${results.filter(r => r.startsWith('PASS')).length}/${results.length - waits} passed${waits ? ` · ${waits} wait for an emailed code` : ''} · other hosts: ${offHost.length}`);
   if (results.some(r => r.startsWith('FAIL')) || offHost.length) process.exitCode = 1;
 } else if (process.argv[2] === 'teardown') {
