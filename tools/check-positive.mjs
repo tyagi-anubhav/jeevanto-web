@@ -7,12 +7,14 @@
 // The run opens three throwaway inboxes at mail.tm (the contact, the owners' alert inbox, and the contact's new address
 // for "update"), then has ENGINES' tool make three test owners called Uma (A, B, C) who each ask the contact inbox,
 // and three test accounts called Asha with invite codes. Then, as the contact:
-//   A: /check with the ask mail's reference → real; /invited with Asha's code → "Asha"; the ask link → yes
+//   A: /check with the ask mail's reference → real; /invited with Asha's code → "Asha Website" (254); the ask link → yes
 //   B: the ask link → no (WebKit)              C: the ask link → yes
 //   door session 1: start A's way back in (type "Uma") → started
 //   door session 2: A is waiting; C is idle → step down from C → stepped
 //   door session 3: A is waiting → update the email (the code from the new inbox) → saved → back to people after
 //                   A's ten-minute test hold → the wait is over → send the 6 digits → they arrive
+// NO_CODES=1 skips the three door sessions (each needs an emailed code). Until ENGINES' 266 drive note, a code must come
+// the real way (decision 264), so those legs wait; they're recorded as WAITS, never as PASS (Cowork, 12 Oct 08:32).
 // Three door codes in all (the limit is ten an hour per visitor). No address, code, link or reference is written to the
 // proof: inboxes appear as ‹contact›, ‹alert›, ‹new›.
 import { chromium, webkit } from 'playwright';
@@ -28,6 +30,7 @@ const sfile = join(STATE, 'state.json');
 const S = existsSync(sfile) ? JSON.parse(readFileSync(sfile, 'utf8')) : {};
 const save = () => writeFileSync(sfile, JSON.stringify(S, null, 1));
 const sleep = ms => new Promise(r => setTimeout(r, ms));
+const NO_CODES = process.env.NO_CODES === '1';
 const results = [], requests = {}, offHost = [];
 const mask = s => String(s).replace(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}/g, m => Object.entries(S.inbox || {}).find(([, v]) => v.address === m)?.[0] ? `‹${Object.entries(S.inbox).find(([, v]) => v.address === m)[0]}›` : '‹address›')
   .replace(/JV-[A-Z0-9]{4}-[A-Z0-9]{4}/g, 'JV-‹ref›').replace(/[?&]t=[^&\s]+/g, '&t=‹token›');
@@ -121,7 +124,9 @@ if (process.argv[2] === 'run') {
     ok(`${en} /check: the ask's reference → THIS IS REAL`, real, real ? `sent to ${await text(p, '[data-f="sent_to"]')}, about "${await text(p, '[data-f="about"]')}"` : await text(p, '[data-err]'));
     await p.goto(BASE + '/invited?c=' + encodeURIComponent(S.made.A.code));
     await p.waitForFunction(() => document.querySelector('[data-inviter]')?.textContent && document.querySelector('[data-inviter]').textContent !== 'Someone', null, { timeout: 15000 }).catch(() => {});
-    ok(`${en} /invited?c=<Asha's code> → names "Asha"`, (await text(p, '[data-inviter]')) === 'Asha', await text(p, 'h1'));
+    // decision 254: the whole first name, and an account with no separate first name gets its whole stored name, never a
+    // first word. ENGINES' fixture saves "Asha Website" with no first name, so the page must say "Asha Website" (12 Oct).
+    ok(`${en} /invited?c=<Asha's code> → names "Asha Website" (the whole name, decision 254)`, (await text(p, '[data-inviter]')) === 'Asha Website', await text(p, 'h1'));
   });
   await browse(chromium, async p => {
     await p.goto(A.link); ok('chromium the ask link (A) → "Uma" asks, pending', await shown(p, '[data-state="agree"]'), await text(p, 'h1'));
@@ -132,6 +137,7 @@ if (process.argv[2] === 'run') {
 
   // door session 1: start A
   await browse(chromium, async p => {
+    if (NO_CODES) { results.push('WAITS session 1: needs an emailed door code (decision 264; ENGINES\' 266 drive note first)'); return; }
     if (!await doorSession(p, 'session 1')) return;
     const r = await rows(p); ok('session 1: people lists Uma, nothing happening', r.length === 1 && r[0].name === 'Uma' && r[0].status === 'Nothing happening', JSON.stringify(r));
     await p.click('[data-list] > * [data-p="start"]'); await p.fill('#rc-name', 'Umaa'); await p.click('[data-name-go]');
@@ -154,6 +160,7 @@ if (process.argv[2] === 'run') {
 
   // door session 2: step down from C
   await browse(chromium, async p => {
+    if (NO_CODES) { results.push('WAITS session 2: needs an emailed door code (decision 264; ENGINES\' 266 drive note first)'); return; }
     if (!await doorSession(p, 'session 2')) return;
     const r = await rows(p);
     ok('session 2: people lists A waiting and C idle, not B', r.length === 2 && r.some(x => /^Started\./.test(x.status)) && r.some(x => x.status === 'Nothing happening'), JSON.stringify(r));
@@ -164,6 +171,7 @@ if (process.argv[2] === 'run') {
 
   // door session 3: the wait, update, the digits
   await browse(chromium, async p => {
+    if (NO_CODES) { results.push('WAITS session 3: needs an emailed door code (decision 264; ENGINES\' 266 drive note first)'); return; }
     if (!await doorSession(p, 'session 3')) return;
     let r = await rows(p);
     ok('session 3: Uma alone, waiting ("Started. …")', r.length === 1 && /^Started\./.test(r[0].status), JSON.stringify(r));
@@ -186,7 +194,8 @@ if (process.argv[2] === 'run') {
 
   writeFileSync('proofs/positive-live.txt', [`cc-website-02 JOB 2 — the positive paths on ${BASE}, ${new Date().toISOString()}`, ...results,
     `requests by host: ${JSON.stringify(requests)}`, `requests to any other host: ${offHost.length}`].join('\n') + '\n');
-  console.log(`\n${results.filter(r => r.startsWith('PASS')).length}/${results.length} passed · other hosts: ${offHost.length}`);
+  const waits = results.filter(r => r.startsWith('WAITS')).length;
+  console.log(`\n${results.filter(r => r.startsWith('PASS')).length}/${results.length - waits} passed${waits ? ` · ${waits} wait for an emailed code` : ''} · other hosts: ${offHost.length}`);
   if (results.some(r => r.startsWith('FAIL')) || offHost.length) process.exitCode = 1;
 } else if (process.argv[2] === 'teardown') {
   let first = true;
