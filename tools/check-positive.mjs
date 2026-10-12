@@ -11,7 +11,7 @@
 // and three test accounts called Asha with invite codes. Then, as the contact:
 //   A: /check with the ask mail's reference → real; /invited with Asha's code → "Asha Website" (254); the ask link → yes
 //   B: the ask link → no (WebKit)              C: the ask link → yes
-//   door session 1: start A's way back in (type "Uma") → started
+//   door session 1: start A's way back in (type "uma website": the whole name, decision 254) → started
 //   door session 2: A is waiting; C is idle → step down from C → stepped
 //   door session 3: A is waiting → update the email (the code from the new inbox) → saved → back to people after
 //                   A's ten-minute test hold → the wait is over → send the 6 digits → they arrive
@@ -33,7 +33,7 @@ const S = existsSync(sfile) ? JSON.parse(readFileSync(sfile, 'utf8')) : {};
 const save = () => writeFileSync(sfile, JSON.stringify(S, null, 1));
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const NO_CODES = process.env.NO_CODES === '1';
-const results = [], requests = {}, offHost = [];
+const results = [], requests = {}, offHost = [], doorLog = [];
 const mask = s => String(s).replace(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}/g, m => Object.entries(S.inbox || {}).find(([, v]) => v.address === m)?.[0] ? `‹${Object.entries(S.inbox).find(([, v]) => v.address === m)[0]}›` : '‹address›')
   .replace(/JV-[A-Z0-9]{4}-[A-Z0-9]{4}/g, 'JV-‹ref›').replace(/[?&]t=[^&\s]+/g, '&t=‹token›');
 const ok = (name, cond, extra = '') => { const l = `${cond ? 'PASS' : 'FAIL'} ${name}${extra ? ' — ' + mask(extra) : ''}`; results.push(l); console.log(l); return cond; };
@@ -79,6 +79,14 @@ const siteHost = 'jeevanto.com', engineHost = new URL(engine.url).host;
 async function browse(engineT, fn) {
   const b = await engineT.launch(); const ctx = await b.newContext({ viewport: { width: 390, height: 844 } });
   ctx.on('request', r => { const h = new URL(r.url()).host; requests[h] = (requests[h] || 0) + 1; if (h !== siteHost && h !== engineHost && !r.url().startsWith('data:')) offHost.push(r.url()); });
+  // every engine door's answer: the action, the status and the error code only (never a body field that could hold an
+  // address, code or link), so a refusal is named in the proof, not guessed (ENGINES, 12 Oct: a 409 hid its reason)
+  ctx.on('response', async r => {
+    const req = r.request(); if (new URL(r.url()).host !== engineHost || req.method() !== 'POST') return;
+    let action = ''; try { action = JSON.parse(req.postData() || '{}').action || ''; } catch (e) {}
+    let error = ''; try { const j = await r.json(); error = j && j.ok === false ? String(j.error || '') : ''; } catch (e) {}
+    const line = `door ${action || '?'} → ${r.status()}${error ? ' ' + error : ''}`; doorLog.push(line); log(line);
+  });
   const p = await ctx.newPage();
   try { return await fn(p); } finally { const c = await ctx.cookies(); if (c.length) ok('no cookie', false, c.map(x => x.name).join(' ')); await b.close(); }
 }
@@ -123,10 +131,13 @@ if (process.argv[2] === 'run') {
   await browse(chromium, async p => {
     if (NO_CODES) { results.push('WAITS session 1: needs an emailed door code (decision 264; ENGINES\' 266 drive note first)'); return; }
     if (!await doorSession(p, 'session 1')) return;
-    const r = await rows(p); ok('session 1: people lists Uma, nothing happening', r.length === 1 && r[0].name === 'Uma' && r[0].status === 'Nothing happening', JSON.stringify(r));
+    const r = await rows(p); ok('session 1: people lists "Uma Website" (the whole name, decision 254), nothing happening', r.length === 1 && r[0].name === 'Uma Website' && r[0].status === 'Nothing happening', JSON.stringify(r));
     await p.click('[data-list] > * [data-p="start"]'); await p.fill('#rc-name', 'Umaa'); await p.click('[data-name-go]');
     ok('session 1: a wrong name is refused', await shown(p, '#rc-name-err', 3000));
-    await p.fill('#rc-name', 'uma'); await p.click('[data-name-go]'); ok('session 1: "uma" → the warning', await shown(p, '[data-state="warn"]'));
+    // decision 254: the first word alone is not the name; the whole name, in any case, is
+    await p.fill('#rc-name', 'uma'); await p.click('[data-name-go]');
+    ok('session 1: "uma" (the first word alone) is refused', await shown(p, '#rc-name-err', 3000) && !(await shown(p, '[data-state="warn"]', 1500)));
+    await p.fill('#rc-name', 'uma website'); await p.click('[data-name-go]'); ok('session 1: "uma website" → the warning', await shown(p, '[data-state="warn"]'));
     await p.click('[data-start]'); const st = await shown(p, '[data-state="started"]');
     S.startedAt = Date.now(); save();
     ok('session 1: Start → "started"', st, st ? await text(p, '[data-state="started"] h1') : await text(p, '[data-warn-err]'));
@@ -171,12 +182,13 @@ if (process.argv[2] === 'run') {
     const t1 = Date.now(); await p.click('[data-list] > * [data-p="send"]');
     const d = await shown(p, '[data-state="digits"]');
     ok('session 3: Send the 6 digits → "digits", sent to the masked address', d, d ? await text(p, '[data-sent-to]') : await text(p, '[data-list] [data-p="err"]'));
-    const where = await Promise.any(['new', 'contact'].map(role => readCode(role, t1, 'the digits').then(() => role)));
+    // no digits in either tag is a FAIL with the door's answer beside it, never a crash that loses the proof
+    const where = await Promise.any(['new', 'contact'].map(role => readCode(role, t1, 'the digits').then(() => role))).catch(() => 'neither');
     ok('session 3: the digits arrive, at the updated address', where === 'new', `in ‹${where}›`);
   });
 
   writeFileSync('proofs/positive-live.txt', [`cc-website-02 JOB 2 — the positive paths on ${BASE}, ${new Date().toISOString()}`, ...results,
-    `requests by host: ${JSON.stringify(requests)}`, `requests to any other host: ${offHost.length}`].join('\n') + '\n');
+    `requests by host: ${JSON.stringify(requests)}`, `requests to any other host: ${offHost.length}`, 'the doors answered:', ...doorLog].join('\n') + '\n');
   const waits = results.filter(r => r.startsWith('WAITS')).length;
   console.log(`\n${results.filter(r => r.startsWith('PASS')).length}/${results.length - waits} passed${waits ? ` · ${waits} wait for an emailed code` : ''} · other hosts: ${offHost.length}`);
   if (results.some(r => r.startsWith('FAIL')) || offHost.length) process.exitCode = 1;
