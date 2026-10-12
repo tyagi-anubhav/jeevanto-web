@@ -111,7 +111,8 @@
       if (res.status === 200 && res.body.ok) { $('[data-sent-to]').textContent = res.body.sent_to || ''; go('digits'); }
       else if (res.status === 401) signedOut();
       else if (e === 'HOLD_NOT_ELAPSED') say(errEl, 'The wait isn’t over yet. ' + daysLeft(res.body.hold_until).replace('Started. ', ''));
-      else if (e === 'NOTHING_WAITING') loadPeople();
+      else if (e === 'NOTHING_WAITING' || e === 'NOT_STARTED') loadPeople();   // the list shows where things really stand
+      else if (e === 'NOT_FOUND') say(errEl, 'We couldn’t send the ' + DIGITS + ' digits. Write to help@jeevanto.com, and we’ll look into it.');
       else if (e === 'DIGITS_NOT_SENT') say(errEl, 'We couldn’t send the ' + DIGITS + ' digits just now. Try again in a little while.');
       else say(errEl, jvTrouble(res));
     });

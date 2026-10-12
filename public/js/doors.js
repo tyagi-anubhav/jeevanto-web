@@ -21,7 +21,10 @@
   window.jvTrouble = function (res) {
     var e = res.body && res.body.error;
     if (res.status === 429 || e === 'RATE_LIMITED') return 'Too many tries from here. Try again in an hour.';
-    return 'We couldn’t reach ' + NAME + ' just now. Try again in a little while.';
+    // "couldn't reach" only when the engine really wasn't reached (no answer, or a server error). A refusal it answered
+    // with (a 4xx carrying a reason) isn't a lost connection, and saying so isn't true (WEBSITE, 12 Oct: a 409 showed it).
+    if (res.status === 0 || res.status >= 500) return 'We couldn’t reach ' + NAME + ' just now. Try again in a little while.';
+    return 'That didn’t go through. Write to help@jeevanto.com, and we’ll look into it.';
   };
   window.jvShow = function (root, name) { root.querySelectorAll('[data-state]').forEach(function (el) { el.hidden = el.getAttribute('data-state').split(' ').indexOf(name) < 0; }); };
   window.jvBusy = function (btn, on) { if (btn) { btn.disabled = !!on; btn.setAttribute('aria-busy', on ? 'true' : 'false'); } };
