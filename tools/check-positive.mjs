@@ -2,10 +2,12 @@
 // (cc-wave-25-to-website-the-positive-paths-2026-10-02.md). Real browsers, nothing intercepted.
 //
 //   STATE=<dir outside both repos> APP=<a checkout of the app repo's master> node tools/check-positive.mjs run
-//   STATE=<same dir> APP=<same> node tools/check-positive.mjs teardown      (the accounts, ten minutes apart, then the inboxes)
+//   STATE=<same dir> APP=<same> node tools/check-positive.mjs teardown      (the accounts, ten minutes apart; ~60 min for three)
 //
-// The run opens three throwaway inboxes at mail.tm (the contact, the owners' alert inbox, and the contact's new address
-// for "update"), then has ENGINES' tool make three test owners called Uma (A, B, C) who each ask the contact inbox,
+// The run makes three plus-tags of ENGINES' test Gmail inbox (decision 266; Cowork 12 Oct 11:20 (a)): the contact, the
+// owners' alert inbox and the contact's new address for "update". Every email is read with ENGINES' narrow reader
+// (scripts/verify/engines-kit/gmail-reader.mjs in APP): the ask's reference and link, and each code, the real way
+// (decision 264). mail.tm is gone. The base address comes from Gmail's profile at run time and is never printed; then has ENGINES' tool make three test owners called Uma (A, B, C) who each ask the contact inbox,
 // and three test accounts called Asha with invite codes. Then, as the contact:
 //   A: /check with the ask mail's reference → real; /invited with Asha's code → "Asha Website" (254); the ask link → yes
 //   B: the ask link → no (WebKit)              C: the ask link → yes
@@ -23,7 +25,7 @@ import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import engine from '../src/lib/engine.json' with { type: 'json' };
 
-const BASE = 'https://jeevanto.com', MAIL = 'https://api.mail.tm';
+const BASE = 'https://jeevanto.com', SENDER = 'notifications@jeevanto.com';
 const { STATE, APP } = process.env; if (!STATE || !APP) { console.error('STATE=<dir> APP=<app checkout> node tools/check-positive.mjs run|teardown'); process.exit(2); }
 mkdirSync(STATE, { recursive: true });
 const sfile = join(STATE, 'state.json');
@@ -37,38 +39,22 @@ const mask = s => String(s).replace(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}
 const ok = (name, cond, extra = '') => { const l = `${cond ? 'PASS' : 'FAIL'} ${name}${extra ? ' — ' + mask(extra) : ''}`; results.push(l); console.log(l); return cond; };
 const log = m => console.log(`[${new Date().toISOString().slice(11, 19)}] ${mask(m)}`);
 
-// ── mail.tm ───────────────────────────────────────────────────────────────────────────────────────────────────────
-async function mt(path, { method = 'GET', token, body } = {}) {
-  for (let i = 0; i < 5; i++) {
-    const r = await fetch(MAIL + path, { method, headers: { ...(token ? { Authorization: 'Bearer ' + token } : {}), ...(body ? { 'Content-Type': 'application/json' } : {}) }, body: body ? JSON.stringify(body) : undefined });
-    if (r.status === 429) { await sleep(2000); continue; }
-    if (r.status === 204) return {};
-    const j = await r.json().catch(() => ({})); if (!r.ok) throw new Error(`mail.tm ${method} ${path} ${r.status}`); return j;
-  }
-  throw new Error('mail.tm rate-limited');
+// ── the test Gmail inbox (ENGINES' narrow reader) ──────────────────────────────────────────────────────────────────
+const G = await import(join(APP, 'scripts/verify/engines-kit/gmail-reader.mjs'));
+// These tags are never accounts: they're the recovery contact's addresses that ENGINES' test owners write to (and the
+// contact's new address). test_identity_of (20262137) decides whether an ACCOUNT is a test identity, so it doesn't
+// apply here. The fixtures' teardown purges the owners and what they stored. Mail to a plus-tag takes the real send
+// path (only @jeevanto-test.local goes to the sink), which is what decision 264 asks; the reader reads only a plus-tag.
+async function openInbox(role) {  // a fresh plus-tag of the test inbox; nothing is created anywhere
+  const [local, domain] = (await G.inboxAddress()).split('@');
+  const address = `${local.split('+')[0]}+jvweb${role}${Date.now().toString(36)}@${domain}`;
+  return { address };
 }
-async function openInbox(role) {
-  const domain = (await mt('/domains'))['hydra:member'][0].domain;
-  const address = `jv-web-${role}-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}@${domain}`;
-  const password = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
-  const acct = await mt('/accounts', { method: 'POST', body: { address, password } });
-  const { token } = await mt('/token', { method: 'POST', body: { address, password } });
-  return { address, password, id: acct.id, token };
-}
-// Wait for a message in an inbox that arrived after `since` and passes `want`; returns its full text.
-async function waitMail(role, since, want, label, limitMs = 240000) {
-  const box = S.inbox[role], t0 = Date.now();
-  while (Date.now() - t0 < limitMs) {
-    const list = (await mt('/messages', { token: box.token }))['hydra:member'] || [];
-    for (const m of list) {
-      if (new Date(m.createdAt) < new Date(since - 5000) || (S.seen ||= []).includes(m.id)) continue;
-      const full = await mt('/messages/' + m.id, { token: box.token });
-      const text = [full.subject, full.text, ...(full.html || [])].join('\n').replace(/&amp;/g, '&');
-      if (want(text, full)) { S.seen.push(m.id); save(); log(`mail in ‹${role}›: "${full.subject}" (${label})`); return { text, subject: full.subject }; }
-    }
-    await sleep(4000);
-  }
-  throw new Error(`no mail in ‹${role}› for ${label} within ${limitMs / 1000}s`);
+// Anything Gmail doesn't put in Primary is a deliverability finding (decision 266 step 3), recorded, never a pass.
+const place = (label, where) => { if (where && where !== 'PRIMARY') results.push(`FINDING ${label}: Gmail filed it in ${where}, not Primary`); };
+async function readCode(role, since, label) {
+  const r = await G.readCodeFromGmail({ to: S.inbox[role].address, sender: SENDER, since: new Date(since - 5000), timeoutMs: 240000 });
+  place(label, r.where); log(`code in ‹${role}› (${label}), filed in ${r.where}`); return r.code;
 }
 
 // ── ENGINES' fixtures (run from the app checkout; its env file names the Mumbai project) ─────────────────────────────
@@ -81,12 +67,11 @@ function make(tag) {
   log(`make ${tag}: ${outp.split('\n').filter(l => /F[12] ·|steps|PASS|FAIL|✓|✗/.test(l)).join(' | ').slice(0, 300)}`);
   return code;
 }
-async function askMail(tag) {
-  const m = await waitMail('contact', S.made[tag].at, t => /recovery contact/i.test(t) && /recover\/answer\?r=/.test(t), `the ask, ${tag}`);
-  const ref = (m.text.match(/JV-[A-Z0-9]{4}-[A-Z0-9]{4}/) || [])[0];
-  const link = (m.text.match(/https:\/\/jeevanto\.com\/recover\/answer\?r=[^\s"'<>)\]]+/) || [])[0];
-  S.made[tag].ref = ref; S.made[tag].link = link; S.made[tag].subject = m.subject; save();
-  return { ref, link, subject: m.subject };
+async function askMail(tag) {  // ENGINES' readAskFromGmail returns only the reference and the answer link
+  const a = await G.readAskFromGmail({ to: S.inbox.contact.address, sender: SENDER, since: new Date(S.made[tag].at - 5000), timeoutMs: 240000 });
+  place(`the ask, ${tag}`, a.where); log(`the ask in ‹contact› (${tag}), filed in ${a.where}`);
+  S.made[tag].ref = a.reference; S.made[tag].link = a.answerLink; save();
+  return { ref: a.reference, link: a.answerLink, subject: `(not read: the reader returns the reference and link only), filed in ${a.where}` };
 }
 
 // ── the browser ───────────────────────────────────────────────────────────────────────────────────────────────────
@@ -105,15 +90,14 @@ async function doorSession(p, label) {
   const t0 = Date.now();
   await p.fill('#rc-dest', S.inbox.contact.address); await p.click('[data-send]');
   ok(`${label}: the door code is asked for`, await shown(p, '[data-sent]'), await text(p, '#rc-front-err'));
-  const m = await waitMail('contact', t0, t => /\b\d{6}\b/.test(t) && !/recover\/answer\?r=/.test(t), `door code, ${label}`);
-  await p.fill('#rc-code', m.text.match(/\b(\d{6})\b/)[1]); await p.click('[data-verify]');
+  await p.fill('#rc-code', await readCode('contact', t0, `door code, ${label}`)); await p.click('[data-verify]');
   return ok(`${label}: the code arrives in ‹contact› and opens "your people"`, await shown(p, '[data-state="people"]'), await text(p, '#rc-code-err'));
 }
 const rows = p => p.$$eval('[data-list] > *', els => els.map(e => ({ name: e.querySelector('[data-p="name"]')?.textContent, status: e.querySelector('[data-p="status"]')?.textContent })));
 
 // ── run ───────────────────────────────────────────────────────────────────────────────────────────────────────────
 if (process.argv[2] === 'run') {
-  if (!S.inbox) { S.inbox = { contact: await openInbox('contact'), alert: await openInbox('alert'), new: await openInbox('new') }; save(); log('three inboxes opened at mail.tm'); }
+  if (!S.inbox) { S.inbox = { contact: await openInbox('contact'), alert: await openInbox('alert'), new: await openInbox('new') }; save(); log('three plus-tags of the test Gmail inbox made'); }
 
   // A: the reference, the inviter, yes
   make('A'); const A = await askMail('A');
@@ -180,15 +164,14 @@ if (process.argv[2] === 'run') {
     const card = '[data-upd="mail"]', t0 = Date.now();
     await p.fill('#rc-upd-mail', S.inbox.new.address); await p.click(`${card} [data-upd-btn]`);
     ok('session 3: update → a code is sent to the new address', await shown(p, `${card} [data-upd-code]`), await text(p, `${card} [data-upd-err]`));
-    const m = await waitMail('new', t0, t => /\b\d{6}\b/.test(t), 'update code');
-    await p.fill(`${card} [data-upd-code]`, m.text.match(/\b(\d{6})\b/)[1]); await p.click(`${card} [data-upd-btn]`);
+    await p.fill(`${card} [data-upd-code]`, await readCode('new', t0, 'update code')); await p.click(`${card} [data-upd-btn]`);
     ok('session 3: the code from ‹new› → saved', await shown(p, `${card} [data-upd-saved]`), await text(p, `${card} [data-upd-err]`));
     await p.click('[data-to-people]'); await shown(p, '[data-state="people"]');
     r = await rows(p); ok('session 3: after the hold → "The wait is over."', r.length === 1 && r[0].status === 'The wait is over.', JSON.stringify(r));
     const t1 = Date.now(); await p.click('[data-list] > * [data-p="send"]');
     const d = await shown(p, '[data-state="digits"]');
     ok('session 3: Send the 6 digits → "digits", sent to the masked address', d, d ? await text(p, '[data-sent-to]') : await text(p, '[data-list] [data-p="err"]'));
-    const where = await Promise.any(['new', 'contact'].map(role => waitMail(role, t1, t => /\b\d{6}\b/.test(t) && !/recover\/answer\?r=/.test(t), 'the digits', 180000).then(() => role)));
+    const where = await Promise.any(['new', 'contact'].map(role => readCode(role, t1, 'the digits').then(() => role)));
     ok('session 3: the digits arrive, at the updated address', where === 'new', `in ‹${where}›`);
   });
 
@@ -206,5 +189,5 @@ if (process.argv[2] === 'run') {
     const outp = execFileSync('node', ['scripts/verify/wave25/website-fixtures.mjs', 'teardown'], { cwd: APP, env: { ...process.env, W11C_SCRATCH: m.scratch, JEEVANTO_REPO: process.env.JEEVANTO_REPO || APP }, encoding: 'utf8' });
     log(outp.split('\n').filter(Boolean).slice(-4).join(' | ')); m.tornDown = true; save();
   }
-  for (const [role, box] of Object.entries(S.inbox || {})) { if (box.deleted) continue; await mt('/accounts/' + box.id, { method: 'DELETE', token: box.token }); box.deleted = true; save(); log(`inbox ‹${role}› deleted`); }
+  // the inboxes are plus-tags of ENGINES' test Gmail inbox: nothing to delete, and the reader archives nothing (266, Q2)
 } else { console.error('run | teardown'); process.exit(2); }
