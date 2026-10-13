@@ -192,7 +192,10 @@ if (process.argv[2] === 'run') {
     r = await rows(p); ok('session 3: after the hold → "The wait is over."', r.length === 1 && r[0].status === 'The wait is over.', JSON.stringify(r));
     const t1 = Date.now(); await p.click('[data-list] > * [data-p="send"]');
     const d = await shown(p, '[data-state="digits"]');
-    ok('session 3: Send the 6 digits → "digits", sent to the masked address', d, d ? await text(p, '[data-sent-to]') : await text(p, '[data-list] [data-p="err"]'));
+    // the contact here is an email, so "sent to" must be a masked email: an '@' and the mask's dots. Four digits is the
+    // sealed token masked as a phone (F-555), which this check once let through (13 Oct 09:30).
+    const sentTo = d ? await text(p, '[data-sent-to]') : '';
+    ok('session 3: Send the 6 digits → "digits", sent to the masked address', d && sentTo.includes('@') && sentTo.includes('•'), d ? `sent to: ${sentTo}` : await text(p, '[data-list] [data-p="err"]'));
     // no digits in either tag is a FAIL with the door's answer beside it, never a crash that loses the proof
     const where = await Promise.any(['new', 'contact'].map(role => readCode(role, t1, 'the digits').then(() => role))).catch(() => 'neither');
     ok('session 3: the digits arrive, at the updated address', where === 'new', `in ‹${where}›`);
