@@ -79,9 +79,13 @@ async function askMail(tag) {  // ENGINES' readAskFromGmail returns only the ref
 
 // ── the browser ───────────────────────────────────────────────────────────────────────────────────────────────────
 const siteHost = 'jeevanto.com', engineHost = new URL(engine.url).host;
+// The site's visit counter (decision 233) reports to cloudflareinsights.com. A drive is not a visit: its reports are
+// answered here, never sent, and counted apart; any other outside host is still a fault.
+const COUNTER = 'https://cloudflareinsights.com/cdn-cgi/rum';
 async function browse(engineT, fn) {
   const b = await engineT.launch(); const ctx = await b.newContext({ viewport: { width: 390, height: 844 } });
-  ctx.on('request', r => { const h = new URL(r.url()).host; requests[h] = (requests[h] || 0) + 1; if (h !== siteHost && h !== engineHost && !r.url().startsWith('data:')) offHost.push(r.url()); });
+  await ctx.route(u => u.href.startsWith(COUNTER), route => route.fulfill({ status: 204, body: '' }));
+  ctx.on('request', r => { if (r.url().startsWith(COUNTER)) { requests['cloudflareinsights.com (answered here, not sent)'] = (requests['cloudflareinsights.com (answered here, not sent)'] || 0) + 1; return; } const h = new URL(r.url()).host; requests[h] = (requests[h] || 0) + 1; if (h !== siteHost && h !== engineHost && !r.url().startsWith('data:')) offHost.push(r.url()); });
   // every engine door's answer: the action, the status and the error code only (never a body field that could hold an
   // address, code or link), so a refusal is named in the proof, not guessed (ENGINES, 12 Oct: a 409 hid its reason)
   ctx.on('response', async r => {
