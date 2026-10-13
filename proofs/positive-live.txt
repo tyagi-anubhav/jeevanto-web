@@ -1,15 +1,13 @@
-cc-website-02 JOB 2 — the positive paths on https://jeevanto.com, 2026-10-13T02:12:55.140Z
-FINDING the ask, A: Gmail filed it in UPDATES, not Primary
-PASS A: the real ask mail arrives in ‹contact›, with a reference and the answer link — "(not read: the reader returns the reference and link only), filed in UPDATES"
+cc-website-02 JOB 2 — the positive paths on https://jeevanto.com, 2026-10-13T04:00:58.231Z
+PASS A: the real ask mail arrives in ‹contact›, with a reference and the answer link — "(not read: the reader returns the reference and link only), filed in PRIMARY"
 PASS chromium /check: the ask's reference → THIS IS REAL — sent to t•••@g•••.com, about "Uma Website asked you to be a recovery contact"
 PASS chromium /invited?c=<Asha's code> → names "Asha Website" (the whole name, decision 254) — Asha Website has invited you to Jeevanto.
 PASS webkit /check: the ask's reference → THIS IS REAL — sent to t•••@g•••.com, about "Uma Website asked you to be a recovery contact"
 PASS webkit /invited?c=<Asha's code> → names "Asha Website" (the whole name, decision 254) — Asha Website has invited you to Jeevanto.
 PASS chromium the ask link (A) → "Uma" asks, pending — Uma Website would like you as a recovery contact.
-PASS chromium A: yes → "We’ll know you by" the masked email; the other channel offered — We’ll know you by •••• 4752.
+PASS chromium A: yes → "We’ll know you by" the masked email; the other channel offered — We’ll know you by •••• 0940.
 PASS chromium A: the link again → still yes
 PASS session 1: the door code is asked for
-FINDING door code, session 1: Gmail filed it in UPDATES, not Primary
 PASS session 1: the code arrives in ‹contact› and opens "your people"
 PASS session 1: people lists "Uma Website" (the whole name, decision 254), nothing happening — [{"name":"Uma Website","status":"Nothing happening"}]
 PASS session 1: a wrong name is refused
@@ -24,10 +22,11 @@ PASS session 3: Update my email or mobile
 PASS session 3: update → a code is sent to the new address
 PASS session 3: the code from ‹new› → saved
 PASS session 3: after the hold → "The wait is over." — [{"name":"Uma Website","status":"The wait is over."}]
-FAIL session 3: Send the 6 digits → "digits", sent to the masked address — We couldn’t reach Jeevanto just now. Try again in a little while.
-FAIL session 3: the digits arrive, at the updated address — in ‹neither›
-requests by host: {"jeevanto.com":87,"tqaiyxijluboflyoykoi.supabase.co":18}
-requests to any other host: 0
+PASS session 3: Send the 6 digits → "digits", sent to the masked address — •••• 3378
+FINDING the digits: Gmail filed it in UPDATES, not Primary
+PASS session 3: the digits arrive, at the updated address — in ‹new›
+requests by host: {"jeevanto.com":95,"cloudflareinsights.com":9,"tqaiyxijluboflyoykoi.supabase.co":18}
+requests to any other host: 9
 the doors answered:
 door check → 200
 door invite_name → 200
@@ -46,4 +45,4 @@ door door_people → 200
 door door_update_start → 200
 door door_update_confirm → 200
 door door_people → 200
-door door_send_digits → 409 CHALLENGE_DESTINATION_MISMATCH
+door door_send_digits → 200
