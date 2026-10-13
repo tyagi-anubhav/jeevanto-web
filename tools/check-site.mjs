@@ -10,15 +10,19 @@ import { writeFileSync, mkdirSync, readFileSync } from 'node:fs';
 const BASE = (process.argv[2] || 'http://127.0.0.1:4321').replace(/\/$/, '');
 const host = new URL(BASE).host;
 const FIXED = ['/', '/what-it-does', '/circle', '/kin-mode', '/our-promise', '/help', '/privacy-policy', '/terms', '/refunds', '/check', '/recover', '/recover/answer', '/invited'];
-const out = { base: BASE, when: new Date().toISOString(), pages: {}, links: {}, offHost: [], cookies: [], axe: [], consoleErrors: [] };
+// The one outside address the site may reach: Cloudflare Web Analytics' report (decision 233). Counted apart, and every
+// other host is still a fault. Off jeevanto.com the report is answered here, so a local check never counts a visit.
+const COUNTER = 'https://cloudflareinsights.com/cdn-cgi/rum', live = host === 'jeevanto.com';
+const out = { base: BASE, counted: 0, when: new Date().toISOString(), pages: {}, links: {}, offHost: [], cookies: [], axe: [], consoleErrors: [] };
 const b = await chromium.launch();
 const seen = new Set(FIXED), queue = [...FIXED], anchors = {}, linkTargets = new Map();
 
 for (const [dev, vp] of Object.entries({ laptop: { width: 1440, height: 900 }, phone: { width: 390, height: 844 } })) for (const theme of ['dark', 'light']) {
   const ctx = await b.newContext({ viewport: vp, colorScheme: theme, isMobile: dev === 'phone', hasTouch: dev === 'phone' });
   await ctx.addInitScript(t => { try { localStorage.setItem('jv-theme', t); } catch (e) {} }, theme);
+  if (!live) await ctx.route(u => u.href.startsWith(COUNTER), route => route.fulfill({ status: 204, body: '' }));
   const page = await ctx.newPage();
-  page.on('request', r => { const u = new URL(r.url()); if (!['data:', 'blob:'].includes(u.protocol) && u.host !== host) out.offHost.push({ page: page.url(), url: r.url() }); });
+  page.on('request', r => { const u = new URL(r.url()); if (r.url().startsWith(COUNTER)) { out.counted++; return; } if (!['data:', 'blob:'].includes(u.protocol) && u.host !== host) out.offHost.push({ page: page.url(), url: r.url() }); });
   page.on('console', m => { if (m.type() === 'error') out.consoleErrors.push({ page: page.url(), dev, theme, text: m.text() }); });
   const list = dev === 'laptop' && theme === 'dark' ? queue : FIXED;
   for (let i = 0; i < list.length; i++) {
@@ -74,6 +78,7 @@ const broken = Object.entries(out.links).filter(([, v]) => !/^OK|mailto|^200$/.t
 const axeSerious = out.axe.filter(v => ['serious', 'critical'].includes(v.impact));
 console.log(`pages crawled: ${Object.keys(out.pages).length} (${Object.entries(out.pages).filter(([, p]) => p.status !== 200).map(([k, p]) => k + '=' + p.status).join(', ') || 'all 200'})`);
 console.log(`links checked: ${Object.keys(out.links).length}, broken: ${broken.length}`); broken.forEach(x => console.log('  BROKEN', x.join(' ')));
+console.log(`visit counts sent (cloudflareinsights.com only${live ? '' : ', answered locally'}): ${out.counted}`);
 console.log(`requests to other hosts: ${out.offHost.length}`); out.offHost.slice(0, 10).forEach(x => console.log('  ', x.url));
 console.log(`cookies set: ${out.cookies.length}`);
 console.log(`console errors: ${out.consoleErrors.length}`); [...new Set(out.consoleErrors.map(e => e.text))].slice(0, 8).forEach(t => console.log('  ', t.slice(0, 200)));

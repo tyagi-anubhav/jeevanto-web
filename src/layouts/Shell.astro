@@ -12,9 +12,14 @@ const desc = description || `${productName} is a personal assistant on your phon
 // No request may leave jeevanto.com: everything is self-hosted, and the policy below says so to the browser.
 // The one exception is a page that calls ENGINES' doors (/check, /recover, /invited): it may reach the engine's own
 // address, and nothing else, and only when the visitor asks it to.
+// Visit counting (decision 233, policy 1.1): Cloudflare Web Analytics' beacon, self-hosted, on jeevanto.com only (never
+// the preview, which is built with JV_PREVIEW=1). It sends one request per page view to cloudflareinsights.com, which
+// is the only outside address the policy below opens. No cookie, no storage (public/js/vendor/cf-beacon-*/README.txt).
+const countVisits = process.env.JV_PREVIEW !== '1' && !!config.visitCounterToken;
+const counter = 'https://cloudflareinsights.com';
 const csp = [
   "default-src 'self'", "script-src 'self'", "style-src 'self' 'unsafe-inline'", "img-src 'self' data:", "media-src 'self'",
-  "font-src 'self'", doors ? `connect-src 'self' ${engine.url}` : "connect-src 'self'", "frame-src 'none'", "object-src 'none'", "base-uri 'self'", "form-action 'none'",
+  "font-src 'self'", `connect-src 'self'${doors ? ' ' + engine.url : ''}${countVisits ? ' ' + counter : ''}`, "frame-src 'none'", "object-src 'none'", "base-uri 'self'", "form-action 'none'",
 ].join('; '); // every address is relative and Pages enforces HTTPS, so no upgrade-insecure-requests (it breaks local WebKit tests)
 
 const navItems = [['What it does', '/what-it-does'], ['Circle', '/circle'], ['Kin mode', '/kin-mode']]
@@ -98,6 +103,7 @@ const footer = [
 </footer>
 <script is:inline src="/js/site.js" defer></script>
 <script is:inline src="/js/region.js" defer></script>
+{countVisits && <script is:inline defer src="/js/vendor/cf-beacon-2026.10.0/beacon.min.js" data-cf-beacon={JSON.stringify({ token: config.visitCounterToken })}></script>}
 {doors && <script is:inline src="/js/doors.js" defer></script>}
 <slot name="scripts" />
 </body>

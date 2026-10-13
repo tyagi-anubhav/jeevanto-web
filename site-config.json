@@ -2,6 +2,7 @@
   "_about": "Every value the site reads from the ops console (OPS-CONSOLE-PLACEHOLDERS.md, handback v9, 1 Oct 2026). The build reads ENGINES' public settings door first (src/lib/config.mjs, POST /rest/v1/rpc/site_settings); this file is the fallback and fills any value the door leaves null. Empty string = not set yet; the page shows '(To be confirmed)', 'TBC' or '₹TBC' in its place.",
   "siteMode": "coming soon",
   "productName": "Jeevanto",
+  "visitCounterToken": "572a13f23712447580d8d11e9a9485b3",
   "legalName": "Anubhav Tyagi (Jeevanto)",
   "registeredAddress": "Sector-66, Gurugram, Haryana 122102, India",
   "cin": "",
