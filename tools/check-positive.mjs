@@ -36,11 +36,13 @@ const NO_CODES = process.env.NO_CODES === '1';
 // ONLY_A=1: owner A's path only (the ask, session 1's start, the hold, session 3's update and digits): no B or C, no
 // session 2, so one test owner and a ~20 min teardown. For re-driving one step; the skipped legs are SKIPPED, never PASS.
 const ONLY_A = process.env.ONLY_A === '1';
-// REMOVE_CONTACT=1 (with ONLY_A; row 1133, Cowork 15 Oct 23:55 (b)): after the people list says "The wait is over.", the
-// owner removes the contact the app's own way (ENGINES' `website-fixtures.mjs remove-contact`: edge recovery-contact,
-// action remove, with the owner's session), then the person taps "Send the 6 digits". The door answers 409 NOT_FOUND,
-// and the page must say the founder's words for it (15 Oct 22:10, WEB-1), not "couldn't reach".
-const REMOVE_CONTACT = process.env.REMOVE_CONTACT === '1';
+// EXPIRE_SESSION=1 (with ONLY_A; row 1133, Cowork 15 Oct 23:55 (b)): the honest real-life NOT_FOUND. A person leaves the
+// page open past the door session's life (live: recovery_setting door_session_minutes = 30, ENGINES 16 Oct 00:5x), then
+// taps "Send the 6 digits". The door answers 409 NOT_FOUND (its session check sits in _door_contact), and the page must
+// say the founder's words for it (15 Oct 22:10, WEB-1), never "couldn't reach". The contact can't be removed mid-flow
+// instead: live refuses that while the recovery is live (RECOVERY_LIVE_FLOW), by design.
+const EXPIRE_SESSION = process.env.EXPIRE_SESSION === '1';
+const DOOR_SESSION_MIN = 30;
 const NOT_FOUND_WORDS = 'We couldn’t send the 6 digits. Write to help@jeevanto.com, and we’ll look into it.';
 const results = [], requests = {}, offHost = [], doorLog = [];
 const mask = s => String(s).replace(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}/g, m => Object.entries(S.inbox || {}).find(([, v]) => v.address === m)?.[0] ? `‹${Object.entries(S.inbox).find(([, v]) => v.address === m)[0]}›` : '‹address›')
@@ -78,12 +80,6 @@ function make(tag) {
   S.made ||= {}; S.made[tag] = { scratch, code, at: Date.now() }; save();
   log(`make ${tag}: ${outp.split('\n').filter(l => /F[12] ·|steps|PASS|FAIL|✓|✗/.test(l)).join(' | ').slice(0, 300)}`);
   return code;
-}
-function removeContact(tag) {  // the owner removes every recovery contact, the app's own call; ENGINES reads back 0
-  const outp = execFileSync('node', ['scripts/verify/wave25/website-fixtures.mjs', 'remove-contact', '--live'],
-    { cwd: APP, env: { ...process.env, W11C_SCRATCH: S.made[tag].scratch, JV_TARGET: 'live', JEEVANTO_REPO: process.env.JEEVANTO_REPO || APP }, encoding: 'utf8' });
-  log(`remove-contact ${tag}: ${outp.split('\n').filter(l => /✅|❌|RECOVERY_LIVE_FLOW/.test(l)).join(' | ').slice(0, 300)}`);
-  return outp;
 }
 async function askMail(tag) {  // ENGINES' readAskFromGmail returns only the reference and the answer link
   const a = await G.readAskFromGmail({ to: S.inbox.contact.address, sender: SENDER, since: new Date(S.made[tag].at - 5000), timeoutMs: 240000 });
@@ -194,6 +190,7 @@ if (process.argv[2] === 'run') {
   await browse(chromium, async p => {
     if (NO_CODES) { results.push('WAITS session 3: needs an emailed door code (decision 264; ENGINES\' 266 drive note first)'); return; }
     if (!await doorSession(p, 'session 3')) return;
+    const doorAt = Date.now();   // the door code was accepted: the door session's life starts here
     let r = await rows(p);
     ok('session 3: Uma alone, waiting ("Started. …")', r.length === 1 && /^Started\./.test(r[0].status), JSON.stringify(r));
     await p.click('[data-to-update]'); ok('session 3: Update my email or mobile', await shown(p, '[data-state="update"]'));
@@ -205,15 +202,16 @@ if (process.argv[2] === 'run') {
     ok('session 3: the code from ‹new› → saved', await shown(p, `${card} [data-upd-saved]`), await text(p, `${card} [data-upd-err]`));
     await p.click('[data-to-people]'); await shown(p, '[data-state="people"]');
     r = await rows(p); ok('session 3: after the hold → "The wait is over."', r.length === 1 && r[0].status === 'The wait is over.', JSON.stringify(r));
-    if (REMOVE_CONTACT) {
-      const out = removeContact('A');
-      ok('row 1133: the owner removes the contact the app\'s own way, read back 0', /✅ R3 · read back[^\n]*, 0 left/.test(out) && !/❌|RECOVERY_LIVE_FLOW/.test(out), out.split('\n').filter(Boolean).slice(-3).join(' | ').slice(0, 200));
+    if (EXPIRE_SESSION) {
+      const left = doorAt + (DOOR_SESSION_MIN + 1) * 60000 - Date.now();
+      if (left > 0) { log(`row 1133: keeping the page open ${Math.round(left / 1000)}s, past the ${DOOR_SESSION_MIN}-minute door session`); await sleep(left); }
       await p.click('[data-list] > * [data-p="send"]');
       const err = p.locator('[data-list] [data-p="err"]');
       await err.waitFor({ state: 'visible', timeout: 20000 }).catch(() => {});
       const said = (await err.isVisible()) ? (await err.innerText()).trim() : '';
-      ok('row 1133: Send the 6 digits after the removal → the founder\'s words for NOT_FOUND', said === NOT_FOUND_WORDS && !(await p.locator('[data-state="digits"]').isVisible()), `the page says: ${said || '(nothing)'}`);
+      ok('row 1133: Send the 6 digits after the door session ran out → the founder\'s words for NOT_FOUND', said === NOT_FOUND_WORDS && !(await p.locator('[data-state="digits"]').isVisible()), `the page says: ${said || '(nothing)'}`);
       ok('row 1133: never "couldn\'t reach" for a refusal the engine answered', !/couldn.t reach/i.test(said), said);
+      ok('row 1133: the door really answered 409 NOT_FOUND', doorLog.some(l => l === 'door door_send_digits → 409 NOT_FOUND'), doorLog.filter(l => /send_digits/.test(l)).join(' | ') || 'no send_digits call seen');
       return;
     }
     const t1 = Date.now(); await p.click('[data-list] > * [data-p="send"]');
