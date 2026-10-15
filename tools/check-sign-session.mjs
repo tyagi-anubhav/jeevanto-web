@@ -43,10 +43,11 @@ const kept = () => p.evaluate(() => { try { return localStorage.getItem('jv-sign
 await p.goto(`${BASE}/create-account#access_token=${tok.access_token}&refresh_token=${tok.refresh_token}&token_type=bearer&expires_in=${tok.expires_in}`);
 const askedName = await shown('name');
 const nameStepH1 = askedName ? await p.locator('[data-state="name"] h1').innerText() : '';
-// where a name would show (the heading and the name fields), never an address; "Signed in as …" names the address on purpose
+// where a name would show (the heading and the name fields), never an address
 const leaked = await p.evaluate(() => { const f = document.querySelector('[data-state="name"]'); return /@/.test(f.querySelector('h1').innerText) || [...f.querySelectorAll('input')].some(i => /@/.test(i.value)); });
 ok('no name from the provider → "Good, that’s you. Now your name.", and no address shown as a name', askedName && nameStepH1 === 'Good, that’s you. Now your name.' && !leaked, `h1="${nameStepH1}"`);
-ok('the name step says which account is signed in ("Signed in as …")', /^Signed in as \S+@\S+\.$/.test(await p.locator('[data-who]').innerText()));
+// the founder, 15 Oct 22:10 (WEB-3): no "Signed in as …" and no address, masked or not; the name field is the cue
+ok('the name step shows no "Signed in as …" and no address', (await p.locator('[data-who]').count()) === 0 && !/Signed in as|@/.test(await p.locator('[data-state="name"]').innerText()));
 // decision 254 (TESTS' case): a two-word first name and a 40-character last name
 const LAST = 'Loooooooooooooooooooooooooooooooooongname';
 await p.fill('#sg-first', 'Sai Krishna'); await p.fill('#sg-last', LAST); await p.click('[data-name-go]');
@@ -79,6 +80,8 @@ await p.screenshot({ path: 'proofs/screens/sign/signed-in-phone.png', fullPage: 
 ok('signed in: one Sign out, in the nav’s top-right corner, and none on the page (founder, 10 Oct 12:50)', (await p.locator('[data-nav-sign]').innerText()) === 'Sign out' && (await p.locator('main button:has-text("Sign out")').count()) === 0);
 await p.goto(`${BASE}/our-promise`);
 ok('every page: the nav says Sign out while signed in', (await p.locator('[data-nav-sign]').innerText()) === 'Sign out');
+// WEB-3: the person's name in the top corner where signed-in sites show it, the whole first name (decision 254), nothing else
+ok('every page: the nav shows the name, "Sai Krishna", beside Sign out, and no address', await p.locator('[data-nav-name]').isVisible() && (await p.locator('[data-nav-name]').innerText()) === 'Sai Krishna' && !/@/.test(await p.locator('header').innerText()));
 const meta = await fetch(`${lib.BASE}/auth/v1/user`, { headers: { apikey: lib.ENV.SUPABASE_ANON_KEY, Authorization: 'Bearer ' + JSON.parse(await kept()).access } }).then(r => r.json());
 ok('the first name is saved exactly as typed, beside the full name (decision 254)', meta.user_metadata && meta.user_metadata.first_name === 'Sai Krishna' && meta.user_metadata.display_name === 'Sai Krishna ' + LAST, JSON.stringify({ first: meta.user_metadata && meta.user_metadata.first_name }));
 
@@ -92,6 +95,7 @@ ok('a return visit records no second agreement', again[0].n === 2, String(again[
 await p.click('[data-nav-sign]');
 await p.waitForFunction(() => !localStorage.getItem('jv-sign-in') && location.hash === '', null, { timeout: 15000 }).catch(() => {});
 ok('Sign out → "Welcome back." (the Sign in page), and the record is gone from the browser', p.url().endsWith('/sign-in') && await shown('ask') && (await p.locator('[data-state="ask"] h1').innerText()) === 'Welcome back.' && (await kept()) === null && (await p.locator('[data-nav-sign]').innerText()) === 'Sign in', p.url());
+ok('after Sign out the nav shows no name', !(await p.locator('[data-nav-name]').isVisible()));
 await p.goto(`${BASE}/sign-in`);
 ok('after signing out, a return visit is signed out', await shown('ask', 5000) && !(await p.locator('[data-state="in"]').isVisible()));
 const still = await fetch(`${lib.BASE}/auth/v1/user`, { headers: { apikey: lib.ENV.SUPABASE_ANON_KEY, Authorization: 'Bearer ' + tok.access_token } });
