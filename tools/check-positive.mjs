@@ -92,8 +92,11 @@ function make(tag) {
 async function askMail(tag) {  // ENGINES' readAskFromGmail returns only the reference and the answer link
   const a = await G.readAskFromGmail({ to: S.inbox.contact.address, sender: SENDER, since: new Date(S.made[tag].at - 5000), timeoutMs: STAGING ? 900000 : 240000 });  // staging: ZeptoMail can lag; 15 min, in spam too (ENGINES 16 Oct 03:5x)
   place(`the ask, ${tag}`, a.where); log(`the ask in ‹contact› (${tag}), filed in ${a.where}`);
-  S.made[tag].ref = a.reference; S.made[tag].link = a.answerLink; save();
-  return { ref: a.reference, link: a.answerLink, subject: `(not read: the reader returns the reference and link only), filed in ${a.where}` };
+  // staging's mail names jeevanto.com, which talks to live; on staging only the host is moved to the local build (path,
+  // query and fragment kept exactly), so the same link reaches staging's engine
+  const link = STAGING ? (u => BASE + u.pathname + u.search + u.hash)(new URL(a.answerLink)) : a.answerLink;
+  S.made[tag].ref = a.reference; S.made[tag].link = link; save();
+  return { ref: a.reference, link, subject: `(not read: the reader returns the reference and link only), filed in ${a.where}` };
 }
 
 // ── the browser ───────────────────────────────────────────────────────────────────────────────────────────────────
