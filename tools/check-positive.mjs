@@ -25,7 +25,15 @@ import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import engine from '../src/lib/engine.json' with { type: 'json' };
 
-const BASE = 'https://jeevanto.com', SENDER = 'notifications@jeevanto.com';
+// STAGING=<a local build of this site whose src/lib/engine.json names staging> (row 1133's expiry path, Cowork 16 Oct
+// 03:15 ruling 3): the same drive against staging. The fixtures stay on their staging default (no JV_TARGET=live), the
+// engine is the one the local build names, and Chromium runs with --disable-web-security because staging's recovery-web
+// answers only jeevanto.com's origin (ENGINES 03:3x). Nothing is routed or rewritten. What this can't prove, the real
+// origin's CORS, the live half already proved. Never with jeevanto.com.
+const STAGING = process.env.STAGING || '';
+const BASE = STAGING || 'https://jeevanto.com', SENDER = 'notifications@jeevanto.com';
+if (STAGING && /jeevanto\.com/.test(STAGING)) { console.error('STAGING must be a local build, never jeevanto.com'); process.exit(2); }
+const TARGET = STAGING ? {} : { JV_TARGET: 'live' };
 const { STATE, APP } = process.env; if (!STATE || !APP) { console.error('STATE=<dir> APP=<app checkout> node tools/check-positive.mjs run|teardown'); process.exit(2); }
 mkdirSync(STATE, { recursive: true });
 const sfile = join(STATE, 'state.json');
@@ -75,7 +83,7 @@ async function readCode(role, since, label) {
 function make(tag) {
   const scratch = join(STATE, `fixtures-${tag}.json`);
   const outp = execFileSync('node', ['scripts/verify/wave25/website-fixtures.mjs', 'make', '--contact', S.inbox.contact.address, '--owner-alert', S.inbox.alert.address],
-    { cwd: APP, env: { ...process.env, W11C_SCRATCH: scratch, JV_TARGET: 'live', JEEVANTO_REPO: process.env.JEEVANTO_REPO || APP }, encoding: 'utf8' });
+    { cwd: APP, env: { ...process.env, W11C_SCRATCH: scratch, ...TARGET, JEEVANTO_REPO: process.env.JEEVANTO_REPO || APP }, encoding: 'utf8' });
   const code = (outp.match(/"invite_code":\s*"([^"]+)"/) || [])[1];
   S.made ||= {}; S.made[tag] = { scratch, code, at: Date.now() }; save();
   log(`make ${tag}: ${outp.split('\n').filter(l => /F[12] ·|steps|PASS|FAIL|✓|✗/.test(l)).join(' | ').slice(0, 300)}`);
@@ -89,12 +97,13 @@ async function askMail(tag) {  // ENGINES' readAskFromGmail returns only the ref
 }
 
 // ── the browser ───────────────────────────────────────────────────────────────────────────────────────────────────
-const siteHost = 'jeevanto.com', engineHost = new URL(engine.url).host;
+const siteHost = new URL(BASE).host;
+const engineHost = new URL(STAGING ? JSON.parse(readFileSync(new URL(process.env.STAGING_ENGINE_JSON || '../src/lib/engine.json', import.meta.url), 'utf8')).url : engine.url).host;
 // The site's visit counter (decision 233) reports to cloudflareinsights.com. A drive is not a visit: its reports are
 // answered here, never sent, and counted apart; any other outside host is still a fault.
 const COUNTER = 'https://cloudflareinsights.com/cdn-cgi/rum';
 async function browse(engineT, fn) {
-  const b = await engineT.launch(); const ctx = await b.newContext({ viewport: { width: 390, height: 844 } });
+  const b = await engineT.launch(STAGING && engineT.name() === 'chromium' ? { args: ['--disable-web-security'] } : {}); const ctx = await b.newContext({ viewport: { width: 390, height: 844 } });
   await ctx.route(u => u.href.startsWith(COUNTER), route => route.fulfill({ status: 204, body: '' }));
   ctx.on('request', r => { if (r.url().startsWith(COUNTER)) { requests['cloudflareinsights.com (answered here, not sent)'] = (requests['cloudflareinsights.com (answered here, not sent)'] || 0) + 1; return; } const h = new URL(r.url()).host; requests[h] = (requests[h] || 0) + 1; if (h !== siteHost && h !== engineHost && !r.url().startsWith('data:')) offHost.push(r.url()); });
   // every engine door's answer: the action, the status and the error code only (never a body field that could hold an
@@ -128,7 +137,7 @@ if (process.argv[2] === 'run') {
   // A: the reference, the inviter, yes
   make('A'); const A = await askMail('A');
   ok('A: the real ask mail arrives in ‹contact›, with a reference and the answer link', !!A.ref && !!A.link, `"${A.subject}"`);
-  for (const [en, E] of [['chromium', chromium], ['webkit', webkit]]) await browse(E, async p => {
+  for (const [en, E] of (STAGING ? [['chromium', chromium]] : [['chromium', chromium], ['webkit', webkit]])) await browse(E, async p => {   // staging: Chromium only (its CORS is switched off; WebKit's can't be)
     await p.goto(BASE + '/check'); await p.fill('#chk-ref', A.ref); await p.click('form button[type=submit]');
     const real = await shown(p, '[data-state="real"]');
     ok(`${en} /check: the ask's reference → THIS IS REAL`, real, real ? `sent to ${await text(p, '[data-f="sent_to"]')}, about "${await text(p, '[data-f="about"]')}"` : await text(p, '[data-err]'));
@@ -225,7 +234,7 @@ if (process.argv[2] === 'run') {
     ok('session 3: the digits arrive, at the updated address', where === 'new', `in ‹${where}›`);
   });
 
-  writeFileSync('proofs/positive-live.txt', [`cc-website-02 JOB 2 — the positive paths on ${BASE}, ${new Date().toISOString()}`, ...results,
+  writeFileSync(STAGING ? 'proofs/positive-staging.txt' : 'proofs/positive-live.txt', [`cc-website-02 JOB 2 — the positive paths on ${BASE}, ${new Date().toISOString()}`, ...results,
     `requests by host: ${JSON.stringify(requests)}`, `requests to any other host: ${offHost.length}`, 'the doors answered:', ...doorLog].join('\n') + '\n');
   const waits = results.filter(r => r.startsWith('WAITS') || r.startsWith('SKIPPED')).length;
   console.log(`\n${results.filter(r => r.startsWith('PASS')).length}/${results.length - waits} passed${waits ? ` · ${waits} wait for an emailed code` : ''} · other hosts: ${offHost.length}`);
@@ -236,7 +245,7 @@ if (process.argv[2] === 'run') {
     if (m.tornDown) continue;
     if (!first) { log('ten minutes before the next purge (the estate\'s rule holds across files too)'); await sleep(600_000); } first = false;
     log(`teardown ${tag}`);
-    const outp = execFileSync('node', ['scripts/verify/wave25/website-fixtures.mjs', 'teardown'], { cwd: APP, env: { ...process.env, W11C_SCRATCH: m.scratch, JV_TARGET: 'live', JEEVANTO_REPO: process.env.JEEVANTO_REPO || APP }, encoding: 'utf8' });
+    const outp = execFileSync('node', ['scripts/verify/wave25/website-fixtures.mjs', 'teardown'], { cwd: APP, env: { ...process.env, W11C_SCRATCH: m.scratch, ...TARGET, JEEVANTO_REPO: process.env.JEEVANTO_REPO || APP }, encoding: 'utf8' });
     log(outp.split('\n').filter(Boolean).slice(-4).join(' | ')); m.tornDown = true; save();
   }
   // the inboxes are plus-tags of ENGINES' test Gmail inbox: nothing to delete, and the reader archives nothing (266, Q2)
