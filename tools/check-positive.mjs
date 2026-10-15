@@ -60,11 +60,14 @@ async function readCode(role, since, label) {
   place(label, r.where); log(`code in ‹${role}› (${label}), filed in ${r.where}`); return r.code;
 }
 
-// ── ENGINES' fixtures (run from the app checkout; its env file names the Mumbai project) ─────────────────────────────
+// ── ENGINES' fixtures (run from the app checkout) ─────────────────────────────────────────────────────────────────────
+// jeevanto.com talks to LIVE, so the owners must be made and purged on live. Since rulebook v10 (15 Oct) the fixtures
+// default to staging and reach live only when asked: JV_TARGET=live (ENGINES' supabase-target.mjs), and each run is then
+// logged to shared/_control/live-uses.log. Older fixtures ignore the variable and read live already.
 function make(tag) {
   const scratch = join(STATE, `fixtures-${tag}.json`);
   const outp = execFileSync('node', ['scripts/verify/wave25/website-fixtures.mjs', 'make', '--contact', S.inbox.contact.address, '--owner-alert', S.inbox.alert.address],
-    { cwd: APP, env: { ...process.env, W11C_SCRATCH: scratch, JEEVANTO_REPO: process.env.JEEVANTO_REPO || APP }, encoding: 'utf8' });
+    { cwd: APP, env: { ...process.env, W11C_SCRATCH: scratch, JV_TARGET: 'live', JEEVANTO_REPO: process.env.JEEVANTO_REPO || APP }, encoding: 'utf8' });
   const code = (outp.match(/"invite_code":\s*"([^"]+)"/) || [])[1];
   S.made ||= {}; S.made[tag] = { scratch, code, at: Date.now() }; save();
   log(`make ${tag}: ${outp.split('\n').filter(l => /F[12] ·|steps|PASS|FAIL|✓|✗/.test(l)).join(' | ').slice(0, 300)}`);
@@ -212,7 +215,7 @@ if (process.argv[2] === 'run') {
     if (m.tornDown) continue;
     if (!first) { log('ten minutes before the next purge (the estate\'s rule holds across files too)'); await sleep(600_000); } first = false;
     log(`teardown ${tag}`);
-    const outp = execFileSync('node', ['scripts/verify/wave25/website-fixtures.mjs', 'teardown'], { cwd: APP, env: { ...process.env, W11C_SCRATCH: m.scratch, JEEVANTO_REPO: process.env.JEEVANTO_REPO || APP }, encoding: 'utf8' });
+    const outp = execFileSync('node', ['scripts/verify/wave25/website-fixtures.mjs', 'teardown'], { cwd: APP, env: { ...process.env, W11C_SCRATCH: m.scratch, JV_TARGET: 'live', JEEVANTO_REPO: process.env.JEEVANTO_REPO || APP }, encoding: 'utf8' });
     log(outp.split('\n').filter(Boolean).slice(-4).join(' | ')); m.tornDown = true; save();
   }
   // the inboxes are plus-tags of ENGINES' test Gmail inbox: nothing to delete, and the reader archives nothing (266, Q2)
