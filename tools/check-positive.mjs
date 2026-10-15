@@ -90,7 +90,7 @@ function make(tag) {
   return code;
 }
 async function askMail(tag) {  // ENGINES' readAskFromGmail returns only the reference and the answer link
-  const a = await G.readAskFromGmail({ to: S.inbox.contact.address, sender: SENDER, since: new Date(S.made[tag].at - 5000), timeoutMs: 240000 });
+  const a = await G.readAskFromGmail({ to: S.inbox.contact.address, sender: SENDER, since: new Date(S.made[tag].at - 5000), timeoutMs: STAGING ? 900000 : 240000 });  // staging: ZeptoMail can lag; 15 min, in spam too (ENGINES 16 Oct 03:5x)
   place(`the ask, ${tag}`, a.where); log(`the ask in ‹contact› (${tag}), filed in ${a.where}`);
   S.made[tag].ref = a.reference; S.made[tag].link = a.answerLink; save();
   return { ref: a.reference, link: a.answerLink, subject: `(not read: the reader returns the reference and link only), filed in ${a.where}` };
