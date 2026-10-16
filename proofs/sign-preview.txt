@@ -1,4 +1,4 @@
-decision 229 — the sign-in pages on the preview https://jeevanto-site-preview.pages.dev, 2026-10-11T13:56:47.418Z
+decision 229 — the sign-in pages on the preview https://jeevanto-site-preview.pages.dev, 2026-10-16T14:56:15.164Z
 PASS chromium phone dark /sign-in: "Welcome back.", Google and Apple only, no consent line, noindex — h1="Welcome back." buttons=["Continue with Google","Continue with Apple"] consent=0 robots=noindex, nofollow roboto=true
 PASS chromium phone dark /sign-in: signed out, the nav's top-right corner says Sign in (founder, 10 Oct 12:50)
 PASS chromium phone dark /sign-in: axe
