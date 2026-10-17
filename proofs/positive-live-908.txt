@@ -1,0 +1,12 @@
+cc-website-02 JOB 2 — the positive paths on https://jeevanto.com, 2026-10-17T22:47:07.831Z
+PASS B: the real ask mail arrives in ‹contact›, with the answer link — "(not read: the reader returns the reference and link only), filed in PRIMARY"
+PASS webkit B: the ask link → pending — Uma Website would like you as a recovery contact.
+PASS webkit B: No, thank you → "no" — That’s fine.
+PASS webkit B: the link again → still no (row 908) — That’s fine.
+SKIPPED A and C, and the three door sessions: ONLY_B run
+requests by host: {"jeevanto.com":26,"tqaiyxijluboflyoykoi.supabase.co":3,"cloudflareinsights.com (answered here, not sent)":3}
+requests to any other host: 0
+the doors answered:
+door consent_view → 200
+door consent_answer → 200
+door consent_view → 200
