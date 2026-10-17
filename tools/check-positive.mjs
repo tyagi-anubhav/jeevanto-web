@@ -36,6 +36,12 @@ const NO_CODES = process.env.NO_CODES === '1';
 // ONLY_A=1: owner A's path only (the ask, session 1's start, the hold, session 3's update and digits): no B or C, no
 // session 2, so one test owner and a ~20 min teardown. For re-driving one step; the skipped legs are SKIPPED, never PASS.
 const ONLY_A = process.env.ONLY_A === '1';
+// ONLY_B=1 (rows 908, 501, 833; ENGINES 17 Oct 23:0x): owner B's decline alone, the 4 Oct run's one FAIL. One owner
+// signs up the app's way and asks ‹contact›; WebKit opens the ask, says No, thank you, and opens the link again: it
+// must still say no (20262055: recovery_consent_view answers `declined` with the asker's name), never "doesn't work
+// any more". No door session, no emailed door code: it fits one live turn with its purge.
+const ONLY_B = process.env.ONLY_B === '1';
+if (ONLY_A && ONLY_B) { console.error('ONLY_A and ONLY_B are separate runs'); process.exit(2); }
 // EXPIRE_SESSION=1 (with ONLY_A; row 1133, Cowork 15 Oct 23:55 (b)): the honest real-life NOT_FOUND. A person leaves the
 // page open past the door session's life (live: recovery_setting door_session_minutes = 30, ENGINES 16 Oct 00:5x), then
 // taps "Send the 6 digits". The door answers 409 NOT_FOUND (its session check sits in _door_contact), and the page must
@@ -137,6 +143,17 @@ const rows = p => p.$$eval('[data-list] > *', els => els.map(e => ({ name: e.que
 if (process.argv[2] === 'run') {
   if (!S.inbox) { S.inbox = { contact: await openInbox('contact'), alert: await openInbox('alert'), new: await openInbox('new') }; save(); log('three plus-tags of the test Gmail inbox made'); }
 
+  if (ONLY_B) {
+  await make('B'); const B = await askMail('B');
+  ok('B: the real ask mail arrives in ‹contact›, with the answer link', !!B.link, `"${B.subject}"`);
+  await browse(webkit, async p => {
+    await p.goto(B.link); ok('webkit B: the ask link → pending', await shown(p, '[data-state="agree"]'), await text(p, 'h1'));
+    await p.click('[data-no]'); ok('webkit B: No, thank you → "no"', await shown(p, '[data-state="no"]'), await text(p, '[data-state="no"] h1'));
+    await p.goto(B.link); const still = await shown(p, '[data-state="no"]');
+    ok('webkit B: the link again → still no (row 908)', still, still ? await text(p, '[data-state="no"] h1') : `shows: ${await text(p, 'h1')}`);
+  });
+  results.push('SKIPPED A and C, and the three door sessions: ONLY_B run');
+  } else {
   // A: the reference, the inviter, yes
   await make('A'); const A = await askMail('A');
   ok('A: the real ask mail arrives in ‹contact›, with a reference and the answer link', !!A.ref && !!A.link, `"${A.subject}"`);
@@ -237,7 +254,9 @@ if (process.argv[2] === 'run') {
     ok('session 3: the digits arrive, at the updated address', where === 'new', `in ‹${where}›`);
   });
 
-  writeFileSync('proofs/positive-live.txt', [`cc-website-02 JOB 2 — the positive paths on ${BASE}, ${new Date().toISOString()}`, ...results,
+  }
+
+  writeFileSync(ONLY_B ? 'proofs/positive-live-908.txt' : 'proofs/positive-live.txt', [`cc-website-02 JOB 2 — the positive paths on ${BASE}, ${new Date().toISOString()}`, ...results,
     `requests by host: ${JSON.stringify(requests)}`, `requests to any other host: ${offHost.length}`, 'the doors answered:', ...doorLog].join('\n') + '\n');
   const waits = results.filter(r => r.startsWith('WAITS') || r.startsWith('SKIPPED')).length;
   console.log(`\n${results.filter(r => r.startsWith('PASS')).length}/${results.length - waits} passed${waits ? ` · ${waits} wait for an emailed code` : ''} · other hosts: ${offHost.length}`);
