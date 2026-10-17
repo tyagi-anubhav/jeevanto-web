@@ -1,9 +1,10 @@
 // Decision 229 proof, part 2: what the site does AFTER Google or Apple hand a person back, driven for real on the
-// non-public preview, on a TEST identity (ENGINES' fixtures; the test domain only), in Chromium.
+// non-public preview, on a TEST identity that signed up the app's way (Cowork 17 Oct 17:15 (b): an emailed code from
+// the test Gmail, typed in, through TESTS' one helper via tools/owners.mjs), in Chromium. It purges that identity itself.
 //
-//   APP=<a checkout of the app repo's master> JEEVANTO_REPO=<the main app checkout, for .env.staging> \
+//   APP=<app checkout, for its read-back library> TESTS_REPO=<a checkout of the tests branch> \
 //   W11C_SCRATCH=<file outside both repos> node tools/check-sign-session.mjs [https://jeevanto-site-preview.pages.dev]
-//   … then the same W11C_SCRATCH with `node scripts/verify/wave25/website-fixtures.mjs teardown` from APP.
+//   … if a run crashed: the same env + `node tools/check-sign-session.mjs --teardown` purges what it recorded.
 //
 // A provider's sign-in can't be driven here (no real Google or Apple account is ours to use), so the test account's
 // own session is handed to the page exactly as Supabase hands one back after Google or Apple: in the address's
@@ -14,18 +15,26 @@ import { chromium } from 'playwright';
 import { execFileSync } from 'node:child_process';
 import { writeFileSync } from 'node:fs';
 const BASE = (process.argv[2] || 'https://jeevanto-site-preview.pages.dev').replace(/\/$/, ''), HOST = new URL(BASE).host;
-const { APP } = process.env; if (!APP || !process.env.W11C_SCRATCH) { console.error('APP=… W11C_SCRATCH=… node tools/check-sign-session.mjs'); process.exit(2); }
-const lib = await import(APP + '/scripts/verify/wave11c/lib.mjs');
+const { APP } = process.env; if (!APP || !process.env.W11C_SCRATCH || !process.env.TESTS_REPO) { console.error('APP=… TESTS_REPO=… W11C_SCRATCH=… node tools/check-sign-session.mjs'); process.exit(2); }
+process.env.JV_TARGET = 'live';   // the preview talks to live: the identity and the read-backs are live (asserted, logged)
+const O = await import('./owners.mjs');
+if (process.argv.includes('--teardown')) {
+  for (const r of await O.purgeOwners(O.kept(process.env.W11C_SCRATCH))) console.log(`purge ${r.tag}: ${r.ok ? 'done' : 'NOT done'} ${r.headline}`);
+  process.exit(0);
+}
+const lib = await import(APP + '/scripts/verify/wave11c/lib.mjs');   // read-backs only (no account is made with it)
 const kc = a => execFileSync('security', ['find-generic-password', '-s', 'jeevanto-cloudflare', '-a', a, '-w']).toString().trim();
 const ACCESS = { 'CF-Access-Client-Id': kc('access-client-id'), 'CF-Access-Client-Secret': kc('access-client-secret') };
 const results = [], ok = (n, c, x = '') => { results.push(`${c ? 'PASS' : 'FAIL'} ${n}${x ? ' — ' + x : ''}`); return c; };
-const mask = s => String(s).replace(/[^\s@"]+@jeevanto-test\.local/g, '‹test address›');
+const mask = s => String(s).replace(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}/g, '‹test address›');
 
-// 1 · a test account, and its session (one sign-in by password, as a provider's return would carry)
+// 1 · a test account, signed up the app's way, and its session (the session a provider's return would carry)
 // no name from the provider (as Apple's web flow gave the founder, 9 Oct): the page must ask, never show an address
-const acct = await lib.createTestAccount('w229web', '');
-const tok = await (await fetch(`${lib.BASE}/auth/v1/token?grant_type=password`, { method: 'POST', headers: { apikey: lib.ENV.SUPABASE_ANON_KEY, 'Content-Type': 'application/json' }, body: JSON.stringify({ email: acct.email, password: acct.password }) })).json();
-ok('a test account (the test domain) and its session', !!tok.access_token && !!acct.accountId, `account ${acct.accountId ? 'provisioned' : 'NOT provisioned'}`);
+const A = await O.signUpPerson('w229web');
+O.keep(process.env.W11C_SCRATCH, [A]);   // recorded first, so a crash can still be purged (--teardown)
+const acct = { accountId: A.accountId };
+const tok = { access_token: A.jwt, refresh_token: A.refresh, expires_in: 3600 };
+ok('a test account, signed up the app\'s way (the code emailed to the test Gmail, typed in), and its session', !!tok.access_token && !!acct.accountId, `${A.steps.filter(x => x.ok).length}/${A.steps.length} sign-up steps`);
 
 // 2 · the account door's preflight from the preview, as the browser sends it
 const pf = await fetch(`${lib.BASE}/functions/v1/account`, { method: 'OPTIONS', headers: { Origin: BASE, 'Access-Control-Request-Method': 'POST', 'Access-Control-Request-Headers': 'apikey, authorization, content-type' } });
@@ -107,3 +116,5 @@ const out = [`decision 229 — after the sign-in, on the preview ${BASE}, ${new 
 writeFileSync('proofs/sign-session.txt', out.join('\n') + '\n');
 console.log(out.join('\n')); console.log(`${results.filter(r => r.startsWith('PASS')).length}/${results.length} passed`);
 if (results.some(r => r.startsWith('FAIL'))) process.exitCode = 1;
+// purge in the same turn (live-turn skill §5): through the test door; the caller reads the rows back and sees 0
+for (const r of await O.purgeOwners([A])) console.log(`purge ${r.tag}: ${r.ok ? 'done' : 'NOT done'} ${r.headline}`);

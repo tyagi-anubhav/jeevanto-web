@@ -68,17 +68,29 @@ async function readCode(role, since, label) {
   place(label, r.where); log(`code in ‹${role}› (${label}), filed in ${r.where}`); return r.code;
 }
 
-// ── ENGINES' fixtures (run from the app checkout) ─────────────────────────────────────────────────────────────────────
-// jeevanto.com talks to LIVE, so the owners must be made and purged on live. Since rulebook v10 (15 Oct) the fixtures
-// default to staging and reach live only when asked: JV_TARGET=live (ENGINES' supabase-target.mjs), and each run is then
-// logged to shared/_control/live-uses.log. Older fixtures ignore the variable and read live already.
-function make(tag) {
-  const scratch = join(STATE, `fixtures-${tag}.json`);
-  const outp = execFileSync('node', ['scripts/verify/wave25/website-fixtures.mjs', 'make', '--contact', S.inbox.contact.address, '--owner-alert', S.inbox.alert.address],
-    { cwd: APP, env: { ...process.env, W11C_SCRATCH: scratch, JV_TARGET: 'live', JEEVANTO_REPO: process.env.JEEVANTO_REPO || APP }, encoding: 'utf8' });
-  const code = (outp.match(/"invite_code":\s*"([^"]+)"/) || [])[1];
-  S.made ||= {}; S.made[tag] = { scratch, code, at: Date.now() }; save();
-  log(`make ${tag}: ${outp.split('\n').filter(l => /F[12] ·|steps|PASS|FAIL|✓|✗/.test(l)).join(' | ').slice(0, 300)}`);
+// ── the owners, made THE REAL WAY (Cowork 17 Oct 17:15 (b); live-turn skill §3; decisions 264/266/281) ─────────────
+// Each owner signs up through the app's own email-code door with a fresh plus-tag of the test Gmail (TESTS' one helper,
+// tools/owners.mjs → tests/readiness/lib/identity.mjs from TESTS_REPO, a checkout of the tests branch), names itself
+// with the app's own calls, and asks (Uma) or invites (Asha) with the app's own doors under its own session. No admin
+// API, no SQL writes (the old fixtures did both: a side door under 281). jeevanto.com talks to LIVE, so the owners are
+// made on live (JV_TARGET=live, which the helper asserts against the env file's ref and logs to live-uses.log).
+process.env.JV_TARGET = 'live';
+const O = await import('./owners.mjs');
+const ownersFile = join(STATE, 'owners.json');
+async function make(tag) {
+  const at = Date.now();
+  const u = await O.ownerWhoAsks(`w25web${tag.toLowerCase()}`, S.inbox.contact.address);
+  const owners = O.kept(ownersFile); owners.push(u.A); O.keep(ownersFile, owners);
+  log(`make ${tag}: Uma signed up the app's way (${u.A.steps.filter(x => x.ok).length}/${u.A.steps.length} sign-up steps), named (auth ${u.named.auth}, account ${u.named.account}), asked → ${u.status}`);
+  let code = null;
+  if (tag === 'A') {
+    const a = await O.ownerWhoInvites('w25webasha');
+    const o2 = O.kept(ownersFile); o2.push(a.A); O.keep(ownersFile, o2);
+    code = a.code;
+    log(`make ${tag}: Asha signed up the app's way, named (auth ${a.named.auth}, account ${a.named.account}), invite code → ${a.status}${code ? '' : ' (NONE)'}`);
+  }
+  S.made ||= {}; S.made[tag] = { code, at }; save();
+  if (!u.asked) throw new Error(`make ${tag}: the ask was refused (${u.status})`);
   return code;
 }
 async function askMail(tag) {  // ENGINES' readAskFromGmail returns only the reference and the answer link
@@ -126,7 +138,7 @@ if (process.argv[2] === 'run') {
   if (!S.inbox) { S.inbox = { contact: await openInbox('contact'), alert: await openInbox('alert'), new: await openInbox('new') }; save(); log('three plus-tags of the test Gmail inbox made'); }
 
   // A: the reference, the inviter, yes
-  make('A'); const A = await askMail('A');
+  await make('A'); const A = await askMail('A');
   ok('A: the real ask mail arrives in ‹contact›, with a reference and the answer link', !!A.ref && !!A.link, `"${A.subject}"`);
   for (const [en, E] of [['chromium', chromium], ['webkit', webkit]]) await browse(E, async p => {
     await p.goto(BASE + '/check'); await p.fill('#chk-ref', A.ref); await p.click('form button[type=submit]');
@@ -164,9 +176,9 @@ if (process.argv[2] === 'run') {
   if (ONLY_A) results.push('SKIPPED B and C (yes/no) and session 2 (step down): ONLY_A run');
   else {
   // C: yes; B: no (WebKit)
-  make('C'); const C = await askMail('C');
+  await make('C'); const C = await askMail('C');
   await browse(chromium, async p => { await p.goto(C.link); await shown(p, '[data-state="agree"]'); await p.click('[data-yes]'); ok('chromium C: yes', await shown(p, '[data-state="yes"]')); });
-  make('B'); const B = await askMail('B');
+  await make('B'); const B = await askMail('B');
   await browse(webkit, async p => {
     await p.goto(B.link); ok('webkit B: the ask link → pending', await shown(p, '[data-state="agree"]'));
     await p.click('[data-no]'); ok('webkit B: No, thank you → "no"', await shown(p, '[data-state="no"]'), await text(p, '[data-state="no"] h1'));
@@ -231,13 +243,10 @@ if (process.argv[2] === 'run') {
   console.log(`\n${results.filter(r => r.startsWith('PASS')).length}/${results.length - waits} passed${waits ? ` · ${waits} wait for an emailed code` : ''} · other hosts: ${offHost.length}`);
   if (results.some(r => r.startsWith('FAIL')) || offHost.length) process.exitCode = 1;
 } else if (process.argv[2] === 'teardown') {
-  let first = true;
-  for (const [tag, m] of Object.entries(S.made || {})) {
-    if (m.tornDown) continue;
-    if (!first) { log('ten minutes before the next purge (the estate\'s rule holds across files too)'); await sleep(600_000); } first = false;
-    log(`teardown ${tag}`);
-    const outp = execFileSync('node', ['scripts/verify/wave25/website-fixtures.mjs', 'teardown'], { cwd: APP, env: { ...process.env, W11C_SCRATCH: m.scratch, JV_TARGET: 'live', JEEVANTO_REPO: process.env.JEEVANTO_REPO || APP }, encoding: 'utf8' });
-    log(outp.split('\n').filter(Boolean).slice(-4).join(' | ')); m.tornDown = true; save();
-  }
+  // every owner the run signed up, purged through the test door (identity.purge waits out the 10-minute gap itself);
+  // the caller reads the rows back and sees 0 — "the door didn't say it failed" is not "deleted" (live-turn skill §5)
+  const owners = O.kept(ownersFile);
+  if (!owners.length) { console.log('teardown: no owners recorded in STATE'); }
+  for (const r of await O.purgeOwners(owners)) log(`purge ${r.tag}: ${r.ok ? 'done' : 'NOT done'} ${r.headline}`);
   // the inboxes are plus-tags of ENGINES' test Gmail inbox: nothing to delete, and the reader archives nothing (266, Q2)
 } else { console.error('run | teardown'); process.exit(2); }
