@@ -41,7 +41,10 @@ const ONLY_A = process.env.ONLY_A === '1';
 // must still say no (20262055: recovery_consent_view answers `declined` with the asker's name), never "doesn't work
 // any more". No door session, no emailed door code: it fits one live turn with its purge.
 const ONLY_B = process.env.ONLY_B === '1';
-if (ONLY_A && ONLY_B) { console.error('ONLY_A and ONLY_B are separate runs'); process.exit(2); }
+// ONLY_YES=1 (F-257, TESTS 18 Oct): owner A's ask and the contact's yes alone: what the page knows them by, on the yes
+// and on the reopened link, must both be a masked email. One owner, no Asha, no door session: one live turn.
+const ONLY_YES = process.env.ONLY_YES === '1';
+if ([ONLY_A, ONLY_B, ONLY_YES].filter(Boolean).length > 1) { console.error('ONLY_A and ONLY_B are separate runs'); process.exit(2); }
 // EXPIRE_SESSION=1 (with ONLY_A; row 1133, Cowork 15 Oct 23:55 (b)): the honest real-life NOT_FOUND. A person leaves the
 // page open past the door session's life (live: recovery_setting door_session_minutes = 30, ENGINES 16 Oct 00:5x), then
 // taps "Send the 6 digits". The door answers 409 NOT_FOUND (its session check sits in _door_contact), and the page must
@@ -92,7 +95,7 @@ async function make(tag) {
   const owners = O.kept(ownersFile); owners.push(u.A); O.keep(ownersFile, owners);
   log(`make ${tag}: Uma signed up the app's way (${u.A.steps.filter(x => x.ok).length}/${u.A.steps.length} sign-up steps), named (auth ${u.named.auth}, account ${u.named.account}), asked → ${u.status}`);
   let code = null;
-  if (tag === 'A') {
+  if (tag === 'A' && !ONLY_YES) {
     const a = await O.ownerWhoInvites('w25webasha');
     const o2 = O.kept(ownersFile); o2.push(a.A); O.keep(ownersFile, o2);
     code = a.code;
@@ -160,7 +163,7 @@ if (process.argv[2] === 'run') {
   // A: the reference, the inviter, yes
   await make('A'); const A = await askMail('A');
   ok('A: the real ask mail arrives in ‹contact›, with a reference and the answer link', !!A.ref && !!A.link, `"${A.subject}"`);
-  for (const [en, E] of [['chromium', chromium], ['webkit', webkit]]) await browse(E, async p => {
+  if (!ONLY_YES) for (const [en, E] of [['chromium', chromium], ['webkit', webkit]]) await browse(E, async p => {
     await p.goto(BASE + '/check'); await p.fill('#chk-ref', A.ref); await p.click('form button[type=submit]');
     const real = await shown(p, '[data-state="real"]');
     const sentToChk = real ? (await text(p, '[data-f="sent_to"]')).trim() : '';
@@ -180,9 +183,15 @@ if (process.argv[2] === 'run') {
     const known = y ? await text(p, '[data-known]') : '';
     const maskedEmail = /We’ll know you by \S•+@\S•+\.[a-z]{2,}/.test(known);
     ok('chromium A: yes → "We’ll know you by" a masked EMAIL (a letter, dots, @, a letter, dots, the domain); the other channel offered', y && maskedEmail && await shown(p, '[data-add-mob]', 3000), y ? `known by: ${maskedEmail ? 'a masked email' : 'NOT a masked email (' + known.replace(/\d/g, '#') + ')'}` : await text(p, '[data-known]'));
-    await p.goto(A.link); ok('chromium A: the link again → still yes', await shown(p, '[data-state="yes"]'));
+    // F-257's second place: a reopened accepted link draws "We'll know you by" from recovery_consent_view's known_by
+    await p.goto(A.link); const again = await shown(p, '[data-state="yes"]');
+    const knownAgain = again ? await text(p, '[data-known]') : '';
+    const maskedAgain = /We’ll know you by \S•+@\S•+\.[a-z]{2,}/.test(knownAgain);
+    ok('chromium A: the link again → still yes, still known by a masked EMAIL (F-257, consent_view)', again && maskedAgain, again ? `known by: ${maskedAgain ? 'a masked email' : 'NOT a masked email (' + knownAgain.replace(/\d/g, '#') + ')'}` : 'not the yes state');
   });
 
+  if (ONLY_YES) results.push('SKIPPED /check, /invited, B and C, and the three door sessions: ONLY_YES run');
+  else {
   // door session 1: start A
   await browse(chromium, async p => {
     if (NO_CODES) { results.push('WAITS session 1: needs an emailed door code (decision 264; ENGINES\' 266 drive note first)'); return; }
@@ -262,10 +271,11 @@ if (process.argv[2] === 'run') {
     const where = await Promise.any(['new', 'contact'].map(role => readCode(role, t1, 'the digits').then(() => role))).catch(() => 'neither');
     ok('session 3: the digits arrive, at the updated address', where === 'new', `in ‹${where}›`);
   });
+  }
 
   }
 
-  writeFileSync(ONLY_B ? 'proofs/positive-live-908.txt' : 'proofs/positive-live.txt', [`cc-website-02 JOB 2 — the positive paths on ${BASE}, ${new Date().toISOString()}`, ...results,
+  writeFileSync(ONLY_B ? 'proofs/positive-live-908.txt' : ONLY_YES ? 'proofs/positive-live-f257.txt' : 'proofs/positive-live.txt', [`cc-website-02 JOB 2 — the positive paths on ${BASE}, ${new Date().toISOString()}`, ...results,
     `requests by host: ${JSON.stringify(requests)}`, `requests to any other host: ${offHost.length}`, 'the doors answered:', ...doorLog].join('\n') + '\n');
   const waits = results.filter(r => r.startsWith('WAITS') || r.startsWith('SKIPPED')).length;
   console.log(`\n${results.filter(r => r.startsWith('PASS')).length}/${results.length - waits} passed${waits ? ` · ${waits} wait for an emailed code` : ''} · other hosts: ${offHost.length}`);
