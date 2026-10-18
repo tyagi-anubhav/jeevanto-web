@@ -51,6 +51,9 @@ const EXPIRE_SESSION = process.env.EXPIRE_SESSION === '1';
 const DOOR_SESSION_MIN = 30;
 const NOT_FOUND_WORDS = 'We couldn’t send the 6 digits. Write to help@jeevanto.com, and we’ll look into it.';
 const results = [], requests = {}, offHost = [], doorLog = [];
+// a masked email as the pages draw it: one letter, the mask's dots, '@', one letter, dots, the domain (F-555, F-255)
+const MASKED_EMAIL = /^\S•+@\S•+\.[a-z]{2,}$/;
+const shape = v => MASKED_EMAIL.test(String(v).trim()) ? 'a masked email' : `NOT a masked email (${String(v).replace(/\d/g, '#').replace(/[A-Za-z]/g, 'x').slice(0, 40)})`;
 const mask = s => String(s).replace(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}/g, m => Object.entries(S.inbox || {}).find(([, v]) => v.address === m)?.[0] ? `‹${Object.entries(S.inbox).find(([, v]) => v.address === m)[0]}›` : '‹address›')
   .replace(/JV-[A-Z0-9]{4}-[A-Z0-9]{4}/g, 'JV-‹ref›').replace(/[?&]t=[^&\s]+/g, '&t=‹token›');
 const ok = (name, cond, extra = '') => { const l = `${cond ? 'PASS' : 'FAIL'} ${name}${extra ? ' — ' + mask(extra) : ''}`; results.push(l); console.log(l); return cond; };
@@ -160,7 +163,8 @@ if (process.argv[2] === 'run') {
   for (const [en, E] of [['chromium', chromium], ['webkit', webkit]]) await browse(E, async p => {
     await p.goto(BASE + '/check'); await p.fill('#chk-ref', A.ref); await p.click('form button[type=submit]');
     const real = await shown(p, '[data-state="real"]');
-    ok(`${en} /check: the ask's reference → THIS IS REAL`, real, real ? `sent to ${await text(p, '[data-f="sent_to"]')}, about "${await text(p, '[data-f="about"]')}"` : await text(p, '[data-err]'));
+    const sentToChk = real ? (await text(p, '[data-f="sent_to"]')).trim() : '';
+    ok(`${en} /check: the ask's reference → THIS IS REAL, sent to a masked EMAIL`, real && MASKED_EMAIL.test(sentToChk), real ? `sent to ${shape(sentToChk)}, about "${await text(p, '[data-f="about"]')}"` : await text(p, '[data-err]'));
     await p.goto(BASE + '/invited?c=' + encodeURIComponent(S.made.A.code));
     await p.waitForFunction(() => document.querySelector('[data-inviter]')?.textContent && document.querySelector('[data-inviter]').textContent !== 'Someone', null, { timeout: 15000 }).catch(() => {});
     // decision 254: the whole first name, and an account with no separate first name gets its whole stored name, never a
@@ -253,7 +257,7 @@ if (process.argv[2] === 'run') {
     // the contact here is an email, so "sent to" must be a masked email: an '@' and the mask's dots. Four digits is the
     // sealed token masked as a phone (F-555), which this check once let through (13 Oct 09:30).
     const sentTo = d ? await text(p, '[data-sent-to]') : '';
-    ok('session 3: Send the 6 digits → "digits", sent to the masked address', d && sentTo.includes('@') && sentTo.includes('•'), d ? `sent to: ${sentTo.includes('@') && sentTo.includes('•') ? 'a masked email (\'@\' and the mask\'s dots)' : sentTo.includes('@') ? 'an UNMASKED address (not printed)' : sentTo.replace(/[^\s•]/g, c => /\d/.test(c) ? '9' : c)}` : await text(p, '[data-list] [data-p="err"]'));
+    ok('session 3: Send the 6 digits → "digits", sent to the masked address', d && MASKED_EMAIL.test(sentTo.trim()), d ? `sent to: ${shape(sentTo)}` : 'no digits state');
     // no digits in either tag is a FAIL with the door's answer beside it, never a crash that loses the proof
     const where = await Promise.any(['new', 'contact'].map(role => readCode(role, t1, 'the digits').then(() => role))).catch(() => 'neither');
     ok('session 3: the digits arrive, at the updated address', where === 'new', `in ‹${where}›`);
