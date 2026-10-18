@@ -61,3 +61,16 @@ door door_update_start → 200
 door door_update_confirm → 200
 door door_people → 200
 door door_send_digits → 200
+
+the owners (decision 281: no admin door; tools/owners.mjs → TESTS' tests/readiness/lib/identity.mjs):
+owner 1 · Uma (A) · signed up the app's way 4/4: send code (the app's sign-up door) · code read from the Gmail inbox (266) · verified into a session · the server made the account, and marks it a test account · named (auth 200, account 200) · asked → 200
+owner 2 · Asha (A) · signed up the app's way 4/4 (the same four steps) · named (auth 200, account 200) · invite code → 201
+owner 3 · Uma (C) · signed up the app's way 4/4 (the same four steps) · named (auth 200, account 200) · asked → 200
+owner 4 · Uma (B) · signed up the app's way 4/4 (the same four steps) · named (auth 200, account 200) · asked → 200
+the purge (through the test door, same turn): owners 1–4 · done deleted
+read back on live, read-only (sentinel_identity.accounts / sentinel_identity.users / auth.users), 08:02 IST 18 Oct:
+owner 1 · 0 / 0 / 0
+owner 2 · 0 / 0 / 0
+owner 3 · 0 / 0 / 0
+owner 4 · 0 / 0 / 0
+the pages' doors, by name (from the lines above): /check (THIS IS REAL, chromium + webkit) · /invited (Asha named, both engines) · /recover/answer (A yes, C yes, B no, and the link again still no) · /recover (door sessions 1–3: the code, people, start, step down, update, the 6 digits)
