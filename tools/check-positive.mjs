@@ -170,7 +170,12 @@ if (process.argv[2] === 'run') {
   await browse(chromium, async p => {
     await p.goto(A.link); ok('chromium the ask link (A) → "Uma" asks, pending', await shown(p, '[data-state="agree"]'), await text(p, 'h1'));
     await p.click('[data-yes]'); const y = await shown(p, '[data-state="yes"]');
-    ok('chromium A: yes → "We’ll know you by" the masked email; the other channel offered', y && /We’ll know you by/.test(await text(p, '[data-known]')) && await shown(p, '[data-add-mob]', 3000), await text(p, '[data-known]'));
+    // the contact is an email, so what the page knows them by must LOOK like a masked email: a letter, the mask's dots, an
+    // '@', then the domain masked. "•••• 8327" is the sealed token's tail masked as a phone (F-555's shape, on the accept
+    // path): it passed here on 18 Oct 08:02 because this check read the words only (RECHECK-LIVE, row 833's gate).
+    const known = y ? await text(p, '[data-known]') : '';
+    const maskedEmail = /We’ll know you by \S•+@\S•+\.[a-z]{2,}/.test(known);
+    ok('chromium A: yes → "We’ll know you by" a masked EMAIL (a letter, dots, @, a letter, dots, the domain); the other channel offered', y && maskedEmail && await shown(p, '[data-add-mob]', 3000), y ? `known by: ${maskedEmail ? 'a masked email' : 'NOT a masked email (' + known.replace(/\d/g, '#') + ')'}` : await text(p, '[data-known]'));
     await p.goto(A.link); ok('chromium A: the link again → still yes', await shown(p, '[data-state="yes"]'));
   });
 

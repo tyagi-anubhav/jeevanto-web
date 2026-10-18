@@ -5,7 +5,7 @@ PASS chromium /invited?c=<Asha's code> → names "Asha Website" (the whole name,
 PASS webkit /check: the ask's reference → THIS IS REAL — sent to ‹a masked email: one letter, •••@, one letter, •••.domain›, about "Uma Website asked you to be a recovery contact"
 PASS webkit /invited?c=<Asha's code> → names "Asha Website" (the whole name, decision 254) — Asha Website has invited you to Jeevanto.
 PASS chromium the ask link (A) → "Uma" asks, pending — Uma Website would like you as a recovery contact.
-PASS chromium A: yes → "We’ll know you by" the masked email; the other channel offered — We’ll know you by •••• 8327.
+FAIL (corrected 18 Oct, RECHECK-LIVE at row 833's gate) chromium A: yes → "We’ll know you by" the masked email; the other channel offered — We’ll know you by •••• ####: the sealed token's tail masked as a phone, not a masked email (F-555's shape, on the accept path). The run printed PASS because the check read the words only; tools/check-positive.mjs now asserts the shape.
 PASS chromium A: the link again → still yes
 PASS session 1: the door code is asked for
 PASS session 1: the code arrives in ‹contact› and opens "your people"
