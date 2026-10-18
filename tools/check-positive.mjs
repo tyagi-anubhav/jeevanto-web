@@ -182,12 +182,12 @@ if (process.argv[2] === 'run') {
     // path): it passed here on 18 Oct 08:02 because this check read the words only (RECHECK-LIVE, row 833's gate).
     const known = y ? await text(p, '[data-known]') : '';
     const maskedEmail = /We’ll know you by \S•+@\S•+\.[a-z]{2,}/.test(known);
-    ok('chromium A: yes → "We’ll know you by" a masked EMAIL (a letter, dots, @, a letter, dots, the domain); the other channel offered', y && maskedEmail && await shown(p, '[data-add-mob]', 3000), y ? `known by: ${maskedEmail ? 'a masked email' : 'NOT a masked email (' + known.replace(/\d/g, '#') + ')'}` : await text(p, '[data-known]'));
+    ok('chromium A: yes → "We’ll know you by" a masked EMAIL (a letter, dots, @, a letter, dots, the domain); the other channel offered', y && maskedEmail && await shown(p, '[data-add-mob]', 3000), y ? `known by: ${maskedEmail ? 'a masked email' : 'NOT a masked email (' + known.replace(/\d/g, '#').replace(/[A-Za-z]/g, 'x') + ')'}` : await text(p, '[data-known]'));
     // F-257's second place: a reopened accepted link draws "We'll know you by" from recovery_consent_view's known_by
     await p.goto(A.link); const again = await shown(p, '[data-state="yes"]');
     const knownAgain = again ? await text(p, '[data-known]') : '';
     const maskedAgain = /We’ll know you by \S•+@\S•+\.[a-z]{2,}/.test(knownAgain);
-    ok('chromium A: the link again → still yes, still known by a masked EMAIL (F-257, consent_view)', again && maskedAgain, again ? `known by: ${maskedAgain ? 'a masked email' : 'NOT a masked email (' + knownAgain.replace(/\d/g, '#') + ')'}` : 'not the yes state');
+    ok('chromium A: the link again → still yes, still known by a masked EMAIL (F-257, consent_view)', again && maskedAgain, again ? `known by: ${maskedAgain ? 'a masked email' : 'NOT a masked email (' + knownAgain.replace(/\d/g, '#').replace(/[A-Za-z]/g, 'x') + ')'}` : 'not the yes state');
   });
 
   if (ONLY_YES) results.push('SKIPPED /check, /invited, B and C, and the three door sessions: ONLY_YES run');
