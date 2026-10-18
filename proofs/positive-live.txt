@@ -1,11 +1,11 @@
-cc-website-02 JOB 2 — the positive paths on https://jeevanto.com, 2026-10-13T04:00:58.231Z
+cc-website-02 JOB 2 — the positive paths on https://jeevanto.com, 2026-10-18T01:58:15.423Z
 PASS A: the real ask mail arrives in ‹contact›, with a reference and the answer link — "(not read: the reader returns the reference and link only), filed in PRIMARY"
-PASS chromium /check: the ask's reference → THIS IS REAL — sent to t•••@g•••.com, about "Uma Website asked you to be a recovery contact"
+PASS chromium /check: the ask's reference → THIS IS REAL — sent to ‹a masked email: one letter, •••@, one letter, •••.domain›, about "Uma Website asked you to be a recovery contact"
 PASS chromium /invited?c=<Asha's code> → names "Asha Website" (the whole name, decision 254) — Asha Website has invited you to Jeevanto.
-PASS webkit /check: the ask's reference → THIS IS REAL — sent to t•••@g•••.com, about "Uma Website asked you to be a recovery contact"
+PASS webkit /check: the ask's reference → THIS IS REAL — sent to ‹a masked email: one letter, •••@, one letter, •••.domain›, about "Uma Website asked you to be a recovery contact"
 PASS webkit /invited?c=<Asha's code> → names "Asha Website" (the whole name, decision 254) — Asha Website has invited you to Jeevanto.
 PASS chromium the ask link (A) → "Uma" asks, pending — Uma Website would like you as a recovery contact.
-PASS chromium A: yes → "We’ll know you by" the masked email; the other channel offered — We’ll know you by •••• 0940.
+PASS chromium A: yes → "We’ll know you by" the masked email; the other channel offered — We’ll know you by •••• 8327.
 PASS chromium A: the link again → still yes
 PASS session 1: the door code is asked for
 PASS session 1: the code arrives in ‹contact› and opens "your people"
@@ -14,7 +14,14 @@ PASS session 1: a wrong name is refused
 PASS session 1: "uma" (the first word alone) is refused
 PASS session 1: "uma website" → the warning
 PASS session 1: Start → "started" — Thank you. We’ve started Uma Website’s way back in.
-SKIPPED B and C (yes/no) and session 2 (step down): ONLY_A run
+PASS chromium C: yes
+PASS webkit B: the ask link → pending
+PASS webkit B: No, thank you → "no" — That’s fine.
+PASS webkit B: the link again → still no
+PASS session 2: the door code is asked for
+PASS session 2: the code arrives in ‹contact› and opens "your people"
+PASS session 2: people lists A waiting and C idle, not B — [{"name":"Uma Website","status":"Started. About 1 day left."},{"name":"Uma Website","status":"Nothing happening"}]
+PASS session 2: step down from C → "stepped"
 PASS session 3: the door code is asked for
 PASS session 3: the code arrives in ‹contact› and opens "your people"
 PASS session 3: Uma alone, waiting ("Started. …") — [{"name":"Uma Website","status":"Started. About 1 day left."}]
@@ -22,11 +29,10 @@ PASS session 3: Update my email or mobile
 PASS session 3: update → a code is sent to the new address
 PASS session 3: the code from ‹new› → saved
 PASS session 3: after the hold → "The wait is over." — [{"name":"Uma Website","status":"The wait is over."}]
-PASS session 3: Send the 6 digits → "digits", sent to the masked address — •••• 3378
-FINDING the digits: Gmail filed it in UPDATES, not Primary
+PASS session 3: Send the 6 digits → "digits", sent to the masked address — sent to: a masked email ('@' and the mask's dots)
 PASS session 3: the digits arrive, at the updated address — in ‹new›
-requests by host: {"jeevanto.com":95,"cloudflareinsights.com":9,"tqaiyxijluboflyoykoi.supabase.co":18}
-requests to any other host: 9
+requests by host: {"jeevanto.com":148,"cloudflareinsights.com (answered here, not sent)":14,"tqaiyxijluboflyoykoi.supabase.co":27}
+requests to any other host: 0
 the doors answered:
 door check → 200
 door invite_name → 200
@@ -39,6 +45,15 @@ door door_code_start → 200
 door door_code_verify → 200
 door door_people → 200
 door door_start → 200
+door consent_view → 200
+door consent_answer → 200
+door consent_view → 200
+door consent_answer → 200
+door consent_view → 200
+door door_code_start → 200
+door door_code_verify → 200
+door door_people → 200
+door door_step_down → 200
 door door_code_start → 200
 door door_code_verify → 200
 door door_people → 200
