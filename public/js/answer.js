@@ -13,7 +13,9 @@
 
   function showYes(known, second) {
     var box = $('[data-known]'); box.textContent = '';
-    [known, second].filter(Boolean).forEach(function (k) { var p = document.createElement('p'); p.style.cssText = 'font-size:15px; line-height:21px; color:var(--ink);'; p.append('We’ll know you by '); var b = document.createElement('b'); b.style.fontWeight = '600'; b.textContent = knownLine(k); p.append(b, '.'); box.appendChild(p); });
+    // row 1194 (Cowork 18 Oct 11:13): no "known by" line when known_by is absent or its mask is empty, never "null"
+    [known, second].filter(function (k) { return k && k.masked; }).forEach(function (k) { var p = document.createElement('p'); p.style.cssText = 'font-size:15px; line-height:21px; color:var(--ink);'; p.append('We’ll know you by '); var b = document.createElement('b'); b.style.fontWeight = '600'; b.textContent = knownLine(k); p.append(b, '.'); box.appendChild(p); });
+    known = known && known.masked ? known : null;
     var offer = known && !second, mail = known && known.channel_type === 'email';
     $('[data-add]').hidden = !offer;
     if (offer) {
