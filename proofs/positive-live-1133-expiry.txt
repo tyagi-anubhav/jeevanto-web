@@ -1,0 +1,57 @@
+cc-website-02 JOB 2 — the positive paths on https://jeevanto.com, 2026-10-18T11:51:10.125Z
+PASS A: the real ask mail arrives in ‹contact›, with a reference and the answer link — "(not read: the reader returns the reference and link only), filed in PRIMARY"
+PASS chromium /check: the ask's reference → THIS IS REAL, sent to a masked EMAIL — sent to a masked email, about "Uma Website asked you to be a recovery contact"
+PASS chromium /invited?c=<Asha's code> → names "Asha Website" (the whole name, decision 254) — Asha Website has invited you to Jeevanto.
+PASS webkit /check: the ask's reference → THIS IS REAL, sent to a masked EMAIL — sent to a masked email, about "Uma Website asked you to be a recovery contact"
+PASS webkit /invited?c=<Asha's code> → names "Asha Website" (the whole name, decision 254) — Asha Website has invited you to Jeevanto.
+PASS chromium the ask link (A) → "Uma" asks, pending — Uma Website would like you as a recovery contact.
+PASS chromium A: yes → "We’ll know you by" a masked EMAIL (a letter, dots, @, a letter, dots, the domain); the other channel offered — known by: a masked email
+PASS chromium A: the link again → still yes, still known by a masked EMAIL (F-257, consent_view) — known by: a masked email
+PASS session 1: the door code is asked for
+PASS session 1: the code arrives in ‹contact› and opens "your people"
+PASS session 1: people lists "Uma Website" (the whole name, decision 254), nothing happening — [{"name":"Uma Website","status":"Nothing happening"}]
+PASS session 1: a wrong name is refused
+PASS session 1: "uma" (the first word alone) is refused
+PASS session 1: "uma website" → the warning
+PASS session 1: Start → "started" — Thank you. We’ve started Uma Website’s way back in.
+SKIPPED B and C (yes/no) and session 2 (step down): ONLY_A run
+PASS session 3: the door code is asked for
+PASS session 3: the code arrives in ‹contact› and opens "your people"
+PASS session 3: Uma alone, waiting ("Started. …") — [{"name":"Uma Website","status":"Started. About 1 day left."}]
+PASS session 3: Update my email or mobile
+PASS session 3: update → a code is sent to the new address
+PASS session 3: the code from ‹new› → saved
+PASS session 3: after the hold → "The wait is over." — [{"name":"Uma Website","status":"The wait is over."}]
+PASS row 1133: Send the 6 digits after the door session ran out → the founder's words for NOT_FOUND — the page says: We couldn’t send the 6 digits. Write to ‹address›, and we’ll look into it.
+PASS row 1133: never "couldn't reach" for a refusal the engine answered — We couldn’t send the 6 digits. Write to ‹address›, and we’ll look into it.
+PASS row 1133: the door really answered 409 NOT_FOUND — door door_send_digits → 409 NOT_FOUND
+requests by host: {"jeevanto.com":96,"cloudflareinsights.com (answered here, not sent)":9,"tqaiyxijluboflyoykoi.supabase.co":18}
+requests to any other host: 0
+the doors answered:
+door check → 200
+door invite_name → 200
+door check → 200
+door invite_name → 200
+door consent_view → 200
+door consent_answer → 200
+door consent_view → 200
+door door_code_start → 200
+door door_code_verify → 200
+door door_people → 200
+door door_start → 200
+door door_code_start → 200
+door door_code_verify → 200
+door door_people → 200
+door door_update_start → 200
+door door_update_confirm → 200
+door door_people → 200
+door door_send_digits → 409 NOT_FOUND
+
+the owners (decision 281: no admin door; tools/owners.mjs → TESTS' tests/readiness/lib/identity.mjs):
+owner 1 · Uma (A) · signed up the app's way 4/4: send code (the app's sign-up door) · code read from the Gmail inbox (266) · verified into a session · the server made the account, and marks it a test account · named · asked → 200
+owner 2 · Asha (A) · signed up the app's way 4/4 (the same four steps) · named · invite code → 201
+the purge (through the test door, same turn): owners 1–2 · done deleted
+read back on live, read-only (sentinel_identity.accounts / sentinel_identity.users / auth.users), 17:31 IST 18 Oct:
+owner 1 · 0 / 0 / 0
+owner 2 · 0 / 0 / 0
+the expiry path (row 1133): door session 3 opened with an emailed code, the page then kept open 1229 s past the 30-minute door session; "Send the 6 digits" → the door answered 409 NOT_FOUND → the page says the founder's words (WEB-1), never "couldn't reach".
