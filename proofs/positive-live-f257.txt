@@ -1,8 +1,8 @@
-cc-website-02 JOB 2 — the positive paths on https://jeevanto.com, 2026-10-18T06:47:56.873Z
+cc-website-02 JOB 2 — the positive paths on https://jeevanto.com, 2026-10-18T10:46:54.667Z
 PASS A: the real ask mail arrives in ‹contact›, with a reference and the answer link — "(not read: the reader returns the reference and link only), filed in PRIMARY"
 PASS chromium the ask link (A) → "Uma" asks, pending — Uma Website would like you as a recovery contact.
-FAIL chromium A: yes → "We’ll know you by" a masked EMAIL (a letter, dots, @, a letter, dots, the domain); the other channel offered — known by: NOT a masked email (We’ll know you by xxxxx.•••@xxxxx.xxx.)
-FAIL chromium A: the link again → still yes, still known by a masked EMAIL (F-257, consent_view) — known by: NOT a masked email (We’ll know you by xxxxx.•••@xxxxx.xxx.)
+PASS chromium A: yes → "We’ll know you by" a masked EMAIL (a letter, dots, @, a letter, dots, the domain); the other channel offered — known by: a masked email
+PASS chromium A: the link again → still yes, still known by a masked EMAIL (F-257, consent_view) — known by: a masked email
 SKIPPED /check, /invited, B and C, and the three door sessions: ONLY_YES run
 requests by host: {"jeevanto.com":26,"tqaiyxijluboflyoykoi.supabase.co":3,"cloudflareinsights.com (answered here, not sent)":2}
 requests to any other host: 0
