@@ -69,10 +69,10 @@ We collect only what {{product_name}} needs to do what you ask. Here is each kin
 | **Your account** | Your name; your email; your mobile number, if you give it; the Google, Apple or Microsoft sign-in you use | To create your account, sign you in, and write to you about it |
 | **What you connect** | From the mail, calendar and contacts you choose to connect: the facts that matter, such as a date, a promise, an offer, a person's details. **Not the mail itself** | To remind you, prepare you, and act for you when you ask |
 | **What you tell or give {{product_name}}** | Notes, reminders, requests, documents you upload (for example a medical report or a prescription), photos you share with it | To do what you ask, and to keep it for you |
-| **Your Vault** | Logins you save for websites, and logins for accounts {{product_name}} creates for you on a site with your yes (section 5.2) | So {{product_name}} can sign you in to that site when you ask it to do something there (section 5.2). **{{product_name}} never pays for you:** you pay on the site's own page. They're locked with a key on your own phone |
+| **Your Vault** | Logins you save for websites, and logins for accounts {{product_name}} creates for you on a site with your yes (section 5.2) | So {{product_name}} can sign you in to that site when you ask it to do something there (section 5.2). **{{product_name}} never pays for you:** you pay on the site's own page. They're sealed with their own key, kept in a separate locked store, never alongside your data. |
 | **Your Circle** | Who is in your Family and who your kin are; what each person has chosen to share | To run Family and kin as each person has allowed |
 | **Payments** | Your plan, what you paid and when, your invoices | To bill you, give refunds, and keep records the law requires. **Your card and UPI details stay with Razorpay; we never see them** |
-| **Your device** | The phone model, the app version, a notification token, the keys that lock your data on your phone | To send you reminders and notifications, and keep your data locked to you |
+| **Your device** | The phone model, the app version, a notification token, and a key your phone makes for itself, so we can send your phone what only it should open | To send you reminders and notifications, and keep your data locked to you |
 | **How {{product_name}} is used** | How much it read from each source; which features you use; errors and crashes | To show you your counts, keep within your plan's allowance, and fix what breaks |
 | **Messages to us** | What you write to support or to the Grievance Officer | To answer you |
 | **Our messages to you** | For each email, text or WhatsApp we send: its reference (like JV-7Q2M-4KDX), the channel, the address with most of it hidden, when it went, and one line on what it was about. Kept for 24 months | So you can check at jeevanto.com/check that a message really came from us |
@@ -87,7 +87,7 @@ We collect only what {{product_name}} needs to do what you ask. Here is each kin
 - We never keep the mail itself: only the facts that matter, each pointing to its source.
 - We never sell your data, or share it for advertising.
 - We never use your data to train AI, and we send it only through AI services set up so it doesn't train anyone's models (section 7).
-- We never read your data ourselves, except as section 12 describes.
+- No one at {{product_name}} reads your data, except as section 12.2 describes. Our systems open it automatically, but only to do what you've asked (section 12.1).
 - We never send, change or delete anything in an account you've connected, on our own.
 - We never act for you without your say-so. {{product_name}} signs in with your saved login only for a job you've asked for, and **never presses pay, book, confirm or place order:** you do.
 - **{{product_name}} never sends a text, WhatsApp or email as you.** It writes the message and opens it in your own app, and you send it. The only messages that go from inside {{product_name}} are messages between two {{product_name}} users (in-app), and {{product_name}}'s own messages: your sign-in codes and account notices, and, only when you ask, an invitation to someone you add to your Circle or as your recovery contact.
@@ -188,7 +188,16 @@ How long each of these is kept is set for the country you signed up in, and is s
 
 ## 12. How we protect it
 
-12.1 Your data is encrypted in transit and at rest. What you keep in {{product_name}} is sealed with keys made on your phone. **Your own name and email address are the exception:** we keep them readable, because we need them to sign you in, write to you and run your plan. The names of the people you add or invite are sealed like everything else. Your Vault can be opened only with those keys.
+12.1 Your data is encrypted in transit and at rest. What you keep in {{product_name}} is sealed. Its keys are made by our servers and kept in a separate locked store, never alongside your data. **Your own name and email address are the exception:** we keep them readable, because we need them to sign you in, write to you and run your plan. The names of the people you add or invite are sealed like everything else. Your Vault is sealed with its own key, and a saved login is used only at the moment you ask {{product_name}} to do something on that site.
+
+**12.1a What our systems open, and why.** So {{product_name}} can work while your phone is in your pocket, our servers open some of what you keep without asking your phone each time. Our servers do this, never a person:
+- your notes and reminders, to remind you on time and to answer when you ask;
+- the facts it keeps from the accounts you connect, such as mail and calendar, to keep them up to date and look out for what you asked;
+- what you've asked {{product_name}} to find or prepare, to answer and to keep the answer for you;
+- the people in your contacts, to know who someone is when you mention them;
+- your health records, if you add them, to answer your questions about them.
+
+Each is opened only for the job it's needed for, and closed again. None of it is used to train AI (section 7), and no person at {{product_name}} sees it except as 12.2 says.
 
 12.2 Access inside our company is limited to what's needed to run {{product_name}}. **No one at {{product_name}} reads your content** except:
 - **to help with a problem you've raised**: only if you say yes in the app, only what that problem needs, and the permission closes by itself after a set time;
@@ -228,7 +237,7 @@ In particular:
 - no one at {{product_name}} reads it without your permission, except for security or legal reasons (section 12);
 - **we don't use data obtained through Google Workspace APIs to develop, improve or train generalised AI or machine-learning models**, ours or anyone else's. When {{product_name}} needs an AI model to read an email for you, the request goes through the services in section 7, only for that request, to models whose makers don't train on it.
 
-**How it's kept.** Your Google sign-in permission (the token Google gives us) is sealed in our vault and is never shown to anyone. The facts {{product_name}} keeps are sealed with keys made on your phone (section 12).
+**How it's kept.** Your Google sign-in permission (the token Google gives us) is sealed in our vault and is never shown to anyone. The facts {{product_name}} keeps are sealed, and only {{product_name}}'s own systems can open them (section 12).
 
 **Taking it back.** Disconnect Google in the app, under Settings → Connected accounts, or at [myaccount.google.com/permissions](https://myaccount.google.com/permissions). From then on {{product_name}} reads nothing more, and what it read is deleted unless you choose to keep facts it already found (section 10.3).
 
